@@ -5,9 +5,11 @@ import {
   ClipboardList,
   FileStack,
   GraduationCap,
+  KeyRound,
   LayoutDashboard,
   Menu,
   PenSquare,
+  Plus,
   ScrollText,
   Settings,
   ShieldCheck,
@@ -15,6 +17,7 @@ import {
   UsersRound,
   LogOut,
 } from "lucide-react";
+
 import { useState, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
