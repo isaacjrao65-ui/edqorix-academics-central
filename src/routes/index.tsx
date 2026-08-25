@@ -454,10 +454,11 @@ function Landing() {
           <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {FEATURES.map((item, index) => (
               <Reveal key={item.title} delay={index * 60}>
-                <div className="group h-full rounded-xl border border-border/70 bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl">
-                  <span className="grid size-10 place-items-center rounded-lg bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-105">
+                <div className={`group h-full rounded-xl border border-border/70 bg-background p-6 transition-all duration-300 hover:-translate-y-1.5 hover:card-glow ${BRAND_BORDER[index % BRAND_BORDER.length]}`}>
+                  <span className={`grid size-10 place-items-center rounded-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 ${BRAND_TINT[index % BRAND_TINT.length]}`}>
                     <item.icon className="size-5" aria-hidden />
                   </span>
+
                   <h3 className="mt-4 font-display text-base font-semibold">{item.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
                 </div>
