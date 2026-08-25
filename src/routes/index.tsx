@@ -417,7 +417,7 @@ function Landing() {
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {PROBLEMS.map((item, index) => (
             <Reveal key={item.title} delay={index * 60}>
-              <div className="h-full rounded-xl border border-border/70 bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <div className={`h-full rounded-xl border border-border/70 bg-card p-5 transition-all duration-300 hover:-translate-y-1.5 hover:card-glow ${BRAND_BORDER[index % BRAND_BORDER.length]}`}>
                 <span className="grid size-9 place-items-center rounded-lg bg-destructive/10 text-destructive">
                   <item.icon className="size-4.5" aria-hidden />
                 </span>
@@ -428,13 +428,17 @@ function Landing() {
           ))}
         </div>
         <Reveal delay={100}>
-          <div className="mt-10 flex flex-col items-center gap-3 rounded-2xl border border-primary/25 bg-primary/8 px-6 py-8 text-center">
-            <AlertTriangle className="size-5 text-primary" aria-hidden />
-            <p className="font-display text-lg font-semibold sm:text-xl">
-              Edqorix brings everything into one secure digital platform.
-            </p>
+          <div className="mt-10 flex flex-col items-center gap-3 rounded-2xl bg-gradient-brand p-[1.5px]">
+            <div className="flex w-full flex-col items-center gap-3 rounded-[calc(1rem-1px)] bg-card px-6 py-8 text-center">
+              <AlertTriangle className="size-5 text-brand-2" aria-hidden />
+              <p className="font-display text-lg font-semibold sm:text-xl">
+                Edqorix brings everything into one{" "}
+                <span className="text-gradient-brand">secure digital platform</span>.
+              </p>
+            </div>
           </div>
         </Reveal>
+
       </section>
 
       {/* Solution / features */}
