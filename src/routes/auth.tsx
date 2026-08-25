@@ -1,7 +1,7 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Lock } from "lucide-react";
+import { ArrowLeft, Lock } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -97,12 +97,20 @@ function AuthPage() {
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
       <div className="hidden flex-col justify-between border-r border-border bg-card px-12 py-12 lg:flex">
-        <Link to="/" className="flex items-center gap-2.5">
-          <span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground">
-            <span className="font-display text-sm font-bold">E</span>
-          </span>
-          <span className="font-display text-lg font-semibold tracking-tight">Edqorix</span>
-        </Link>
+        <div className="flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2.5">
+            <span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground">
+              <span className="font-display text-sm font-bold">E</span>
+            </span>
+            <span className="font-display text-lg font-semibold tracking-tight">Edqorix</span>
+          </Link>
+          <Button asChild variant="ghost" size="sm" className="gap-1.5">
+            <Link to="/">
+              <ArrowLeft className="size-4" strokeWidth={1.75} />
+              Back to homepage
+            </Link>
+          </Button>
+        </div>
         <div className="max-w-md space-y-4">
           <h2 className="text-3xl font-semibold leading-tight text-balance-tight">
             Verified marks. Locked records. A full audit trail.
@@ -125,6 +133,13 @@ function AuthPage() {
             </span>
             <span className="font-display text-lg font-semibold">Edqorix</span>
           </Link>
+
+          <Button asChild variant="ghost" size="sm" className="mb-6 gap-1.5 self-start lg:hidden">
+            <Link to="/">
+              <ArrowLeft className="size-4" strokeWidth={1.75} />
+              Back to homepage
+            </Link>
+          </Button>
 
           {sentConfirmation ? (
             <div className="space-y-3 rounded-xl border border-border bg-card p-6">
