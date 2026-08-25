@@ -125,8 +125,11 @@ function AccountMenu() {
         <DropdownMenuLabel className="space-y-1">
           <span className="block truncate text-sm font-medium">{institutionName}</span>
           <span className="block text-xs font-normal text-muted-foreground">
-            {roles.map((r) => ROLE_LABEL[r]).join(" · ") || "No role"}
+            {isPlatformAdmin
+              ? "Platform owner · full access"
+              : roles.map((r) => ROLE_LABEL[r]).join(" · ") || "No role"}
           </span>
+
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         {uniqueOthers.length > 0 ? (
