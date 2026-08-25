@@ -22,9 +22,8 @@ import { useSheets } from "@/lib/queries";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/marks/")({
-  validateSearch: (search: Record<string, unknown>): { exam?: string } => ({
-    exam: typeof search.exam === "string" ? search.exam : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { exam?: string } =>
+    typeof search["exam"] === "string" ? { exam: search["exam"] } : {},
   head: () => ({
     meta: [
       { title: "Marks & approvals — Edqorix" },

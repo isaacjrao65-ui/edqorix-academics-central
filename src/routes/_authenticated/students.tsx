@@ -216,8 +216,8 @@ function BulkImport({
       .filter((cells) => cells[0] && cells[1])
       .map((cells) => ({
         institution_id: institutionId,
-        roll_number: cells[0],
-        full_name: cells[1],
+        roll_number: cells[0] ?? "",
+        full_name: cells[1] ?? "",
         email: cells[2] || null,
         current_semester: cells[3] ? Number(cells[3]) : 1,
       }));
