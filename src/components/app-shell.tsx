@@ -39,51 +39,118 @@ type NavItem = {
   adminOnly?: boolean;
 };
 
-const NAV: NavItem[] = [
-  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/exams", label: "Examinations", icon: ClipboardList },
-  { to: "/marks", label: "Marks & approvals", icon: PenSquare },
-  { to: "/students", label: "Students", icon: GraduationCap },
-  { to: "/academics", label: "Academics", icon: BookOpen },
-  { to: "/documents", label: "Document vault", icon: FileStack },
-  { to: "/reports", label: "Reports", icon: ScrollText },
-  { to: "/team", label: "Staff & roles", icon: UsersRound, manageOnly: true },
-  { to: "/audit", label: "Audit log", icon: ShieldCheck, manageOnly: true },
-  { to: "/settings", label: "Settings", icon: Settings, adminOnly: true },
+type NavGroup = { label: string; items: NavItem[] };
+
+const NAV_GROUPS: NavGroup[] = [
+  {
+    label: "Overview",
+    items: [{ to: "/dashboard", label: "Dashboard", icon: LayoutDashboard }],
+  },
+  {
+    label: "People",
+    items: [
+      { to: "/users", label: "Users & access", icon: UsersRound, manageOnly: true },
+      { to: "/roles", label: "Roles & permissions", icon: KeyRound, adminOnly: true },
+      { to: "/students", label: "Students", icon: GraduationCap },
+    ],
+  },
+  {
+    label: "Academic",
+    items: [
+      { to: "/academics", label: "Departments & classes", icon: BookOpen },
+      { to: "/exams", label: "Examinations", icon: ClipboardList },
+      { to: "/marks", label: "Marks & approvals", icon: PenSquare },
+    ],
+  },
+  {
+    label: "Records",
+    items: [
+      { to: "/documents", label: "Document vault", icon: FileStack },
+      { to: "/reports", label: "Reports", icon: ScrollText },
+    ],
+  },
+  {
+    label: "System",
+    items: [
+      { to: "/audit", label: "Audit log", icon: ShieldCheck, manageOnly: true },
+      { to: "/settings", label: "Settings", icon: Settings, adminOnly: true },
+    ],
+  },
 ];
 
 function NavList({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { canManage, isAdmin } = useInstitution();
 
-  const items = NAV.filter(
-    (item) => (!item.manageOnly || canManage) && (!item.adminOnly || isAdmin),
-  );
-
   return (
-    <nav className="flex flex-col gap-0.5">
-      {items.map((item) => {
-        const active = pathname === item.to || pathname.startsWith(`${item.to}/`);
+    <nav className="flex flex-col gap-5">
+      {NAV_GROUPS.map((group) => {
+        const items = group.items.filter(
+          (item) => (!item.manageOnly || canManage) && (!item.adminOnly || isAdmin),
+        );
+        if (items.length === 0) return null;
         return (
-          <Link
-            key={item.to}
-            to={item.to}
-            onClick={onNavigate}
-            className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
-              active
-                ? "bg-sidebar-accent font-medium text-sidebar-accent-foreground"
-                : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-foreground",
-            )}
-          >
-            <item.icon className="size-4 shrink-0" strokeWidth={1.75} />
-            {item.label}
-          </Link>
+          <div key={group.label} className="flex flex-col gap-0.5">
+            <p className="px-3 pb-1 text-[0.68rem] font-semibold uppercase tracking-wider text-muted-foreground/70">
+              {group.label}
+            </p>
+            {items.map((item) => {
+              const active = pathname === item.to || pathname.startsWith(`${item.to}/`);
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  onClick={onNavigate}
+                  className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
+                    active
+                      ? "bg-sidebar-accent font-medium text-sidebar-accent-foreground"
+                      : "text-muted-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-foreground",
+                  )}
+                >
+                  <item.icon className="size-4 shrink-0" strokeWidth={1.75} />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
         );
       })}
     </nav>
   );
 }
+
+function QuickCreate() {
+  const navigate = useNavigate();
+  const { canManage } = useInstitution();
+  if (!canManage) return null;
+  const actions: { label: string; to: string }[] = [
+    { label: "New examination", to: "/exams" },
+    { label: "Add students", to: "/students" },
+    { label: "New class / section", to: "/academics" },
+    { label: "Invite a user", to: "/users" },
+    { label: "Upload a document", to: "/documents" },
+  ];
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button size="sm" className="gap-1.5">
+          <Plus className="size-4" strokeWidth={2} />
+          <span className="hidden sm:inline">Create</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-52">
+        <DropdownMenuLabel className="text-xs text-muted-foreground">Quick create</DropdownMenuLabel>
+        {actions.map((action) => (
+          <DropdownMenuItem key={action.to} onClick={() => navigate({ to: action.to })}>
+            {action.label}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
 
 function Brand() {
   return (
