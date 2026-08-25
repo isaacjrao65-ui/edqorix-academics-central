@@ -154,6 +154,48 @@ export type Database = {
           },
         ]
       }
+      demo_requests: {
+        Row: {
+          contact_name: string
+          created_at: string
+          designation: string | null
+          email: string
+          handled: boolean
+          id: string
+          institution_name: string
+          institution_type: string
+          message: string | null
+          phone: string | null
+          student_count: number | null
+        }
+        Insert: {
+          contact_name: string
+          created_at?: string
+          designation?: string | null
+          email: string
+          handled?: boolean
+          id?: string
+          institution_name: string
+          institution_type: string
+          message?: string | null
+          phone?: string | null
+          student_count?: number | null
+        }
+        Update: {
+          contact_name?: string
+          created_at?: string
+          designation?: string | null
+          email?: string
+          handled?: boolean
+          id?: string
+          institution_name?: string
+          institution_type?: string
+          message?: string | null
+          phone?: string | null
+          student_count?: number | null
+        }
+        Relationships: []
+      }
       departments: {
         Row: {
           code: string
