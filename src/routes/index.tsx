@@ -292,15 +292,6 @@ const REPORTS = [
   "Pass / fail analysis",
 ];
 
-const ACCENTS = [
-  "bg-brand-violet/15 text-brand-violet",
-  "bg-brand-cyan/15 text-brand-cyan",
-  "bg-brand-pink/15 text-brand-pink",
-  "bg-brand-amber/20 text-brand-amber",
-  "bg-brand-emerald/15 text-brand-emerald",
-  "bg-primary/15 text-primary",
-];
-
 function Landing() {
   return (
     <div className="min-h-screen scroll-smooth bg-background">
@@ -308,46 +299,34 @@ function Landing() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute -top-40 -left-24 size-[26rem] rounded-full bg-brand-violet/25 blur-3xl animate-drift" />
-          <div className="absolute -top-24 right-0 size-[22rem] rounded-full bg-brand-cyan/25 blur-3xl animate-drift [animation-delay:-6s]" />
-          <div className="absolute top-40 left-1/3 size-[20rem] rounded-full bg-brand-pink/20 blur-3xl animate-drift [animation-delay:-12s]" />
-          <div className="absolute top-72 right-1/4 size-[18rem] rounded-full bg-brand-amber/20 blur-3xl animate-float-slow" />
-        </div>
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-brand opacity-70"
+          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_50%_0%,color-mix(in_oklab,var(--color-primary)_18%,transparent),transparent_70%)]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent"
         />
         <div className="mx-auto max-w-7xl px-4 pt-16 pb-8 sm:px-6 sm:pt-24 lg:px-8">
           <Reveal className="mx-auto max-w-4xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-brand-violet/30 bg-card px-3.5 py-1.5 text-xs font-medium text-foreground shadow-sm">
-              <span className="size-1.5 animate-pulse rounded-full bg-brand-emerald" />
+            <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground">
+              <span className="size-1.5 rounded-full bg-success" />
               Digital Academic Management, Simplified
             </span>
             <h1 className="mt-6 font-display text-4xl leading-[1.08] font-semibold tracking-tight text-balance-tight sm:text-5xl lg:text-6xl">
-              Replace paper-based marks management with a{" "}
-              <span className="text-gradient-brand">smarter digital system</span>
+              Replace paper-based marks management with a smarter digital system
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
               Edqorix helps educational institutions enter, verify, manage, secure and analyze
               examination marks from one centralized platform.
             </p>
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button
-                asChild
-                size="lg"
-                className="w-full border-0 bg-gradient-brand text-primary-foreground shadow-lg transition-transform duration-300 hover:scale-[1.03] sm:w-auto"
-              >
+              <Button asChild size="lg" className="w-full sm:w-auto">
                 <Link to="/auth">
                   Get Started <ArrowRight className="ml-1.5 size-4" />
                 </Link>
               </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="w-full border-brand-violet/30 transition-transform duration-300 hover:scale-[1.03] hover:bg-brand-violet/10 sm:w-auto"
-              >
+              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
                 <Link to="/contact">Request a Demo</Link>
               </Button>
             </div>
@@ -356,26 +335,24 @@ function Landing() {
             </p>
           </Reveal>
 
-          <Reveal delay={120} className="mx-auto mt-14 max-w-5xl animate-float-slow">
+          <Reveal delay={120} className="mx-auto mt-14 max-w-5xl">
             <DashboardPreview />
           </Reveal>
         </div>
       </section>
 
       {/* Trusted by / institution types */}
-      <section className="relative overflow-hidden border-y border-border/70 bg-card/40">
+      <section className="border-y border-border/70 bg-card/40">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <Reveal className="flex flex-col items-center gap-6">
             <p className="text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">
               One platform, every kind of institution
             </p>
             <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-4">
-              {INSTITUTION_TYPES.map((type, index) => (
+              {INSTITUTION_TYPES.map((type) => (
                 <div
                   key={type}
-                  className={`rounded-xl border border-border/60 bg-background px-4 py-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
-                    ["hover:border-brand-violet/50", "hover:border-brand-cyan/50", "hover:border-brand-pink/50", "hover:border-brand-amber/60"][index % 4]
-                  }`}
+                  className="rounded-xl border border-border/60 bg-background px-4 py-5 text-center transition-transform duration-300 hover:-translate-y-0.5"
                 >
                   <p className="font-display text-base font-semibold">{type}</p>
                 </div>
@@ -384,7 +361,6 @@ function Landing() {
           </Reveal>
         </div>
       </section>
-
 
       {/* Problem */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
@@ -398,8 +374,8 @@ function Landing() {
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {PROBLEMS.map((item, index) => (
             <Reveal key={item.title} delay={index * 60}>
-              <div className="card-glow card-glow-hover h-full rounded-xl border border-border/70 bg-card p-5">
-                <span className={`grid size-9 place-items-center rounded-lg ${ACCENTS[index % ACCENTS.length]}`}>
+              <div className="h-full rounded-xl border border-border/70 bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                <span className="grid size-9 place-items-center rounded-lg bg-destructive/10 text-destructive">
                   <item.icon className="size-4.5" aria-hidden />
                 </span>
                 <h3 className="mt-4 text-sm font-semibold">{item.title}</h3>
@@ -409,8 +385,8 @@ function Landing() {
           ))}
         </div>
         <Reveal delay={100}>
-          <div className="mt-10 flex flex-col items-center gap-3 rounded-2xl border border-brand-violet/25 bg-gradient-to-r from-brand-violet/10 via-brand-pink/10 to-brand-amber/10 px-6 py-8 text-center">
-            <AlertTriangle className="size-5 text-brand-pink" aria-hidden />
+          <div className="mt-10 flex flex-col items-center gap-3 rounded-2xl border border-primary/25 bg-primary/8 px-6 py-8 text-center">
+            <AlertTriangle className="size-5 text-primary" aria-hidden />
             <p className="font-display text-lg font-semibold sm:text-xl">
               Edqorix brings everything into one secure digital platform.
             </p>
@@ -431,8 +407,8 @@ function Landing() {
           <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {FEATURES.map((item, index) => (
               <Reveal key={item.title} delay={index * 60}>
-                <div className="group card-glow card-glow-hover h-full rounded-xl border border-border/70 bg-background p-6">
-                  <span className={`grid size-10 place-items-center rounded-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 ${ACCENTS[index % ACCENTS.length]}`}>
+                <div className="group h-full rounded-xl border border-border/70 bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl">
+                  <span className="grid size-10 place-items-center rounded-lg bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-105">
                     <item.icon className="size-5" aria-hidden />
                   </span>
                   <h3 className="mt-4 font-display text-base font-semibold">{item.title}</h3>
@@ -456,13 +432,13 @@ function Landing() {
           <div className="relative mt-14">
             <div
               aria-hidden
-              className="absolute top-0 bottom-0 left-[19px] w-px bg-gradient-to-b from-brand-violet/60 via-brand-cyan/50 to-transparent lg:hidden"
+              className="absolute top-0 bottom-0 left-[19px] w-px bg-gradient-to-b from-primary/50 via-border to-transparent lg:hidden"
             />
             <div className="grid gap-6 lg:grid-cols-5">
               {STEPS.map((item, index) => (
                 <Reveal key={item.step} delay={index * 90}>
                   <div className="relative flex gap-4 lg:block">
-                    <span className={`z-10 grid size-10 shrink-0 place-items-center rounded-full font-display text-sm font-semibold transition-transform duration-300 hover:scale-110 ${ACCENTS[index % ACCENTS.length]}`}>
+                    <span className="z-10 grid size-10 shrink-0 place-items-center rounded-full border border-primary/30 bg-primary/10 font-display text-sm font-semibold text-primary">
                       {item.step}
                     </span>
                     <div className="lg:mt-5">
@@ -515,9 +491,9 @@ function Landing() {
           <div className="mt-14 grid gap-5 lg:grid-cols-2">
             {ROLES.map((role, index) => (
               <Reveal key={role.name} delay={index * 80}>
-                <div className="card-glow card-glow-hover h-full rounded-2xl border border-border/70 bg-background p-6 sm:p-7">
+                <div className="h-full rounded-2xl border border-border/70 bg-background p-6 sm:p-7">
                   <div className="flex items-start gap-4">
-                    <span className={`grid size-11 shrink-0 place-items-center rounded-xl transition-transform duration-300 hover:scale-110 ${ACCENTS[index % ACCENTS.length]}`}>
+                    <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
                       <role.icon className="size-5" aria-hidden />
                     </span>
                     <div>
@@ -649,8 +625,8 @@ function Landing() {
           <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {SECURITY.map((item, index) => (
               <Reveal key={item.title} delay={index * 70}>
-                <div className="card-glow card-glow-hover h-full rounded-xl border border-border/70 bg-background p-6">
-                  <span className={`grid size-10 place-items-center rounded-lg ${ACCENTS[index % ACCENTS.length]}`}>
+                <div className="h-full rounded-xl border border-border/70 bg-background p-6">
+                  <span className="grid size-10 place-items-center rounded-lg bg-success/12 text-success">
                     <item.icon className="size-5" aria-hidden />
                   </span>
                   <h3 className="mt-4 font-display text-base font-semibold">{item.title}</h3>
@@ -682,7 +658,7 @@ function Landing() {
         >
           <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-18 sm:px-6 sm:py-20 lg:grid-cols-2 lg:px-8">
             <Reveal className={segmentIndex % 2 === 1 ? "lg:order-2" : undefined}>
-              <span className="inline-flex items-center gap-2 rounded-full border border-brand-violet/30 bg-gradient-to-r from-brand-violet/10 to-brand-cyan/10 px-3 py-1.5 text-xs font-medium text-foreground">
+              <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background px-3 py-1.5 text-xs font-medium text-primary">
                 <segment.icon className="size-3.5" aria-hidden /> {segment.label}
               </span>
               <h2 className="mt-4 text-2xl font-semibold tracking-tight text-balance-tight sm:text-3xl">
@@ -720,7 +696,7 @@ function Landing() {
           <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {REPORTS.map((report, index) => (
               <Reveal key={report} delay={index * 50}>
-                <div className={`card-glow card-glow-hover flex items-center justify-between gap-3 rounded-xl border border-border/70 bg-card px-5 py-4 ${["hover:border-brand-violet/50","hover:border-brand-cyan/50","hover:border-brand-pink/50","hover:border-brand-amber/60","hover:border-brand-emerald/50","hover:border-primary/50"][index % 6]}`}>
+                <div className="flex items-center justify-between gap-3 rounded-xl border border-border/70 bg-card px-5 py-4 transition-colors hover:border-primary/40">
                   <span className="text-sm font-medium">{report}</span>
                   <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <Search className="size-3.5" aria-hidden /> CSV · PDF
@@ -748,12 +724,12 @@ function Landing() {
                 <div
                   className={
                     tier.highlight
-                      ? "card-glow card-glow-hover relative h-full rounded-2xl border-2 border-brand-violet bg-gradient-to-b from-brand-violet/10 to-background p-7 shadow-xl"
-                      : "card-glow card-glow-hover h-full rounded-2xl border border-border/70 bg-background p-7"
+                      ? "relative h-full rounded-2xl border-2 border-primary bg-background p-7 shadow-xl"
+                      : "h-full rounded-2xl border border-border/70 bg-background p-7"
                   }
                 >
                   {tier.highlight ? (
-                    <span className="absolute -top-3 left-7 rounded-full bg-gradient-brand px-3 py-1 text-[11px] font-semibold text-primary-foreground shadow-md">
+                    <span className="absolute -top-3 left-7 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold text-primary-foreground">
                       Recommended
                     </span>
                   ) : null}
@@ -761,15 +737,7 @@ function Landing() {
                   <p className="mt-1.5 text-sm text-muted-foreground">{tier.audience}</p>
                   <p className="mt-6 font-display text-3xl font-semibold">{tier.price}</p>
                   <p className="mt-1 text-xs text-muted-foreground">{tier.priceNote}</p>
-                  <Button
-                    asChild
-                    className={
-                      tier.highlight
-                        ? "mt-6 w-full border-0 bg-gradient-brand text-primary-foreground"
-                        : "mt-6 w-full"
-                    }
-                    variant={tier.highlight ? "default" : "outline"}
-                  >
+                  <Button asChild className="mt-6 w-full" variant={tier.highlight ? "default" : "outline"}>
                     <Link to="/contact">{tier.cta}</Link>
                   </Button>
                   <ul className="mt-6 space-y-2.5">
@@ -811,11 +779,11 @@ function Landing() {
       <section id="demo" className="scroll-mt-20 border-t border-border/70">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
           <Reveal>
-            <div className="relative overflow-hidden rounded-3xl border border-brand-violet/25 bg-gradient-to-br from-brand-violet/12 via-brand-pink/10 to-brand-cyan/12 px-6 py-14 text-center sm:px-12">
-              <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-                <div className="absolute -top-24 left-10 size-72 rounded-full bg-brand-violet/25 blur-3xl animate-drift" />
-                <div className="absolute -bottom-28 right-6 size-72 rounded-full bg-brand-cyan/25 blur-3xl animate-drift [animation-delay:-9s]" />
-              </div>
+            <div className="relative overflow-hidden rounded-3xl border border-primary/25 bg-primary/8 px-6 py-14 text-center sm:px-12">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_60%_at_50%_0%,color-mix(in_oklab,var(--color-primary)_18%,transparent),transparent_70%)]"
+              />
               <h2 className="relative font-display text-3xl font-semibold tracking-tight text-balance-tight sm:text-4xl">
                 Ready to replace your correction register?
               </h2>
@@ -824,11 +792,7 @@ function Landing() {
                 digital platform with Edqorix.
               </p>
               <div className="relative mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <Button
-                  asChild
-                  size="lg"
-                  className="w-full border-0 bg-gradient-brand text-primary-foreground shadow-lg transition-transform duration-300 hover:scale-[1.03] sm:w-auto"
-                >
+                <Button asChild size="lg" className="w-full sm:w-auto">
                   <Link to="/contact">
                     Request a Demo <ArrowRight className="ml-1.5 size-4" />
                   </Link>
