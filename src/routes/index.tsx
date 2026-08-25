@@ -540,11 +540,12 @@ function Landing() {
           <div className="mt-14 grid gap-5 lg:grid-cols-2">
             {ROLES.map((role, index) => (
               <Reveal key={role.name} delay={index * 80}>
-                <div className="h-full rounded-2xl border border-border/70 bg-background p-6 sm:p-7">
+                <div className={`h-full rounded-2xl border border-border/70 bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:card-glow sm:p-7 ${BRAND_BORDER[index % BRAND_BORDER.length]}`}>
                   <div className="flex items-start gap-4">
-                    <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+                    <span className={`grid size-11 shrink-0 place-items-center rounded-xl ${BRAND_TINT[index % BRAND_TINT.length]}`}>
                       <role.icon className="size-5" aria-hidden />
                     </span>
+
                     <div>
                       <h3 className="font-display text-lg font-semibold">{role.name}</h3>
                       <p className="mt-1 text-sm text-muted-foreground">{role.summary}</p>
