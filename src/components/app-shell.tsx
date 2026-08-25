@@ -262,7 +262,11 @@ export function AppShell({ children }: { children: ReactNode }) {
             </Sheet>
             <span className="font-display text-base font-semibold lg:hidden">Edqorix</span>
           </div>
-          <AccountMenu />
+          <div className="flex items-center gap-2">
+            <QuickCreate />
+            <AccountMenu />
+          </div>
+
         </header>
         <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-8 sm:py-10">
           <InstitutionGate>{children}</InstitutionGate>
