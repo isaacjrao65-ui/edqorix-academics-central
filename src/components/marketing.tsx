@@ -161,9 +161,7 @@ export function SiteHeader() {
             <Link to="/auth">Login</Link>
           </Button>
           <Button asChild size="sm">
-            <Link to="/auth" search={{ mode: "register" }}>
-              Get Started
-            </Link>
+            <Link to="/auth">Get Started</Link>
           </Button>
         </div>
 
@@ -196,9 +194,7 @@ export function SiteHeader() {
                 <Link to="/auth">Login</Link>
               </Button>
               <Button asChild>
-                <Link to="/auth" search={{ mode: "register" }}>
-                  Get Started
-                </Link>
+                <Link to="/auth">Get Started</Link>
               </Button>
             </div>
           </div>
