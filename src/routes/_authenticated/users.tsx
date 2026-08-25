@@ -37,7 +37,7 @@ export const Route = createFileRoute("/_authenticated/users")({
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: UsersPage;
+  component: UsersPage,
 });
 
 const STATUS_VARIANT: Record<string, "default" | "secondary" | "destructive"> = {
