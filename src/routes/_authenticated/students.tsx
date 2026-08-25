@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import { PageHeader, EmptyState } from "@/components/page-header";
-import { RecordDialog, type FieldDef } from "@/components/record-dialog";
+import { RecordDialog, type FieldDef, type RecordGetter } from "@/components/record-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -75,19 +75,19 @@ function Students() {
     { name: "current_semester", label: "Current semester", type: "number", defaultValue: "1" },
   ];
 
-  async function addStudent(values: Record<string, string>) {
+  async function addStudent(values: RecordGetter) {
     if (!institutionId) return;
     const { data, error } = await supabase
       .from("students")
       .insert({
         institution_id: institutionId,
-        roll_number: values.roll_number,
-        full_name: values.full_name,
-        email: values.email || null,
-        phone: values.phone || null,
-        program_id: values.program_id || null,
-        batch_year: values.batch_year ? Number(values.batch_year) : null,
-        current_semester: Number(values.current_semester || 1),
+        roll_number: values("roll_number"),
+        full_name: values("full_name"),
+        email: values("email") || null,
+        phone: values("phone") || null,
+        program_id: values("program_id") || null,
+        batch_year: values("batch_year") ? Number(values("batch_year")) : null,
+        current_semester: Number(values("current_semester") || 1),
       })
       .select("id")
       .single();
@@ -100,7 +100,7 @@ function Students() {
       action: "students.created",
       entityType: "students",
       entityId: data.id,
-      description: `Added student ${values.roll_number}`,
+      description: `Added student ${values("roll_number")}`,
     });
     await queryClient.invalidateQueries({ queryKey: ["students"] });
     toast.success("Student added");
@@ -216,8 +216,8 @@ function BulkImport({
       .filter((cells) => cells[0] && cells[1])
       .map((cells) => ({
         institution_id: institutionId,
-        roll_number: cells[0],
-        full_name: cells[1],
+        roll_number: cells[0] ?? "",
+        full_name: cells[1] ?? "",
         email: cells[2] || null,
         current_semester: cells[3] ? Number(cells[3]) : 1,
       }));

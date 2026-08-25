@@ -47,7 +47,7 @@ function Onboarding() {
   const [name, setName] = useState("");
   const [shortName, setShortName] = useState("");
   const [type, setType] = useState("college");
-  const [city, setCity] = useState("");
+  const [address, setAddress] = useState("");
 
   async function submit(event: React.FormEvent) {
     event.preventDefault();
@@ -63,7 +63,7 @@ function Onboarding() {
           name,
           short_name: shortName || null,
           type: type as "school" | "college" | "institute" | "university",
-          city: city || null,
+          address: address || null,
           created_by: userId,
         })
         .select("id, name")
@@ -165,8 +165,8 @@ function Onboarding() {
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="inst-city">City</Label>
-          <Input id="inst-city" value={city} onChange={(e) => setCity(e.target.value)} />
+          <Label htmlFor="inst-city">Address</Label>
+          <Input id="inst-city" value={address} onChange={(e) => setAddress(e.target.value)} />
         </div>
         <Button type="submit" disabled={busy} className="w-full">
           Create institution

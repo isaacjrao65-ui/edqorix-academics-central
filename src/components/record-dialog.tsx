@@ -35,6 +35,9 @@ export type FieldDef = {
 
 export type RecordValues = Record<string, string>;
 
+/** Field accessor handed to onSubmit: always returns a string, never undefined. */
+export type RecordGetter = (name: string) => string;
+
 export function RecordDialog({
   trigger,
   title,
@@ -50,7 +53,7 @@ export function RecordDialog({
   fields: FieldDef[];
   submitLabel?: string;
   initial?: RecordValues;
-  onSubmit: (values: RecordValues) => Promise<void> | void;
+  onSubmit: (values: RecordGetter) => Promise<void> | void;
 }) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -64,7 +67,7 @@ export function RecordDialog({
     event.preventDefault();
     setBusy(true);
     try {
-      await onSubmit(values);
+      await onSubmit((name: string) => values[name] ?? "");
       setOpen(false);
       setValues(seed(fields, initial));
     } finally {

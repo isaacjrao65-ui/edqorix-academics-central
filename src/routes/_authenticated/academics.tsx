@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 import { toast } from "sonner";
 
 import { PageHeader, EmptyState } from "@/components/page-header";
-import { RecordDialog, type FieldDef, type RecordValues } from "@/components/record-dialog";
+import { RecordDialog, type FieldDef, type RecordGetter } from "@/components/record-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -103,7 +103,7 @@ function Academics() {
                   { name: "code", label: "Code", required: true, placeholder: "CSE" },
                 ]}
                 onSubmit={(v) =>
-                  create("departments", { name: v.name, code: v.code }, v.name, ["departments"])
+                  create("departments", { name: v("name"), code: v("code") }, v("name"), ["departments"])
                 }
               />
             }
@@ -157,13 +157,13 @@ function Academics() {
                   create(
                     "programs",
                     {
-                      name: v.name,
-                      code: v.code,
-                      level: v.level || "undergraduate",
-                      duration_semesters: Number(v.duration_semesters || 8),
-                      department_id: v.department_id || null,
+                      name: v("name"),
+                      code: v("code"),
+                      level: v("level") || "undergraduate",
+                      duration_semesters: Number(v("duration_semesters") || 8),
+                      department_id: v("department_id") || null,
                     },
-                    v.name,
+                    v("name"),
                     ["programs"],
                   )
                 }
@@ -195,11 +195,11 @@ function Academics() {
                   create(
                     "academic_sessions",
                     {
-                      name: v.name,
-                      start_date: v.start_date || null,
-                      end_date: v.end_date || null,
+                      name: v("name"),
+                      start_date: v("start_date") || null,
+                      end_date: v("end_date") || null,
                     },
-                    v.name,
+                    v("name"),
                     ["sessions"],
                   )
                 }
@@ -243,14 +243,14 @@ function Academics() {
                   create(
                     "courses",
                     {
-                      code: v.code,
-                      title: v.title,
-                      credits: Number(v.credits || 3),
-                      semester: Number(v.semester || 1),
-                      department_id: v.department_id || null,
-                      program_id: v.program_id || null,
+                      code: v("code"),
+                      title: v("title"),
+                      credits: Number(v("credits") || 3),
+                      semester: Number(v("semester") || 1),
+                      department_id: v("department_id") || null,
+                      program_id: v("program_id") || null,
                     },
-                    `${v.code} ${v.title}`,
+                    `${v("code")} ${v("title")}`,
                     ["courses"],
                   )
                 }
@@ -282,20 +282,20 @@ function Academics() {
                     { name: "room", label: "Room" },
                   ] satisfies FieldDef[]
                 }
-                onSubmit={async (v: RecordValues) => {
-                  if (!v.course_id || !v.session_id) {
+                onSubmit={async (v: RecordGetter) => {
+                  if (!v("course_id") || !v("session_id")) {
                     toast.error("Course and session are required");
                     return;
                   }
                   await create(
                     "sections",
                     {
-                      course_id: v.course_id,
-                      session_id: v.session_id,
-                      name: v.name || "A",
-                      room: v.room || null,
+                      course_id: v("course_id"),
+                      session_id: v("session_id"),
+                      name: v("name") || "A",
+                      room: v("room") || null,
                     },
-                    `Section ${v.name || "A"}`,
+                    `Section ${v("name") || "A"}`,
                     ["sections"],
                   );
                 }}
