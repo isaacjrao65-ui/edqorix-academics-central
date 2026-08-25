@@ -480,15 +480,16 @@ function Landing() {
           <div className="relative mt-14">
             <div
               aria-hidden
-              className="absolute top-0 bottom-0 left-[19px] w-px bg-gradient-to-b from-primary/50 via-border to-transparent lg:hidden"
+              className="absolute top-0 bottom-0 left-[19px] w-px bg-gradient-to-b from-brand-1 via-brand-2 to-brand-3/0 lg:hidden"
             />
             <div className="grid gap-6 lg:grid-cols-5">
               {STEPS.map((item, index) => (
                 <Reveal key={item.step} delay={index * 90}>
-                  <div className="relative flex gap-4 lg:block">
-                    <span className="z-10 grid size-10 shrink-0 place-items-center rounded-full border border-primary/30 bg-primary/10 font-display text-sm font-semibold text-primary">
+                  <div className="group relative flex gap-4 lg:block">
+                    <span className="z-10 grid size-10 shrink-0 place-items-center rounded-full bg-gradient-brand font-display text-sm font-semibold text-primary-foreground shadow-md transition-transform duration-300 group-hover:scale-110">
                       {item.step}
                     </span>
+
                     <div className="lg:mt-5">
                       <h3 className="font-display text-base font-semibold">{item.title}</h3>
                       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
