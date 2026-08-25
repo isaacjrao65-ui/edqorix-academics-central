@@ -16,6 +16,10 @@ export type MembershipRow = {
   id: string;
   institution_id: string;
   role: AppRole;
+  role_id: string | null;
+  status: string;
+  designation: string | null;
+  is_class_teacher: boolean;
   department_id: string | null;
   institutions: {
     id: string;
@@ -24,6 +28,7 @@ export type MembershipRow = {
     type: string;
   } | null;
 };
+
 
 const STORAGE_KEY = "edqorix.institution";
 
