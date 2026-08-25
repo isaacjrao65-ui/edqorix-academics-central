@@ -18,6 +18,7 @@ import { Route as AuthenticatedExamsRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
 import { Route as AuthenticatedStudentsRouteImport } from './routes/_authenticated/students'
 import { Route as AuthenticatedMarksIndexRouteImport } from './routes/_authenticated/marks.index'
+import { Route as AuthenticatedMarksSheetIdRouteImport } from './routes/_authenticated/marks.$sheetId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -63,6 +64,12 @@ const AuthenticatedMarksIndexRoute = AuthenticatedMarksIndexRouteImport.update({
   path: '/marks/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedMarksSheetIdRoute =
+  AuthenticatedMarksSheetIdRouteImport.update({
+    id: '/marks/$sheetId',
+    path: '/marks/$sheetId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -72,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/exams': typeof AuthenticatedExamsRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/students': typeof AuthenticatedStudentsRoute
+  '/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
   '/marks/': typeof AuthenticatedMarksIndexRoute
 }
 export interface FileRoutesByTo {
@@ -82,6 +90,7 @@ export interface FileRoutesByTo {
   '/exams': typeof AuthenticatedExamsRoute
   '/onboarding': typeof AuthenticatedOnboardingRoute
   '/students': typeof AuthenticatedStudentsRoute
+  '/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
   '/marks': typeof AuthenticatedMarksIndexRoute
 }
 export interface FileRoutesById {
@@ -94,6 +103,7 @@ export interface FileRoutesById {
   '/_authenticated/exams': typeof AuthenticatedExamsRoute
   '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
   '/_authenticated/students': typeof AuthenticatedStudentsRoute
+  '/_authenticated/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
   '/_authenticated/marks/': typeof AuthenticatedMarksIndexRoute
 }
 export interface FileRouteTypes {
@@ -106,6 +116,7 @@ export interface FileRouteTypes {
     | '/exams'
     | '/onboarding'
     | '/students'
+    | '/marks/$sheetId'
     | '/marks/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -116,6 +127,7 @@ export interface FileRouteTypes {
     | '/exams'
     | '/onboarding'
     | '/students'
+    | '/marks/$sheetId'
     | '/marks'
   id:
     | '__root__'
@@ -127,6 +139,7 @@ export interface FileRouteTypes {
     | '/_authenticated/exams'
     | '/_authenticated/onboarding'
     | '/_authenticated/students'
+    | '/_authenticated/marks/$sheetId'
     | '/_authenticated/marks/'
   fileRoutesById: FileRoutesById
 }
@@ -201,6 +214,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMarksIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/marks/$sheetId': {
+      id: '/_authenticated/marks/$sheetId'
+      path: '/marks/$sheetId'
+      fullPath: '/marks/$sheetId'
+      preLoaderRoute: typeof AuthenticatedMarksSheetIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -210,6 +230,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedExamsRoute: typeof AuthenticatedExamsRoute
   AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
   AuthenticatedStudentsRoute: typeof AuthenticatedStudentsRoute
+  AuthenticatedMarksSheetIdRoute: typeof AuthenticatedMarksSheetIdRoute
   AuthenticatedMarksIndexRoute: typeof AuthenticatedMarksIndexRoute
 }
 
@@ -219,6 +240,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedExamsRoute: AuthenticatedExamsRoute,
   AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
   AuthenticatedStudentsRoute: AuthenticatedStudentsRoute,
+  AuthenticatedMarksSheetIdRoute: AuthenticatedMarksSheetIdRoute,
   AuthenticatedMarksIndexRoute: AuthenticatedMarksIndexRoute,
 }
 
