@@ -176,7 +176,7 @@ function Team() {
                           onValueChange={(value) =>
                             updateMember(
                               member.id,
-                              { role: value },
+                              { role: value as AppRole },
                               `Changed role of ${member.profile?.email ?? member.user_id} to ${
                                 ROLE_LABEL[value as AppRole]
                               }`,

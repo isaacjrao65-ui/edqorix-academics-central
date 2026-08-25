@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 import { toast } from "sonner";
 
 import { PageHeader, EmptyState } from "@/components/page-header";
-import { RecordDialog, type FieldDef, type RecordValues } from "@/components/record-dialog";
+import { RecordDialog, type FieldDef, type RecordGetter } from "@/components/record-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
