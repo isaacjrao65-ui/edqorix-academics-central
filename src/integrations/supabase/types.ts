@@ -755,6 +755,24 @@ export type Database = {
           },
         ]
       }
+      platform_admins: {
+        Row: {
+          created_at: string
+          email: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -963,6 +981,7 @@ export type Database = {
         Returns: boolean
       }
       is_member: { Args: { _institution: string }; Returns: boolean }
+      is_platform_admin: { Args: never; Returns: boolean }
       is_section_faculty: { Args: { _section: string }; Returns: boolean }
       my_departments: { Args: { _institution: string }; Returns: string[] }
     }
