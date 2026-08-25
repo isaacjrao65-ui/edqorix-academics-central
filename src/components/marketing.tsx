@@ -323,8 +323,19 @@ export function DashboardPreview() {
 
       <div className="rounded-xl border border-border/70 bg-background p-4 sm:p-5">
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-          {PREVIEW_STATS.map((stat) => (
-            <div key={stat.label} className="rounded-lg border border-border/60 bg-card/60 p-3">
+          {PREVIEW_STATS.map((stat, index) => (
+            <div
+              key={stat.label}
+              className={cn(
+                "rounded-lg border border-border/60 p-3 transition-transform duration-300 hover:-translate-y-0.5",
+                [
+                  "bg-brand-1/10 border-brand-1/25",
+                  "bg-brand-2/10 border-brand-2/25",
+                  "bg-brand-3/10 border-brand-3/25",
+                  "bg-brand-5/10 border-brand-5/25",
+                ][index % 4],
+              )}
+            >
               <p className="text-[11px] tracking-wide text-muted-foreground uppercase">
                 {stat.label}
               </p>
@@ -337,14 +348,24 @@ export function DashboardPreview() {
           <div className="rounded-lg border border-border/60 bg-card/60 p-4 lg:col-span-3">
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium">Performance overview</p>
-              <BarChart3 className="size-4 text-muted-foreground" aria-hidden />
+              <BarChart3 className="size-4 text-brand-2" aria-hidden />
             </div>
             <div className="mt-5 flex h-32 items-end gap-3">
-              {PREVIEW_BARS.map((bar) => (
+              {PREVIEW_BARS.map((bar, index) => (
                 <div key={bar.label} className="flex flex-1 flex-col items-center gap-2">
                   <div className="flex h-28 w-full items-end rounded-md bg-muted/70">
                     <div
-                      className="w-full rounded-md bg-primary/85"
+                      className={cn(
+                        "w-full rounded-md transition-all duration-700",
+                        [
+                          "bg-brand-1",
+                          "bg-brand-2",
+                          "bg-brand-3",
+                          "bg-brand-4",
+                          "bg-brand-5",
+                          "bg-brand-6",
+                        ][index % 6],
+                      )}
                       style={{ height: `${bar.value}%` }}
                     />
                   </div>
@@ -352,6 +373,7 @@ export function DashboardPreview() {
                 </div>
               ))}
             </div>
+
             <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
               <div className="rounded-md bg-success/10 px-3 py-2 text-success">
                 Marks completed · 1,842
