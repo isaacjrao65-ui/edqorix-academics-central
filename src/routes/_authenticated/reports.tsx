@@ -30,7 +30,7 @@ export const Route = createFileRoute("/_authenticated/reports")({
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: Reports;
+  component: Reports,
 });
 
 function Reports() {
