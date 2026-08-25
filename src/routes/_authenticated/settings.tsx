@@ -34,22 +34,38 @@ export const Route = createFileRoute("/_authenticated/settings")({
   component: Settings,
 });
 
-const TYPES = ["school", "college", "institute", "university"];
+type InstitutionType = "school" | "college" | "institute" | "university";
+
+const TYPES: InstitutionType[] = ["school", "college", "institute", "university"];
 
 function Settings() {
-  const { institutionId, institution } = useInstitution();
+  const { institutionId } = useInstitution();
   const queryClient = useQueryClient();
   const [name, setName] = useState("");
   const [shortName, setShortName] = useState("");
-  const [type, setType] = useState("college");
+  const [type, setType] = useState<InstitutionType>("college");
   const [address, setAddress] = useState("");
   const [busy, setBusy] = useState(false);
+
+  const { data: institution } = useQuery({
+    queryKey: ["institution", institutionId],
+    enabled: Boolean(institutionId),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("institutions")
+        .select("id, name, short_name, type, address")
+        .eq("id", institutionId as string)
+        .single();
+      if (error) throw error;
+      return data;
+    },
+  });
 
   useEffect(() => {
     if (!institution) return;
     setName(institution.name ?? "");
     setShortName(institution.short_name ?? "");
-    setType(institution.type ?? "college");
+    setType(institution.type);
     setAddress(institution.address ?? "");
   }, [institution]);
 
@@ -99,6 +115,7 @@ function Settings() {
       description: `Updated institution profile`,
     });
     await queryClient.invalidateQueries({ queryKey: ["memberships"] });
+    await queryClient.invalidateQueries({ queryKey: ["institution"] });
     toast.success("Institution updated");
   }
 
@@ -158,7 +175,7 @@ function Settings() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="inst-type">Type</Label>
-            <Select value={type} onValueChange={setType}>
+            <Select value={type} onValueChange={(value) => setType(value as InstitutionType)}>
               <SelectTrigger id="inst-type">
                 <SelectValue />
               </SelectTrigger>
