@@ -398,8 +398,8 @@ function Landing() {
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {PROBLEMS.map((item, index) => (
             <Reveal key={item.title} delay={index * 60}>
-              <div className="h-full rounded-xl border border-border/70 bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                <span className="grid size-9 place-items-center rounded-lg bg-destructive/10 text-destructive">
+              <div className="card-glow card-glow-hover h-full rounded-xl border border-border/70 bg-card p-5">
+                <span className={`grid size-9 place-items-center rounded-lg ${ACCENTS[index % ACCENTS.length]}`}>
                   <item.icon className="size-4.5" aria-hidden />
                 </span>
                 <h3 className="mt-4 text-sm font-semibold">{item.title}</h3>
@@ -409,8 +409,8 @@ function Landing() {
           ))}
         </div>
         <Reveal delay={100}>
-          <div className="mt-10 flex flex-col items-center gap-3 rounded-2xl border border-primary/25 bg-primary/8 px-6 py-8 text-center">
-            <AlertTriangle className="size-5 text-primary" aria-hidden />
+          <div className="mt-10 flex flex-col items-center gap-3 rounded-2xl border border-brand-violet/25 bg-gradient-to-r from-brand-violet/10 via-brand-pink/10 to-brand-amber/10 px-6 py-8 text-center">
+            <AlertTriangle className="size-5 text-brand-pink" aria-hidden />
             <p className="font-display text-lg font-semibold sm:text-xl">
               Edqorix brings everything into one secure digital platform.
             </p>
@@ -431,8 +431,8 @@ function Landing() {
           <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {FEATURES.map((item, index) => (
               <Reveal key={item.title} delay={index * 60}>
-                <div className="group h-full rounded-xl border border-border/70 bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl">
-                  <span className="grid size-10 place-items-center rounded-lg bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-105">
+                <div className="group card-glow card-glow-hover h-full rounded-xl border border-border/70 bg-background p-6">
+                  <span className={`grid size-10 place-items-center rounded-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 ${ACCENTS[index % ACCENTS.length]}`}>
                     <item.icon className="size-5" aria-hidden />
                   </span>
                   <h3 className="mt-4 font-display text-base font-semibold">{item.title}</h3>
@@ -456,13 +456,13 @@ function Landing() {
           <div className="relative mt-14">
             <div
               aria-hidden
-              className="absolute top-0 bottom-0 left-[19px] w-px bg-gradient-to-b from-primary/50 via-border to-transparent lg:hidden"
+              className="absolute top-0 bottom-0 left-[19px] w-px bg-gradient-to-b from-brand-violet/60 via-brand-cyan/50 to-transparent lg:hidden"
             />
             <div className="grid gap-6 lg:grid-cols-5">
               {STEPS.map((item, index) => (
                 <Reveal key={item.step} delay={index * 90}>
                   <div className="relative flex gap-4 lg:block">
-                    <span className="z-10 grid size-10 shrink-0 place-items-center rounded-full border border-primary/30 bg-primary/10 font-display text-sm font-semibold text-primary">
+                    <span className={`z-10 grid size-10 shrink-0 place-items-center rounded-full font-display text-sm font-semibold transition-transform duration-300 hover:scale-110 ${ACCENTS[index % ACCENTS.length]}`}>
                       {item.step}
                     </span>
                     <div className="lg:mt-5">
@@ -515,9 +515,9 @@ function Landing() {
           <div className="mt-14 grid gap-5 lg:grid-cols-2">
             {ROLES.map((role, index) => (
               <Reveal key={role.name} delay={index * 80}>
-                <div className="h-full rounded-2xl border border-border/70 bg-background p-6 sm:p-7">
+                <div className="card-glow card-glow-hover h-full rounded-2xl border border-border/70 bg-background p-6 sm:p-7">
                   <div className="flex items-start gap-4">
-                    <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+                    <span className={`grid size-11 shrink-0 place-items-center rounded-xl transition-transform duration-300 hover:scale-110 ${ACCENTS[index % ACCENTS.length]}`}>
                       <role.icon className="size-5" aria-hidden />
                     </span>
                     <div>
@@ -649,8 +649,8 @@ function Landing() {
           <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {SECURITY.map((item, index) => (
               <Reveal key={item.title} delay={index * 70}>
-                <div className="h-full rounded-xl border border-border/70 bg-background p-6">
-                  <span className="grid size-10 place-items-center rounded-lg bg-success/12 text-success">
+                <div className="card-glow card-glow-hover h-full rounded-xl border border-border/70 bg-background p-6">
+                  <span className={`grid size-10 place-items-center rounded-lg ${ACCENTS[index % ACCENTS.length]}`}>
                     <item.icon className="size-5" aria-hidden />
                   </span>
                   <h3 className="mt-4 font-display text-base font-semibold">{item.title}</h3>
@@ -682,7 +682,7 @@ function Landing() {
         >
           <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-18 sm:px-6 sm:py-20 lg:grid-cols-2 lg:px-8">
             <Reveal className={segmentIndex % 2 === 1 ? "lg:order-2" : undefined}>
-              <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background px-3 py-1.5 text-xs font-medium text-primary">
+              <span className="inline-flex items-center gap-2 rounded-full border border-brand-violet/30 bg-gradient-to-r from-brand-violet/10 to-brand-cyan/10 px-3 py-1.5 text-xs font-medium text-foreground">
                 <segment.icon className="size-3.5" aria-hidden /> {segment.label}
               </span>
               <h2 className="mt-4 text-2xl font-semibold tracking-tight text-balance-tight sm:text-3xl">
