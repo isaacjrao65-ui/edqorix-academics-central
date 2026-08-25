@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 import { toast } from "sonner";
 
 import { PageHeader, EmptyState } from "@/components/page-header";
-import { RecordDialog, type FieldDef } from "@/components/record-dialog";
+import { RecordDialog, type FieldDef, type RecordGetter } from "@/components/record-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -72,9 +72,9 @@ function Exams() {
     { name: "exam_date", label: "Exam date", type: "date" },
   ];
 
-  async function createExam(values: Record<string, string>) {
+  async function createExam(values: RecordGetter) {
     if (!institutionId) return;
-    if (!values.course_id || !values.session_id) {
+    if (!values("course_id") || !values("session_id")) {
       toast.error("Course and session are required");
       return;
     }
@@ -82,14 +82,14 @@ function Exams() {
       .from("exams")
       .insert({
         institution_id: institutionId,
-        title: values.title,
-        exam_type: values.exam_type as "internal",
-        course_id: values.course_id,
-        session_id: values.session_id,
-        max_marks: Number(values.max_marks || 100),
-        pass_marks: Number(values.pass_marks || 40),
-        weightage: Number(values.weightage || 100),
-        exam_date: values.exam_date || null,
+        title: values("title"),
+        exam_type: values("exam_type") as "internal",
+        course_id: values("course_id"),
+        session_id: values("session_id"),
+        max_marks: Number(values("max_marks") || 100),
+        pass_marks: Number(values("pass_marks") || 40),
+        weightage: Number(values("weightage") || 100),
+        exam_date: values("exam_date") || null,
       })
       .select("id, title")
       .single();
@@ -100,7 +100,7 @@ function Exams() {
 
     // Open a mark sheet for every section of this course in this session.
     const matching = sections.filter(
-      (s) => s.course_id === values.course_id && s.session_id === values.session_id,
+      (s) => s.course_id === values("course_id") && s.session_id === values("session_id"),
     );
     if (matching.length > 0) {
       const { error: sheetError } = await supabase.from("mark_sheets").insert(
