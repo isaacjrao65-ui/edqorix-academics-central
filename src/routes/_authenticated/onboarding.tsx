@@ -70,13 +70,6 @@ function Onboarding() {
         .single();
       if (error) throw error;
 
-      const { error: memberError } = await supabase.from("memberships").insert({
-        institution_id: institution.id,
-        user_id: userId,
-        role: "admin",
-      });
-      if (memberError) throw memberError;
-
       const { data: scale, error: scaleError } = await supabase
         .from("grade_scales")
         .insert({
@@ -89,24 +82,29 @@ function Onboarding() {
       if (scaleError) throw scaleError;
 
       const bands = [
-        { grade: "O", min_percent: 90, points: 10 },
-        { grade: "A+", min_percent: 80, points: 9 },
-        { grade: "A", min_percent: 70, points: 8 },
-        { grade: "B+", min_percent: 60, points: 7 },
-        { grade: "B", min_percent: 50, points: 6 },
-        { grade: "C", min_percent: 40, points: 5 },
-        { grade: "F", min_percent: 0, points: 0, is_fail: true },
+        { grade: "O", min_percent: 90, grade_points: 10 },
+        { grade: "A+", min_percent: 80, grade_points: 9 },
+        { grade: "A", min_percent: 70, grade_points: 8 },
+        { grade: "B+", min_percent: 60, grade_points: 7 },
+        { grade: "B", min_percent: 50, grade_points: 6 },
+        { grade: "C", min_percent: 40, grade_points: 5 },
+        { grade: "F", min_percent: 0, grade_points: 0 },
       ];
-      await supabase
-        .from("grade_bands")
-        .insert(bands.map((band) => ({ ...band, grade_scale_id: scale.id })));
+      const { error: bandError } = await supabase.from("grade_bands").insert(
+        bands.map((band) => ({
+          ...band,
+          scale_id: scale.id,
+          institution_id: institution.id,
+        })),
+      );
+      if (bandError) throw bandError;
 
       await logAudit({
         institutionId: institution.id,
         action: "institution.created",
-        entity: "institutions",
+        entityType: "institutions",
         entityId: institution.id,
-        meta: { name: institution.name },
+        details: { name: institution.name },
       });
 
       await queryClient.invalidateQueries({ queryKey: ["memberships"] });
