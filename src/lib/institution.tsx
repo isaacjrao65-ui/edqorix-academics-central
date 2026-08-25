@@ -27,21 +27,45 @@ export type MembershipRow = {
 
 const STORAGE_KEY = "edqorix.institution";
 
-async function fetchMemberships(): Promise<MembershipRow[]> {
+async function fetchMemberships(): Promise<{ rows: MembershipRow[]; isPlatformAdmin: boolean }> {
   const { data: auth } = await supabase.auth.getUser();
-  if (!auth.user) return [];
-  const { data, error } = await supabase
-    .from("memberships")
-    .select("id, institution_id, role, department_id, institutions(id, name, short_name, type)")
-    .eq("user_id", auth.user.id)
-    .eq("is_active", true);
+  if (!auth.user) return { rows: [], isPlatformAdmin: false };
+
+  const [{ data, error }, { data: platform }] = await Promise.all([
+    supabase
+      .from("memberships")
+      .select("id, institution_id, role, department_id, institutions(id, name, short_name, type)")
+      .eq("user_id", auth.user.id)
+      .eq("is_active", true),
+    supabase.rpc("is_platform_admin"),
+  ]);
   if (error) throw error;
-  return (data ?? []) as unknown as MembershipRow[];
+  const rows = (data ?? []) as unknown as MembershipRow[];
+  const isPlatformAdmin = platform === true;
+
+  if (!isPlatformAdmin) return { rows, isPlatformAdmin };
+
+  // Platform owners administer every institution.
+  const { data: institutions } = await supabase
+    .from("institutions")
+    .select("id, name, short_name, type")
+    .order("name");
+  const owned: MembershipRow[] = (institutions ?? [])
+    .filter((inst) => !rows.some((r) => r.institution_id === inst.id && r.role === "admin"))
+    .map((inst) => ({
+      id: `platform-${inst.id}`,
+      institution_id: inst.id,
+      role: "admin" as AppRole,
+      department_id: null,
+      institutions: inst,
+    }));
+  return { rows: [...owned, ...rows], isPlatformAdmin };
 }
 
 export function useMembershipsQuery() {
   return useQuery({ queryKey: ["memberships"], queryFn: fetchMemberships });
 }
+
 
 type InstitutionContextValue = {
   memberships: MembershipRow[];
