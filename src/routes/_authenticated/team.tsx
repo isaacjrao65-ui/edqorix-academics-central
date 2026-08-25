@@ -88,7 +88,7 @@ function Team() {
     },
   });
 
-  async function updateMember(id: string, patch: Record<string, unknown>, description: string) {
+  async function updateMember(id: string, patch: { role?: AppRole; is_active?: boolean }, description: string) {
     if (!institutionId) return;
     const { error } = await supabase.from("memberships").update(patch).eq("id", id);
     if (error) {
