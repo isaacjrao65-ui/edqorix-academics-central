@@ -720,7 +720,7 @@ function Landing() {
           <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {REPORTS.map((report, index) => (
               <Reveal key={report} delay={index * 50}>
-                <div className="flex items-center justify-between gap-3 rounded-xl border border-border/70 bg-card px-5 py-4 transition-colors hover:border-primary/40">
+                <div className={`card-glow card-glow-hover flex items-center justify-between gap-3 rounded-xl border border-border/70 bg-card px-5 py-4 ${["hover:border-brand-violet/50","hover:border-brand-cyan/50","hover:border-brand-pink/50","hover:border-brand-amber/60","hover:border-brand-emerald/50","hover:border-primary/50"][index % 6]}`}>
                   <span className="text-sm font-medium">{report}</span>
                   <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
                     <Search className="size-3.5" aria-hidden /> CSV · PDF
@@ -748,12 +748,12 @@ function Landing() {
                 <div
                   className={
                     tier.highlight
-                      ? "relative h-full rounded-2xl border-2 border-primary bg-background p-7 shadow-xl"
-                      : "h-full rounded-2xl border border-border/70 bg-background p-7"
+                      ? "card-glow card-glow-hover relative h-full rounded-2xl border-2 border-brand-violet bg-gradient-to-b from-brand-violet/10 to-background p-7 shadow-xl"
+                      : "card-glow card-glow-hover h-full rounded-2xl border border-border/70 bg-background p-7"
                   }
                 >
                   {tier.highlight ? (
-                    <span className="absolute -top-3 left-7 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold text-primary-foreground">
+                    <span className="absolute -top-3 left-7 rounded-full bg-gradient-brand px-3 py-1 text-[11px] font-semibold text-primary-foreground shadow-md">
                       Recommended
                     </span>
                   ) : null}
@@ -761,7 +761,15 @@ function Landing() {
                   <p className="mt-1.5 text-sm text-muted-foreground">{tier.audience}</p>
                   <p className="mt-6 font-display text-3xl font-semibold">{tier.price}</p>
                   <p className="mt-1 text-xs text-muted-foreground">{tier.priceNote}</p>
-                  <Button asChild className="mt-6 w-full" variant={tier.highlight ? "default" : "outline"}>
+                  <Button
+                    asChild
+                    className={
+                      tier.highlight
+                        ? "mt-6 w-full border-0 bg-gradient-brand text-primary-foreground"
+                        : "mt-6 w-full"
+                    }
+                    variant={tier.highlight ? "default" : "outline"}
+                  >
                     <Link to="/contact">{tier.cta}</Link>
                   </Button>
                   <ul className="mt-6 space-y-2.5">
@@ -803,11 +811,11 @@ function Landing() {
       <section id="demo" className="scroll-mt-20 border-t border-border/70">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
           <Reveal>
-            <div className="relative overflow-hidden rounded-3xl border border-primary/25 bg-primary/8 px-6 py-14 text-center sm:px-12">
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0 bg-[radial-gradient(50%_60%_at_50%_0%,color-mix(in_oklab,var(--color-primary)_18%,transparent),transparent_70%)]"
-              />
+            <div className="relative overflow-hidden rounded-3xl border border-brand-violet/25 bg-gradient-to-br from-brand-violet/12 via-brand-pink/10 to-brand-cyan/12 px-6 py-14 text-center sm:px-12">
+              <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+                <div className="absolute -top-24 left-10 size-72 rounded-full bg-brand-violet/25 blur-3xl animate-drift" />
+                <div className="absolute -bottom-28 right-6 size-72 rounded-full bg-brand-cyan/25 blur-3xl animate-drift [animation-delay:-9s]" />
+              </div>
               <h2 className="relative font-display text-3xl font-semibold tracking-tight text-balance-tight sm:text-4xl">
                 Ready to replace your correction register?
               </h2>
@@ -816,7 +824,11 @@ function Landing() {
                 digital platform with Edqorix.
               </p>
               <div className="relative mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <Button asChild size="lg" className="w-full sm:w-auto">
+                <Button
+                  asChild
+                  size="lg"
+                  className="w-full border-0 bg-gradient-brand text-primary-foreground shadow-lg transition-transform duration-300 hover:scale-[1.03] sm:w-auto"
+                >
                   <Link to="/contact">
                     Request a Demo <ArrowRight className="ml-1.5 size-4" />
                   </Link>
