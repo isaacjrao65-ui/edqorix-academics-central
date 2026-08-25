@@ -19,11 +19,12 @@ import { cn } from "@/lib/utils";
 export function Wordmark({ className }: { className?: string }) {
   return (
     <span className={cn("flex items-center gap-2", className)}>
-      <span className="relative grid size-9 place-items-center rounded-xl bg-primary text-primary-foreground shadow-sm">
+      <span className="relative grid size-9 place-items-center rounded-xl bg-gradient-brand text-primary-foreground shadow-md transition-transform duration-300 hover:scale-110 hover:rotate-6">
         <GraduationCap className="size-5" aria-hidden />
-        <span className="absolute -right-0.5 -bottom-0.5 size-2.5 rounded-full bg-success ring-2 ring-background" />
+        <span className="absolute -right-0.5 -bottom-0.5 size-2.5 rounded-full bg-brand-4 ring-2 ring-background" />
       </span>
       <span className="font-display text-lg font-semibold tracking-tight">Edqorix</span>
+
     </span>
   );
 }
@@ -93,7 +94,7 @@ export function SectionHeading({
   return (
     <div className={cn("max-w-3xl", align === "center" && "mx-auto text-center")}>
       {eyebrow ? (
-        <p className="text-xs font-semibold tracking-[0.18em] text-primary uppercase">{eyebrow}</p>
+        <p className="text-gradient-brand text-xs font-semibold tracking-[0.18em] uppercase">{eyebrow}</p>
       ) : null}
       <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance-tight sm:text-4xl">
         {title}
@@ -322,8 +323,19 @@ export function DashboardPreview() {
 
       <div className="rounded-xl border border-border/70 bg-background p-4 sm:p-5">
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-          {PREVIEW_STATS.map((stat) => (
-            <div key={stat.label} className="rounded-lg border border-border/60 bg-card/60 p-3">
+          {PREVIEW_STATS.map((stat, index) => (
+            <div
+              key={stat.label}
+              className={cn(
+                "rounded-lg border border-border/60 p-3 transition-transform duration-300 hover:-translate-y-0.5",
+                [
+                  "bg-brand-1/10 border-brand-1/25",
+                  "bg-brand-2/10 border-brand-2/25",
+                  "bg-brand-3/10 border-brand-3/25",
+                  "bg-brand-5/10 border-brand-5/25",
+                ][index % 4],
+              )}
+            >
               <p className="text-[11px] tracking-wide text-muted-foreground uppercase">
                 {stat.label}
               </p>
@@ -336,14 +348,24 @@ export function DashboardPreview() {
           <div className="rounded-lg border border-border/60 bg-card/60 p-4 lg:col-span-3">
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium">Performance overview</p>
-              <BarChart3 className="size-4 text-muted-foreground" aria-hidden />
+              <BarChart3 className="size-4 text-brand-2" aria-hidden />
             </div>
             <div className="mt-5 flex h-32 items-end gap-3">
-              {PREVIEW_BARS.map((bar) => (
+              {PREVIEW_BARS.map((bar, index) => (
                 <div key={bar.label} className="flex flex-1 flex-col items-center gap-2">
                   <div className="flex h-28 w-full items-end rounded-md bg-muted/70">
                     <div
-                      className="w-full rounded-md bg-primary/85"
+                      className={cn(
+                        "w-full rounded-md transition-all duration-700",
+                        [
+                          "bg-brand-1",
+                          "bg-brand-2",
+                          "bg-brand-3",
+                          "bg-brand-4",
+                          "bg-brand-5",
+                          "bg-brand-6",
+                        ][index % 6],
+                      )}
                       style={{ height: `${bar.value}%` }}
                     />
                   </div>
@@ -351,6 +373,7 @@ export function DashboardPreview() {
                 </div>
               ))}
             </div>
+
             <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
               <div className="rounded-md bg-success/10 px-3 py-2 text-success">
                 Marks completed · 1,842
@@ -364,9 +387,15 @@ export function DashboardPreview() {
           <div className="rounded-lg border border-border/60 bg-card/60 p-4 lg:col-span-2">
             <p className="text-sm font-medium">Recent activity</p>
             <ul className="mt-3 space-y-3">
-              {PREVIEW_ACTIVITY.map((item) => (
+              {PREVIEW_ACTIVITY.map((item, index) => (
                 <li key={item.who + item.what} className="flex gap-2.5">
-                  <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary" />
+                  <span
+                    className={cn(
+                      "mt-1.5 size-1.5 shrink-0 rounded-full",
+                      ["bg-brand-1", "bg-brand-2", "bg-brand-3", "bg-brand-5"][index % 4],
+                    )}
+                  />
+
                   <div className="min-w-0">
                     <p className="truncate text-xs">
                       <span className="font-medium">{item.who}</span>{" "}

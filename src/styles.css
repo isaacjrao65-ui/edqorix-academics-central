@@ -168,3 +168,139 @@
 @utility text-balance-tight {
   text-wrap: balance;
 }
+
+/* ---------------------------------------------------------------
+ * Vibrant marketing palette + motion.
+ * Tokens only — components never hardcode colors.
+ * --------------------------------------------------------------- */
+
+:root {
+  --brand-1: oklch(0.55 0.22 285); /* violet   */
+  --brand-2: oklch(0.62 0.24 330); /* fuchsia  */
+  --brand-3: oklch(0.66 0.15 205); /* cyan     */
+  --brand-4: oklch(0.75 0.16 80); /* amber    */
+  --brand-5: oklch(0.62 0.16 155); /* emerald  */
+  --brand-6: oklch(0.6 0.2 25); /* coral    */
+}
+
+.dark {
+  --brand-1: oklch(0.7 0.19 285);
+  --brand-2: oklch(0.74 0.2 330);
+  --brand-3: oklch(0.78 0.13 205);
+  --brand-4: oklch(0.83 0.15 80);
+  --brand-5: oklch(0.76 0.14 155);
+  --brand-6: oklch(0.73 0.18 25);
+}
+
+@theme inline {
+  --color-brand-1: var(--brand-1);
+  --color-brand-2: var(--brand-2);
+  --color-brand-3: var(--brand-3);
+  --color-brand-4: var(--brand-4);
+  --color-brand-5: var(--brand-5);
+  --color-brand-6: var(--brand-6);
+  --animate-float-slow: float-slow 14s ease-in-out infinite;
+  --animate-float-slower: float-slow 20s ease-in-out infinite;
+  --animate-gradient-pan: gradient-pan 8s ease infinite;
+  --animate-shimmer: shimmer 2.6s linear infinite;
+  --animate-rise: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-pulse-ring: pulse-ring 2.4s ease-out infinite;
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(4%, -5%, 0) scale(1.08);
+  }
+  66% {
+    transform: translate3d(-4%, 4%, 0) scale(0.95);
+  }
+}
+
+@keyframes gradient-pan {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(220%);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--brand-2) 45%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 14px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+/* Animated rainbow text */
+@utility text-gradient-brand {
+  background-image: linear-gradient(
+    100deg,
+    var(--brand-1),
+    var(--brand-2),
+    var(--brand-6),
+    var(--brand-4),
+    var(--brand-3),
+    var(--brand-1)
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: var(--animate-gradient-pan);
+}
+
+/* Vivid filled surface */
+@utility bg-gradient-brand {
+  background-image: linear-gradient(120deg, var(--brand-1), var(--brand-2) 45%, var(--brand-3));
+  background-size: 200% 200%;
+  animation: var(--animate-gradient-pan);
+}
+
+/* Colorful hairline border via gradient ring */
+@utility card-glow {
+  box-shadow:
+    0 1px 2px color-mix(in oklab, var(--brand-1) 8%, transparent),
+    0 18px 40px -24px color-mix(in oklab, var(--brand-1) 35%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+

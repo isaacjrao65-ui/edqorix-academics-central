@@ -292,6 +292,24 @@ const REPORTS = [
   "Pass / fail analysis",
 ];
 
+const BRAND_TINT = [
+  "bg-brand-1/12 text-brand-1",
+  "bg-brand-2/12 text-brand-2",
+  "bg-brand-3/14 text-brand-3",
+  "bg-brand-4/16 text-brand-4",
+  "bg-brand-5/14 text-brand-5",
+  "bg-brand-6/12 text-brand-6",
+];
+
+const BRAND_BORDER = [
+  "hover:border-brand-1/50",
+  "hover:border-brand-2/50",
+  "hover:border-brand-3/50",
+  "hover:border-brand-4/50",
+  "hover:border-brand-5/50",
+  "hover:border-brand-6/50",
+];
+
 function Landing() {
   return (
     <div className="min-h-screen scroll-smooth bg-background">
@@ -299,34 +317,50 @@ function Landing() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute -top-40 -left-24 size-[34rem] rounded-full bg-brand-1/25 blur-3xl animate-float-slow" />
+          <div className="absolute -top-24 right-[-10%] size-[30rem] rounded-full bg-brand-2/25 blur-3xl animate-float-slower" />
+          <div className="absolute top-40 left-1/3 size-[26rem] rounded-full bg-brand-3/22 blur-3xl animate-float-slow" />
+          <div className="absolute top-72 right-1/4 size-[22rem] rounded-full bg-brand-4/20 blur-3xl animate-float-slower" />
+        </div>
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_50%_0%,color-mix(in_oklab,var(--color-primary)_18%,transparent),transparent_70%)]"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent"
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-brand-1/0 via-brand-2/70 to-brand-3/0"
         />
         <div className="mx-auto max-w-7xl px-4 pt-16 pb-8 sm:px-6 sm:pt-24 lg:px-8">
           <Reveal className="mx-auto max-w-4xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground">
-              <span className="size-1.5 rounded-full bg-success" />
+            <span className="animate-pulse-ring inline-flex items-center gap-2 rounded-full border border-brand-2/30 bg-card px-3.5 py-1.5 text-xs font-medium text-foreground/80">
+              <span className="size-1.5 rounded-full bg-gradient-brand" />
               Digital Academic Management, Simplified
             </span>
             <h1 className="mt-6 font-display text-4xl leading-[1.08] font-semibold tracking-tight text-balance-tight sm:text-5xl lg:text-6xl">
-              Replace paper-based marks management with a smarter digital system
+              Replace paper-based marks management with a{" "}
+              <span className="text-gradient-brand">smarter digital system</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
               Edqorix helps educational institutions enter, verify, manage, secure and analyze
               examination marks from one centralized platform.
             </p>
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button asChild size="lg" className="w-full sm:w-auto">
+              <Button
+                asChild
+                size="lg"
+                className="group relative w-full overflow-hidden border-0 bg-gradient-brand text-primary-foreground shadow-lg transition-transform duration-300 hover:scale-[1.03] sm:w-auto"
+              >
                 <Link to="/auth">
-                  Get Started <ArrowRight className="ml-1.5 size-4" />
+                  <span
+                    aria-hidden
+                    className="animate-shimmer absolute inset-y-0 -left-1/2 w-1/3 skew-x-12 bg-background/25"
+                  />
+                  Get Started <ArrowRight className="ml-1.5 size-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="w-full border-brand-3/40 transition-colors hover:bg-brand-3/10 sm:w-auto"
+              >
                 <Link to="/contact">Request a Demo</Link>
               </Button>
             </div>
@@ -336,7 +370,11 @@ function Landing() {
           </Reveal>
 
           <Reveal delay={120} className="mx-auto mt-14 max-w-5xl">
-            <DashboardPreview />
+            <div className="rounded-2xl bg-gradient-brand p-[1.5px] card-glow">
+              <div className="rounded-[calc(1rem-1px)] bg-background">
+                <DashboardPreview />
+              </div>
+            </div>
           </Reveal>
         </div>
       </section>
@@ -349,18 +387,23 @@ function Landing() {
               One platform, every kind of institution
             </p>
             <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-4">
-              {INSTITUTION_TYPES.map((type) => (
+              {INSTITUTION_TYPES.map((type, index) => (
                 <div
                   key={type}
-                  className="rounded-xl border border-border/60 bg-background px-4 py-5 text-center transition-transform duration-300 hover:-translate-y-0.5"
+                  className={`rounded-xl border border-border/60 bg-background px-4 py-5 text-center transition-all duration-300 hover:-translate-y-1 hover:card-glow ${BRAND_BORDER[index % BRAND_BORDER.length]}`}
                 >
-                  <p className="font-display text-base font-semibold">{type}</p>
+                  <p
+                    className={`font-display text-base font-semibold ${["text-brand-1", "text-brand-2", "text-brand-3", "text-brand-5"][index % 4]}`}
+                  >
+                    {type}
+                  </p>
                 </div>
               ))}
             </div>
           </Reveal>
         </div>
       </section>
+
 
       {/* Problem */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
@@ -374,7 +417,7 @@ function Landing() {
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {PROBLEMS.map((item, index) => (
             <Reveal key={item.title} delay={index * 60}>
-              <div className="h-full rounded-xl border border-border/70 bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <div className={`h-full rounded-xl border border-border/70 bg-card p-5 transition-all duration-300 hover:-translate-y-1.5 hover:card-glow ${BRAND_BORDER[index % BRAND_BORDER.length]}`}>
                 <span className="grid size-9 place-items-center rounded-lg bg-destructive/10 text-destructive">
                   <item.icon className="size-4.5" aria-hidden />
                 </span>
@@ -385,13 +428,17 @@ function Landing() {
           ))}
         </div>
         <Reveal delay={100}>
-          <div className="mt-10 flex flex-col items-center gap-3 rounded-2xl border border-primary/25 bg-primary/8 px-6 py-8 text-center">
-            <AlertTriangle className="size-5 text-primary" aria-hidden />
-            <p className="font-display text-lg font-semibold sm:text-xl">
-              Edqorix brings everything into one secure digital platform.
-            </p>
+          <div className="mt-10 flex flex-col items-center gap-3 rounded-2xl bg-gradient-brand p-[1.5px]">
+            <div className="flex w-full flex-col items-center gap-3 rounded-[calc(1rem-1px)] bg-card px-6 py-8 text-center">
+              <AlertTriangle className="size-5 text-brand-2" aria-hidden />
+              <p className="font-display text-lg font-semibold sm:text-xl">
+                Edqorix brings everything into one{" "}
+                <span className="text-gradient-brand">secure digital platform</span>.
+              </p>
+            </div>
           </div>
         </Reveal>
+
       </section>
 
       {/* Solution / features */}
@@ -407,10 +454,11 @@ function Landing() {
           <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {FEATURES.map((item, index) => (
               <Reveal key={item.title} delay={index * 60}>
-                <div className="group h-full rounded-xl border border-border/70 bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl">
-                  <span className="grid size-10 place-items-center rounded-lg bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-105">
+                <div className={`group h-full rounded-xl border border-border/70 bg-background p-6 transition-all duration-300 hover:-translate-y-1.5 hover:card-glow ${BRAND_BORDER[index % BRAND_BORDER.length]}`}>
+                  <span className={`grid size-10 place-items-center rounded-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 ${BRAND_TINT[index % BRAND_TINT.length]}`}>
                     <item.icon className="size-5" aria-hidden />
                   </span>
+
                   <h3 className="mt-4 font-display text-base font-semibold">{item.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
                 </div>
@@ -432,15 +480,16 @@ function Landing() {
           <div className="relative mt-14">
             <div
               aria-hidden
-              className="absolute top-0 bottom-0 left-[19px] w-px bg-gradient-to-b from-primary/50 via-border to-transparent lg:hidden"
+              className="absolute top-0 bottom-0 left-[19px] w-px bg-gradient-to-b from-brand-1 via-brand-2 to-brand-3/0 lg:hidden"
             />
             <div className="grid gap-6 lg:grid-cols-5">
               {STEPS.map((item, index) => (
                 <Reveal key={item.step} delay={index * 90}>
-                  <div className="relative flex gap-4 lg:block">
-                    <span className="z-10 grid size-10 shrink-0 place-items-center rounded-full border border-primary/30 bg-primary/10 font-display text-sm font-semibold text-primary">
+                  <div className="group relative flex gap-4 lg:block">
+                    <span className="z-10 grid size-10 shrink-0 place-items-center rounded-full bg-gradient-brand font-display text-sm font-semibold text-primary-foreground shadow-md transition-transform duration-300 group-hover:scale-110">
                       {item.step}
                     </span>
+
                     <div className="lg:mt-5">
                       <h3 className="font-display text-base font-semibold">{item.title}</h3>
                       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -491,11 +540,12 @@ function Landing() {
           <div className="mt-14 grid gap-5 lg:grid-cols-2">
             {ROLES.map((role, index) => (
               <Reveal key={role.name} delay={index * 80}>
-                <div className="h-full rounded-2xl border border-border/70 bg-background p-6 sm:p-7">
+                <div className={`h-full rounded-2xl border border-border/70 bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:card-glow sm:p-7 ${BRAND_BORDER[index % BRAND_BORDER.length]}`}>
                   <div className="flex items-start gap-4">
-                    <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+                    <span className={`grid size-11 shrink-0 place-items-center rounded-xl ${BRAND_TINT[index % BRAND_TINT.length]}`}>
                       <role.icon className="size-5" aria-hidden />
                     </span>
+
                     <div>
                       <h3 className="font-display text-lg font-semibold">{role.name}</h3>
                       <p className="mt-1 text-sm text-muted-foreground">{role.summary}</p>
@@ -557,7 +607,7 @@ function Landing() {
                   <p className="text-sm font-semibold">Unit Test 1 · Class 9-A · Mathematics</p>
                   <p className="text-xs text-muted-foreground">Maximum 50 · Passing 17</p>
                 </div>
-                <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                <span className="rounded-full bg-gradient-brand px-3 py-1 text-xs font-medium text-primary-foreground">
                   42 / 45 students entered
                 </span>
               </div>
