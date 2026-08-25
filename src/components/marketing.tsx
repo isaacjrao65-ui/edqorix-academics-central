@@ -37,7 +37,7 @@ export function Reveal({
 }: {
   children: ReactNode;
   delay?: number;
-  className?: string;
+  className?: string | undefined;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);

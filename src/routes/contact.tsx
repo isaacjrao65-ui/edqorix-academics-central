@@ -70,7 +70,16 @@ function ContactPage() {
     }
 
     setSubmitting(true);
-    const { error } = await supabase.from("demo_requests").insert(parsed.data);
+    const { error } = await supabase.from("demo_requests").insert({
+      contact_name: parsed.data.contact_name,
+      institution_name: parsed.data.institution_name,
+      institution_type: parsed.data.institution_type,
+      email: parsed.data.email,
+      designation: parsed.data.designation ?? null,
+      phone: parsed.data.phone ?? null,
+      student_count: parsed.data.student_count ?? null,
+      message: parsed.data.message ?? null,
+    });
     setSubmitting(false);
 
     if (error) {
