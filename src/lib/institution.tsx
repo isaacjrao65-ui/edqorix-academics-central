@@ -39,9 +39,12 @@ async function fetchMemberships(): Promise<{ rows: MembershipRow[]; isPlatformAd
   const [{ data, error }, { data: platform }] = await Promise.all([
     supabase
       .from("memberships")
-      .select("id, institution_id, role, department_id, institutions(id, name, short_name, type)")
+      .select(
+        "id, institution_id, role, role_id, status, designation, is_class_teacher, department_id, institutions(id, name, short_name, type)",
+      )
       .eq("user_id", auth.user.id)
-      .eq("is_active", true),
+      .eq("is_active", true)
+      .eq("status", "active"),
     supabase.rpc("is_platform_admin"),
   ]);
   if (error) throw error;
@@ -61,11 +64,16 @@ async function fetchMemberships(): Promise<{ rows: MembershipRow[]; isPlatformAd
       id: `platform-${inst.id}`,
       institution_id: inst.id,
       role: "admin" as AppRole,
+      role_id: null,
+      status: "active",
+      designation: "Platform owner",
+      is_class_teacher: false,
       department_id: null,
       institutions: inst,
     }));
   return { rows: [...owned, ...rows], isPlatformAdmin };
 }
+
 
 export function useMembershipsQuery() {
   return useQuery({ queryKey: ["memberships"], queryFn: fetchMemberships });
