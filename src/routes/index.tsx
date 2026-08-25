@@ -607,7 +607,7 @@ function Landing() {
                   <p className="text-sm font-semibold">Unit Test 1 · Class 9-A · Mathematics</p>
                   <p className="text-xs text-muted-foreground">Maximum 50 · Passing 17</p>
                 </div>
-                <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                <span className="rounded-full bg-gradient-brand px-3 py-1 text-xs font-medium text-primary-foreground">
                   42 / 45 students entered
                 </span>
               </div>
