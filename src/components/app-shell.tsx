@@ -99,7 +99,9 @@ function Brand() {
 function AccountMenu() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { memberships, institutionId, institutionName, roles, setInstitutionId } = useInstitution();
+  const { memberships, institutionId, institutionName, roles, isPlatformAdmin, setInstitutionId } =
+    useInstitution();
+
 
   async function signOut() {
     await queryClient.cancelQueries();
