@@ -292,6 +292,15 @@ const REPORTS = [
   "Pass / fail analysis",
 ];
 
+const ACCENTS = [
+  "bg-brand-violet/15 text-brand-violet",
+  "bg-brand-cyan/15 text-brand-cyan",
+  "bg-brand-pink/15 text-brand-pink",
+  "bg-brand-amber/20 text-brand-amber",
+  "bg-brand-emerald/15 text-brand-emerald",
+  "bg-primary/15 text-primary",
+];
+
 function Landing() {
   return (
     <div className="min-h-screen scroll-smooth bg-background">
@@ -299,34 +308,46 @@ function Landing() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute -top-40 -left-24 size-[26rem] rounded-full bg-brand-violet/25 blur-3xl animate-drift" />
+          <div className="absolute -top-24 right-0 size-[22rem] rounded-full bg-brand-cyan/25 blur-3xl animate-drift [animation-delay:-6s]" />
+          <div className="absolute top-40 left-1/3 size-[20rem] rounded-full bg-brand-pink/20 blur-3xl animate-drift [animation-delay:-12s]" />
+          <div className="absolute top-72 right-1/4 size-[18rem] rounded-full bg-brand-amber/20 blur-3xl animate-float-slow" />
+        </div>
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_60%_at_50%_0%,color-mix(in_oklab,var(--color-primary)_18%,transparent),transparent_70%)]"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent"
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-brand opacity-70"
         />
         <div className="mx-auto max-w-7xl px-4 pt-16 pb-8 sm:px-6 sm:pt-24 lg:px-8">
           <Reveal className="mx-auto max-w-4xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card px-3.5 py-1.5 text-xs font-medium text-muted-foreground">
-              <span className="size-1.5 rounded-full bg-success" />
+            <span className="inline-flex items-center gap-2 rounded-full border border-brand-violet/30 bg-card px-3.5 py-1.5 text-xs font-medium text-foreground shadow-sm">
+              <span className="size-1.5 animate-pulse rounded-full bg-brand-emerald" />
               Digital Academic Management, Simplified
             </span>
             <h1 className="mt-6 font-display text-4xl leading-[1.08] font-semibold tracking-tight text-balance-tight sm:text-5xl lg:text-6xl">
-              Replace paper-based marks management with a smarter digital system
+              Replace paper-based marks management with a{" "}
+              <span className="text-gradient-brand">smarter digital system</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
               Edqorix helps educational institutions enter, verify, manage, secure and analyze
               examination marks from one centralized platform.
             </p>
             <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button asChild size="lg" className="w-full sm:w-auto">
+              <Button
+                asChild
+                size="lg"
+                className="w-full border-0 bg-gradient-brand text-primary-foreground shadow-lg transition-transform duration-300 hover:scale-[1.03] sm:w-auto"
+              >
                 <Link to="/auth">
                   Get Started <ArrowRight className="ml-1.5 size-4" />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="w-full border-brand-violet/30 transition-transform duration-300 hover:scale-[1.03] hover:bg-brand-violet/10 sm:w-auto"
+              >
                 <Link to="/contact">Request a Demo</Link>
               </Button>
             </div>
@@ -335,24 +356,26 @@ function Landing() {
             </p>
           </Reveal>
 
-          <Reveal delay={120} className="mx-auto mt-14 max-w-5xl">
+          <Reveal delay={120} className="mx-auto mt-14 max-w-5xl animate-float-slow">
             <DashboardPreview />
           </Reveal>
         </div>
       </section>
 
       {/* Trusted by / institution types */}
-      <section className="border-y border-border/70 bg-card/40">
+      <section className="relative overflow-hidden border-y border-border/70 bg-card/40">
         <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
           <Reveal className="flex flex-col items-center gap-6">
             <p className="text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">
               One platform, every kind of institution
             </p>
             <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-4">
-              {INSTITUTION_TYPES.map((type) => (
+              {INSTITUTION_TYPES.map((type, index) => (
                 <div
                   key={type}
-                  className="rounded-xl border border-border/60 bg-background px-4 py-5 text-center transition-transform duration-300 hover:-translate-y-0.5"
+                  className={`rounded-xl border border-border/60 bg-background px-4 py-5 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
+                    ["hover:border-brand-violet/50", "hover:border-brand-cyan/50", "hover:border-brand-pink/50", "hover:border-brand-amber/60"][index % 4]
+                  }`}
                 >
                   <p className="font-display text-base font-semibold">{type}</p>
                 </div>
@@ -361,6 +384,7 @@ function Landing() {
           </Reveal>
         </div>
       </section>
+
 
       {/* Problem */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
