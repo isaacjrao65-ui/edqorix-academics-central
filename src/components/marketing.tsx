@@ -387,9 +387,15 @@ export function DashboardPreview() {
           <div className="rounded-lg border border-border/60 bg-card/60 p-4 lg:col-span-2">
             <p className="text-sm font-medium">Recent activity</p>
             <ul className="mt-3 space-y-3">
-              {PREVIEW_ACTIVITY.map((item) => (
+              {PREVIEW_ACTIVITY.map((item, index) => (
                 <li key={item.who + item.what} className="flex gap-2.5">
-                  <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-primary" />
+                  <span
+                    className={cn(
+                      "mt-1.5 size-1.5 shrink-0 rounded-full",
+                      ["bg-brand-1", "bg-brand-2", "bg-brand-3", "bg-brand-5"][index % 4],
+                    )}
+                  />
+
                   <div className="min-w-0">
                     <p className="truncate text-xs">
                       <span className="font-medium">{item.who}</span>{" "}
