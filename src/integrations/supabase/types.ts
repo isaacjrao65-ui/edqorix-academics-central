@@ -63,6 +63,9 @@ export type Database = {
           entity_type: string
           id: string
           institution_id: string
+          new_value: Json | null
+          old_value: Json | null
+          reason: string | null
         }
         Insert: {
           action: string
@@ -74,6 +77,9 @@ export type Database = {
           entity_type: string
           id?: string
           institution_id: string
+          new_value?: Json | null
+          old_value?: Json | null
+          reason?: string | null
         }
         Update: {
           action?: string
@@ -85,6 +91,9 @@ export type Database = {
           entity_type?: string
           id?: string
           institution_id?: string
+          new_value?: Json | null
+          old_value?: Json | null
+          reason?: string | null
         }
         Relationships: [
           {
@@ -714,28 +723,43 @@ export type Database = {
         Row: {
           created_at: string
           department_id: string | null
+          designation: string | null
           id: string
           institution_id: string
           is_active: boolean
+          is_class_teacher: boolean
           role: Database["public"]["Enums"]["app_role"]
+          role_id: string | null
+          status: Database["public"]["Enums"]["member_status"]
+          updated_at: string
           user_id: string
         }
         Insert: {
           created_at?: string
           department_id?: string | null
+          designation?: string | null
           id?: string
           institution_id: string
           is_active?: boolean
+          is_class_teacher?: boolean
           role?: Database["public"]["Enums"]["app_role"]
+          role_id?: string | null
+          status?: Database["public"]["Enums"]["member_status"]
+          updated_at?: string
           user_id: string
         }
         Update: {
           created_at?: string
           department_id?: string | null
+          designation?: string | null
           id?: string
           institution_id?: string
           is_active?: boolean
+          is_class_teacher?: boolean
           role?: Database["public"]["Enums"]["app_role"]
+          role_id?: string | null
+          status?: Database["public"]["Enums"]["member_status"]
+          updated_at?: string
           user_id?: string
         }
         Relationships: [
@@ -753,7 +777,35 @@ export type Database = {
             referencedRelation: "institutions"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "memberships_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "roles"
+            referencedColumns: ["id"]
+          },
         ]
+      }
+      permissions: {
+        Row: {
+          grp: string
+          key: string
+          label: string
+          sort_order: number
+        }
+        Insert: {
+          grp: string
+          key: string
+          label: string
+          sort_order?: number
+        }
+        Update: {
+          grp?: string
+          key?: string
+          label?: string
+          sort_order?: number
+        }
+        Relationships: []
       }
       platform_admins: {
         Row: {
@@ -844,6 +896,96 @@ export type Database = {
           },
           {
             foreignKeyName: "programs_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      role_permissions: {
+        Row: {
+          created_at: string
+          id: string
+          institution_id: string
+          permission_key: string
+          role_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          institution_id: string
+          permission_key: string
+          role_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          institution_id?: string
+          permission_key?: string
+          role_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "role_permissions_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "role_permissions_permission_key_fkey"
+            columns: ["permission_key"]
+            isOneToOne: false
+            referencedRelation: "permissions"
+            referencedColumns: ["key"]
+          },
+          {
+            foreignKeyName: "role_permissions_role_id_fkey"
+            columns: ["role_id"]
+            isOneToOne: false
+            referencedRelation: "roles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      roles: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          institution_id: string
+          is_system: boolean
+          key: string | null
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          institution_id: string
+          is_system?: boolean
+          key?: string | null
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          institution_id?: string
+          is_system?: boolean
+          key?: string | null
+          name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "roles_institution_id_fkey"
             columns: ["institution_id"]
             isOneToOne: false
             referencedRelation: "institutions"
@@ -966,6 +1108,51 @@ export type Database = {
           },
         ]
       }
+      user_permissions: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          granted: boolean
+          id: string
+          institution_id: string
+          permission_key: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          granted?: boolean
+          id?: string
+          institution_id: string
+          permission_key: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          granted?: boolean
+          id?: string
+          institution_id?: string
+          permission_key?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_permissions_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_permissions_permission_key_fkey"
+            columns: ["permission_key"]
+            isOneToOne: false
+            referencedRelation: "permissions"
+            referencedColumns: ["key"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -980,10 +1167,16 @@ export type Database = {
         }
         Returns: boolean
       }
+      has_perm: {
+        Args: { _institution: string; _permission: string }
+        Returns: boolean
+      }
+      is_admin: { Args: { _institution: string }; Returns: boolean }
       is_member: { Args: { _institution: string }; Returns: boolean }
       is_platform_admin: { Args: never; Returns: boolean }
       is_section_faculty: { Args: { _section: string }; Returns: boolean }
       my_departments: { Args: { _institution: string }; Returns: string[] }
+      seed_default_roles: { Args: { _institution: string }; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "exam_cell" | "hod" | "faculty"
@@ -997,6 +1190,7 @@ export type Database = {
       institution_type: "school" | "college" | "institute" | "university"
       invite_status: "pending" | "accepted" | "revoked"
       mark_state: "present" | "absent" | "exempt" | "malpractice"
+      member_status: "active" | "suspended" | "deactivated"
       sheet_status:
         | "draft"
         | "submitted"
@@ -1144,6 +1338,7 @@ export const Constants = {
       institution_type: ["school", "college", "institute", "university"],
       invite_status: ["pending", "accepted", "revoked"],
       mark_state: ["present", "absent", "exempt", "malpractice"],
+      member_status: ["active", "suspended", "deactivated"],
       sheet_status: [
         "draft",
         "submitted",
