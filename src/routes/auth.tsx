@@ -134,6 +134,13 @@ function AuthPage() {
             <span className="font-display text-lg font-semibold">Edqorix</span>
           </Link>
 
+          <Button asChild variant="ghost" size="sm" className="mb-6 gap-1.5 self-start lg:hidden">
+            <Link to="/">
+              <ArrowLeft className="size-4" strokeWidth={1.75} />
+              Back to homepage
+            </Link>
+          </Button>
+
           {sentConfirmation ? (
             <div className="space-y-3 rounded-xl border border-border bg-card p-6">
               <h1 className="text-lg font-semibold">Confirm your email</h1>
