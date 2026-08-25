@@ -40,6 +40,12 @@ export const Route = createFileRoute("/_authenticated/users")({
   component: UsersPage,
 });
 
+type MemberStatus = "active" | "suspended" | "deactivated";
+type MembershipPatch = {
+  designation?: string | null;
+  is_class_teacher?: boolean;
+};
+
 const STATUS_VARIANT: Record<string, "default" | "secondary" | "destructive"> = {
   active: "default",
   suspended: "secondary",
@@ -55,7 +61,7 @@ function UsersPage() {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [pending, setPending] = useState<
-    | { member: MemberRow; kind: "status"; next: string }
+    | { member: MemberRow; kind: "status"; next: MemberStatus }
     | { member: MemberRow; kind: "role"; nextRole: AppRole; nextRoleId: string | null }
     | null
   >(null);
@@ -75,7 +81,7 @@ function UsersPage() {
     await queryClient.invalidateQueries({ queryKey: ["members"] });
   }
 
-  async function applyStatus(member: MemberRow, next: string, reason: string) {
+  async function applyStatus(member: MemberRow, next: MemberStatus, reason: string) {
     if (!institutionId) return;
     const { error } = await supabase
       .from("memberships")
@@ -130,7 +136,7 @@ function UsersPage() {
 
   async function quickUpdate(
     member: MemberRow,
-    patch: Record<string, unknown>,
+    patch: MembershipPatch,
     action: string,
     description: string,
   ) {
@@ -302,7 +308,7 @@ function UsersPage() {
                       <Select
                         value={member.status}
                         onValueChange={(next) =>
-                          setPending({ member, kind: "status", next })
+                          setPending({ member, kind: "status", next: next as MemberStatus })
                         }
                       >
                         <SelectTrigger className="h-9 w-36">
