@@ -79,13 +79,16 @@ type InstitutionContextValue = {
   isExamCell: boolean;
   isHod: boolean;
   isFaculty: boolean;
+  isPlatformAdmin: boolean;
   setInstitutionId: (id: string) => void;
 };
 
 const InstitutionContext = createContext<InstitutionContextValue | null>(null);
 
 export function InstitutionProvider({ children }: { children: ReactNode }) {
-  const { data: memberships = [], isLoading } = useMembershipsQuery();
+  const { data, isLoading } = useMembershipsQuery();
+  const memberships = data?.rows ?? [];
+  const isPlatformAdmin = data?.isPlatformAdmin ?? false;
   const [selected, setSelected] = useState<string | null>(null);
 
   useEffect(() => {
@@ -108,17 +111,19 @@ export function InstitutionProvider({ children }: { children: ReactNode }) {
       roles,
       departmentIds: mine.map((m) => m.department_id).filter((d): d is string => Boolean(d)),
       isLoading,
-      canManage: roles.includes("admin") || roles.includes("exam_cell"),
-      isAdmin: roles.includes("admin"),
-      isExamCell: roles.includes("exam_cell"),
+      canManage: isPlatformAdmin || roles.includes("admin") || roles.includes("exam_cell"),
+      isAdmin: isPlatformAdmin || roles.includes("admin"),
+      isExamCell: isPlatformAdmin || roles.includes("exam_cell"),
       isHod: roles.includes("hod"),
       isFaculty: roles.includes("faculty"),
+      isPlatformAdmin,
       setInstitutionId: (id: string) => {
         window.localStorage.setItem(STORAGE_KEY, id);
         setSelected(id);
       },
     };
-  }, [memberships, institutionId, isLoading]);
+  }, [memberships, institutionId, isLoading, isPlatformAdmin]);
+
 
   return <InstitutionContext.Provider value={value}>{children}</InstitutionContext.Provider>;
 }
