@@ -29,6 +29,7 @@ import { Route as AuthenticatedStudentsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedTeamRouteImport } from './routes/_authenticated/team'
 import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
 import { Route as PlatformIndexRouteImport } from './routes/platform/index'
+import { Route as PlatformPeopleRouteImport } from './routes/platform/people'
 import { Route as AuthenticatedMarksIndexRouteImport } from './routes/_authenticated/marks.index'
 import { Route as AuthenticatedMarksSheetIdRouteImport } from './routes/_authenticated/marks.$sheetId'
 import { Route as PlatformInstitutionsIndexRouteImport } from './routes/platform/institutions.index'
@@ -133,6 +134,11 @@ const PlatformIndexRoute = PlatformIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PlatformRouteRoute,
 } as any)
+const PlatformPeopleRoute = PlatformPeopleRouteImport.update({
+  id: '/people',
+  path: '/people',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
 const AuthenticatedMarksIndexRoute = AuthenticatedMarksIndexRouteImport.update({
   id: '/marks/',
   path: '/marks/',
@@ -176,6 +182,7 @@ export interface FileRoutesByFullPath {
   '/students': typeof AuthenticatedStudentsRoute
   '/team': typeof AuthenticatedTeamRoute
   '/users': typeof AuthenticatedUsersRoute
+  '/platform/people': typeof PlatformPeopleRoute
   '/platform/': typeof PlatformIndexRoute
   '/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
   '/platform/institutions/$institutionId': typeof PlatformInstitutionsInstitutionIdRoute
@@ -200,6 +207,7 @@ export interface FileRoutesByTo {
   '/students': typeof AuthenticatedStudentsRoute
   '/team': typeof AuthenticatedTeamRoute
   '/users': typeof AuthenticatedUsersRoute
+  '/platform/people': typeof PlatformPeopleRoute
   '/platform': typeof PlatformIndexRoute
   '/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
   '/platform/institutions/$institutionId': typeof PlatformInstitutionsInstitutionIdRoute
@@ -227,6 +235,7 @@ export interface FileRoutesById {
   '/_authenticated/students': typeof AuthenticatedStudentsRoute
   '/_authenticated/team': typeof AuthenticatedTeamRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
+  '/platform/people': typeof PlatformPeopleRoute
   '/platform/': typeof PlatformIndexRoute
   '/_authenticated/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
   '/platform/institutions/$institutionId': typeof PlatformInstitutionsInstitutionIdRoute
@@ -254,6 +263,7 @@ export interface FileRouteTypes {
     | '/students'
     | '/team'
     | '/users'
+    | '/platform/people'
     | '/platform/'
     | '/marks/$sheetId'
     | '/platform/institutions/$institutionId'
@@ -278,6 +288,7 @@ export interface FileRouteTypes {
     | '/students'
     | '/team'
     | '/users'
+    | '/platform/people'
     | '/platform'
     | '/marks/$sheetId'
     | '/platform/institutions/$institutionId'
@@ -304,6 +315,7 @@ export interface FileRouteTypes {
     | '/_authenticated/students'
     | '/_authenticated/team'
     | '/_authenticated/users'
+    | '/platform/people'
     | '/platform/'
     | '/_authenticated/marks/$sheetId'
     | '/platform/institutions/$institutionId'
@@ -463,6 +475,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlatformIndexRouteImport
       parentRoute: typeof PlatformRouteRoute
     }
+    '/platform/people': {
+      id: '/platform/people'
+      path: '/people'
+      fullPath: '/platform/people'
+      preLoaderRoute: typeof PlatformPeopleRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
     '/_authenticated/marks/': {
       id: '/_authenticated/marks/'
       path: '/marks'
@@ -532,12 +551,14 @@ const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 interface PlatformRouteRouteChildren {
+  PlatformPeopleRoute: typeof PlatformPeopleRoute
   PlatformIndexRoute: typeof PlatformIndexRoute
   PlatformInstitutionsInstitutionIdRoute: typeof PlatformInstitutionsInstitutionIdRoute
   PlatformInstitutionsIndexRoute: typeof PlatformInstitutionsIndexRoute
 }
 
 const PlatformRouteRouteChildren: PlatformRouteRouteChildren = {
+  PlatformPeopleRoute: PlatformPeopleRoute,
   PlatformIndexRoute: PlatformIndexRoute,
   PlatformInstitutionsInstitutionIdRoute:
     PlatformInstitutionsInstitutionIdRoute,
