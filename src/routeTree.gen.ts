@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as PlatformAdminRouteImport } from './routes/platform-admin'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as AuthenticatedAcademicsRouteImport } from './routes/_authenticated/academics'
 import { Route as AuthenticatedAuditRouteImport } from './routes/_authenticated/audit'
@@ -46,6 +47,11 @@ const AuthRoute = AuthRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlatformAdminRoute = PlatformAdminRouteImport.update({
+  id: '/platform-admin',
+  path: '/platform-admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PricingRoute = PricingRouteImport.update({
@@ -129,6 +135,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/platform-admin': typeof PlatformAdminRoute
   '/pricing': typeof PricingRoute
   '/academics': typeof AuthenticatedAcademicsRoute
   '/audit': typeof AuthenticatedAuditRoute
@@ -149,6 +156,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/platform-admin': typeof PlatformAdminRoute
   '/pricing': typeof PricingRoute
   '/academics': typeof AuthenticatedAcademicsRoute
   '/audit': typeof AuthenticatedAuditRoute
@@ -171,6 +179,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/platform-admin': typeof PlatformAdminRoute
   '/pricing': typeof PricingRoute
   '/_authenticated/academics': typeof AuthenticatedAcademicsRoute
   '/_authenticated/audit': typeof AuthenticatedAuditRoute
@@ -193,6 +202,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/contact'
+    | '/platform-admin'
     | '/pricing'
     | '/academics'
     | '/audit'
@@ -213,6 +223,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/contact'
+    | '/platform-admin'
     | '/pricing'
     | '/academics'
     | '/audit'
@@ -234,6 +245,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/contact'
+    | '/platform-admin'
     | '/pricing'
     | '/_authenticated/academics'
     | '/_authenticated/audit'
@@ -256,6 +268,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
+  PlatformAdminRoute: typeof PlatformAdminRoute
   PricingRoute: typeof PricingRoute
 }
 
@@ -287,6 +300,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/platform-admin': {
+      id: '/platform-admin'
+      path: '/platform-admin'
+      fullPath: '/platform-admin'
+      preLoaderRoute: typeof PlatformAdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pricing': {
@@ -439,6 +459,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
+  PlatformAdminRoute: PlatformAdminRoute,
   PricingRoute: PricingRoute,
 }
 export const routeTree = rootRouteImport
