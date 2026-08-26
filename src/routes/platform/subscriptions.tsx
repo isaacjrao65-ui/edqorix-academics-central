@@ -19,7 +19,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { logPlatformAudit, usePlans, usePlatformInstitutions } from "@/lib/platform";
 
 export const Route = createFileRoute("/platform/subscriptions")({
-  validateSearch: (search: Record<string, unknown>) => ({
+  validateSearch: (search: Record<string, unknown>): { create?: "1" } => ({
     create: search["create"] === "1" ? "1" : undefined,
   }),
   head: () => ({

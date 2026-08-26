@@ -25,7 +25,7 @@ import {
 } from "@/lib/platform";
 
 export const Route = createFileRoute("/platform/features")({
-  validateSearch: (search: Record<string, unknown>) => ({
+  validateSearch: (search: Record<string, unknown>): { create?: "1" } => ({
     create: search["create"] === "1" ? "1" : undefined,
   }),
   head: () => ({
