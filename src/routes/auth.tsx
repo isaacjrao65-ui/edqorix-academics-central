@@ -126,9 +126,7 @@ function AuthPage() {
       <div className="flex items-center justify-center px-6 py-14">
         <div className="w-full max-w-sm">
           <Link to="/" className="mb-8 flex items-center gap-2.5 lg:hidden">
-            <span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground">
-              <span className="font-display text-sm font-bold">E</span>
-            </span>
+            <img src={edqorixMark.url} alt="Edqorix logo" className="size-9 rounded-full" />
             <span className="font-display text-lg font-semibold">Edqorix</span>
           </Link>
 
