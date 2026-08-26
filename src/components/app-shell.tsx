@@ -18,7 +18,9 @@ import {
   LogOut,
 } from "lucide-react";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+
+import { endViewAs, getViewAs, type ViewAsSession } from "@/lib/view-as";
 
 import edqorixMark from "@/assets/edqorix-mark.png.asset.json";
 import { Button } from "@/components/ui/button";
