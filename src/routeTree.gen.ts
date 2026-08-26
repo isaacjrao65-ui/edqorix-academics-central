@@ -32,6 +32,7 @@ import { Route as PlatformIndexRouteImport } from './routes/platform/index'
 import { Route as AuthenticatedMarksIndexRouteImport } from './routes/_authenticated/marks.index'
 import { Route as AuthenticatedMarksSheetIdRouteImport } from './routes/_authenticated/marks.$sheetId'
 import { Route as PlatformInstitutionsIndexRouteImport } from './routes/platform/institutions.index'
+import { Route as PlatformInstitutionsInstitutionIdRouteImport } from './routes/platform/institutions.$institutionId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -149,6 +150,12 @@ const PlatformInstitutionsIndexRoute =
     path: '/institutions/',
     getParentRoute: () => PlatformRouteRoute,
   } as any)
+const PlatformInstitutionsInstitutionIdRoute =
+  PlatformInstitutionsInstitutionIdRouteImport.update({
+    id: '/institutions/$institutionId',
+    path: '/institutions/$institutionId',
+    getParentRoute: () => PlatformRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -171,6 +178,7 @@ export interface FileRoutesByFullPath {
   '/users': typeof AuthenticatedUsersRoute
   '/platform/': typeof PlatformIndexRoute
   '/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
+  '/platform/institutions/$institutionId': typeof PlatformInstitutionsInstitutionIdRoute
   '/marks/': typeof AuthenticatedMarksIndexRoute
   '/platform/institutions/': typeof PlatformInstitutionsIndexRoute
 }
@@ -194,6 +202,7 @@ export interface FileRoutesByTo {
   '/users': typeof AuthenticatedUsersRoute
   '/platform': typeof PlatformIndexRoute
   '/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
+  '/platform/institutions/$institutionId': typeof PlatformInstitutionsInstitutionIdRoute
   '/marks': typeof AuthenticatedMarksIndexRoute
   '/platform/institutions': typeof PlatformInstitutionsIndexRoute
 }
@@ -220,6 +229,7 @@ export interface FileRoutesById {
   '/_authenticated/users': typeof AuthenticatedUsersRoute
   '/platform/': typeof PlatformIndexRoute
   '/_authenticated/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
+  '/platform/institutions/$institutionId': typeof PlatformInstitutionsInstitutionIdRoute
   '/_authenticated/marks/': typeof AuthenticatedMarksIndexRoute
   '/platform/institutions/': typeof PlatformInstitutionsIndexRoute
 }
@@ -246,6 +256,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/platform/'
     | '/marks/$sheetId'
+    | '/platform/institutions/$institutionId'
     | '/marks/'
     | '/platform/institutions/'
   fileRoutesByTo: FileRoutesByTo
@@ -269,6 +280,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/platform'
     | '/marks/$sheetId'
+    | '/platform/institutions/$institutionId'
     | '/marks'
     | '/platform/institutions'
   id:
@@ -294,6 +306,7 @@ export interface FileRouteTypes {
     | '/_authenticated/users'
     | '/platform/'
     | '/_authenticated/marks/$sheetId'
+    | '/platform/institutions/$institutionId'
     | '/_authenticated/marks/'
     | '/platform/institutions/'
   fileRoutesById: FileRoutesById
@@ -471,6 +484,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlatformInstitutionsIndexRouteImport
       parentRoute: typeof PlatformRouteRoute
     }
+    '/platform/institutions/$institutionId': {
+      id: '/platform/institutions/$institutionId'
+      path: '/institutions/$institutionId'
+      fullPath: '/platform/institutions/$institutionId'
+      preLoaderRoute: typeof PlatformInstitutionsInstitutionIdRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
   }
 }
 
@@ -513,11 +533,14 @@ const AuthenticatedRouteRouteWithChildren =
 
 interface PlatformRouteRouteChildren {
   PlatformIndexRoute: typeof PlatformIndexRoute
+  PlatformInstitutionsInstitutionIdRoute: typeof PlatformInstitutionsInstitutionIdRoute
   PlatformInstitutionsIndexRoute: typeof PlatformInstitutionsIndexRoute
 }
 
 const PlatformRouteRouteChildren: PlatformRouteRouteChildren = {
   PlatformIndexRoute: PlatformIndexRoute,
+  PlatformInstitutionsInstitutionIdRoute:
+    PlatformInstitutionsInstitutionIdRoute,
   PlatformInstitutionsIndexRoute: PlatformInstitutionsIndexRoute,
 }
 
