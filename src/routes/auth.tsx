@@ -99,9 +99,7 @@ function AuthPage() {
       <div className="hidden flex-col justify-between border-r border-border bg-card px-12 py-12 lg:flex">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2.5">
-            <span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground">
-              <span className="font-display text-sm font-bold">E</span>
-            </span>
+            <img src={edqorixMark.url} alt="Edqorix logo" className="size-9 rounded-full" />
             <span className="font-display text-lg font-semibold tracking-tight">Edqorix</span>
           </Link>
           <Button asChild variant="ghost" size="sm" className="gap-1.5">
