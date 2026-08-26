@@ -3,6 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
+import { PlatformOwnerEmailsCard } from "@/components/platform-owner-emails";
 import { OwnerCard, OwnerPageHeader } from "@/components/platform-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -132,6 +133,7 @@ function SettingsPage() {
         title="Platform settings"
         description="Global configuration. These values are stored as data, so nothing here is hardcoded."
       />
+      <PlatformOwnerEmailsCard />
       <div className="grid gap-4 lg:grid-cols-2">
         {GROUPS.map((group) => (
           <OwnerCard key={group.key} title={group.title} description={group.description}>
