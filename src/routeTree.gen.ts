@@ -31,6 +31,7 @@ import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/
 import { Route as PlatformIndexRouteImport } from './routes/platform/index'
 import { Route as AuthenticatedMarksIndexRouteImport } from './routes/_authenticated/marks.index'
 import { Route as AuthenticatedMarksSheetIdRouteImport } from './routes/_authenticated/marks.$sheetId'
+import { Route as PlatformInstitutionsIndexRouteImport } from './routes/platform/institutions.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -142,6 +143,12 @@ const AuthenticatedMarksSheetIdRoute =
     path: '/marks/$sheetId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const PlatformInstitutionsIndexRoute =
+  PlatformInstitutionsIndexRouteImport.update({
+    id: '/institutions/',
+    path: '/institutions/',
+    getParentRoute: () => PlatformRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -165,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/platform/': typeof PlatformIndexRoute
   '/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
   '/marks/': typeof AuthenticatedMarksIndexRoute
+  '/platform/institutions/': typeof PlatformInstitutionsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -187,6 +195,7 @@ export interface FileRoutesByTo {
   '/platform': typeof PlatformIndexRoute
   '/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
   '/marks': typeof AuthenticatedMarksIndexRoute
+  '/platform/institutions': typeof PlatformInstitutionsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -212,6 +221,7 @@ export interface FileRoutesById {
   '/platform/': typeof PlatformIndexRoute
   '/_authenticated/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
   '/_authenticated/marks/': typeof AuthenticatedMarksIndexRoute
+  '/platform/institutions/': typeof PlatformInstitutionsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -237,6 +247,7 @@ export interface FileRouteTypes {
     | '/platform/'
     | '/marks/$sheetId'
     | '/marks/'
+    | '/platform/institutions/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -259,6 +270,7 @@ export interface FileRouteTypes {
     | '/platform'
     | '/marks/$sheetId'
     | '/marks'
+    | '/platform/institutions'
   id:
     | '__root__'
     | '/'
@@ -283,6 +295,7 @@ export interface FileRouteTypes {
     | '/platform/'
     | '/_authenticated/marks/$sheetId'
     | '/_authenticated/marks/'
+    | '/platform/institutions/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -451,6 +464,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMarksSheetIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/platform/institutions/': {
+      id: '/platform/institutions/'
+      path: '/institutions'
+      fullPath: '/platform/institutions/'
+      preLoaderRoute: typeof PlatformInstitutionsIndexRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
   }
 }
 
@@ -493,10 +513,12 @@ const AuthenticatedRouteRouteWithChildren =
 
 interface PlatformRouteRouteChildren {
   PlatformIndexRoute: typeof PlatformIndexRoute
+  PlatformInstitutionsIndexRoute: typeof PlatformInstitutionsIndexRoute
 }
 
 const PlatformRouteRouteChildren: PlatformRouteRouteChildren = {
   PlatformIndexRoute: PlatformIndexRoute,
+  PlatformInstitutionsIndexRoute: PlatformInstitutionsIndexRoute,
 }
 
 const PlatformRouteRouteWithChildren = PlatformRouteRoute._addFileChildren(
