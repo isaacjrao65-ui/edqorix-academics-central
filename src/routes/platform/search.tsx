@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/platform/search")({
-  validateSearch: (search: Record<string, unknown>): { q?: string } => ({
+  validateSearch: (search: Record<string, unknown>): { q?: string | undefined } => ({
     q: typeof search["q"] === "string" ? (search["q"] as string) : undefined,
   }),
   head: () => ({
@@ -98,7 +98,7 @@ function SearchPage() {
                     <Link
                       to="/platform/institutions/$institutionId"
                       params={{ institutionId: i.id }}
-                      search={{ tab: undefined }}
+                      search={{}}
                       className="text-slate-100 hover:text-cyan-300"
                     >
                       {i.name}

@@ -24,7 +24,7 @@ const ROLE_FILTERS = [
 ];
 
 export const Route = createFileRoute("/platform/people")({
-  validateSearch: (search: Record<string, unknown>): { role?: string } => ({
+  validateSearch: (search: Record<string, unknown>): { role?: string | undefined } => ({
     role: typeof search["role"] === "string" ? (search["role"] as string) : undefined,
   }),
   head: () => ({

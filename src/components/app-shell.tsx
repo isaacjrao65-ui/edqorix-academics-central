@@ -246,7 +246,7 @@ function ViewAsBanner() {
     await endViewAs();
     setSession(null);
     queryClient.clear();
-    navigate({ to: "/platform/institutions/$institutionId", params: { institutionId: session!.institutionId }, search: { tab: undefined } });
+    navigate({ to: "/platform/institutions/$institutionId", params: { institutionId: session!.institutionId }, search: {} });
   }
 
   return (

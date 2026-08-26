@@ -21,7 +21,7 @@ import { logPlatformAudit, usePermissionRequests, usePlatformInstitutions } from
 import { PERMISSION_GROUP_ORDER, usePermissionCatalogue } from "@/lib/permissions";
 
 export const Route = createFileRoute("/platform/permissions")({
-  validateSearch: (search: Record<string, unknown>): { tab?: "catalogue" } => ({
+  validateSearch: (search: Record<string, unknown>): { tab?: "catalogue" | undefined } => ({
     tab: search["tab"] === "catalogue" ? ("catalogue" as const) : undefined,
   }),
   head: () => ({

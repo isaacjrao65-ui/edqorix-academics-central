@@ -47,7 +47,7 @@ const TABS = [
 type Tab = (typeof TABS)[number];
 
 export const Route = createFileRoute("/platform/institutions/$institutionId")({
-  validateSearch: (search: Record<string, unknown>): { tab?: Tab } => ({
+  validateSearch: (search: Record<string, unknown>): { tab?: Tab | undefined } => ({
     tab: TABS.includes(search["tab"] as Tab) ? (search["tab"] as Tab) : undefined,
   }),
   head: () => ({

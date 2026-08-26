@@ -34,7 +34,7 @@ import {
 } from "@/lib/platform";
 
 export const Route = createFileRoute("/platform/institutions/")({
-  validateSearch: (search: Record<string, unknown>): { status?: string; create?: "1" } => ({
+  validateSearch: (search: Record<string, unknown>): { status?: string | undefined; create?: "1" | undefined } => ({
     status: typeof search["status"] === "string" ? (search["status"] as string) : undefined,
     create: search["create"] === "1" ? "1" : undefined,
   }),
