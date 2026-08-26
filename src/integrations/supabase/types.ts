@@ -1143,6 +1143,27 @@ export type Database = {
           },
         ]
       }
+      platform_owner_emails: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          email: string
+          note: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          email: string
+          note?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          email?: string
+          note?: string | null
+        }
+        Relationships: []
+      }
       platform_settings: {
         Row: {
           key: string
