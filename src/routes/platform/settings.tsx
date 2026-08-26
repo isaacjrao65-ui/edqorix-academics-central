@@ -3,6 +3,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
+import { PlatformOwnerEmailsCard } from "@/components/platform-owner-emails";
 import { OwnerCard, OwnerPageHeader } from "@/components/platform-shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
