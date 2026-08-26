@@ -30,6 +30,7 @@ import { Route as AuthenticatedTeamRouteImport } from './routes/_authenticated/t
 import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
 import { Route as PlatformIndexRouteImport } from './routes/platform/index'
 import { Route as PlatformAnalyticsRouteImport } from './routes/platform/analytics'
+import { Route as PlatformAuditRouteImport } from './routes/platform/audit'
 import { Route as PlatformFeaturesRouteImport } from './routes/platform/features'
 import { Route as PlatformPeopleRouteImport } from './routes/platform/people'
 import { Route as PlatformPermissionsRouteImport } from './routes/platform/permissions'
@@ -146,6 +147,11 @@ const PlatformAnalyticsRoute = PlatformAnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => PlatformRouteRoute,
 } as any)
+const PlatformAuditRoute = PlatformAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
 const PlatformFeaturesRoute = PlatformFeaturesRouteImport.update({
   id: '/features',
   path: '/features',
@@ -225,6 +231,7 @@ export interface FileRoutesByFullPath {
   '/team': typeof AuthenticatedTeamRoute
   '/users': typeof AuthenticatedUsersRoute
   '/platform/analytics': typeof PlatformAnalyticsRoute
+  '/platform/audit': typeof PlatformAuditRoute
   '/platform/features': typeof PlatformFeaturesRoute
   '/platform/people': typeof PlatformPeopleRoute
   '/platform/permissions': typeof PlatformPermissionsRoute
@@ -257,6 +264,7 @@ export interface FileRoutesByTo {
   '/team': typeof AuthenticatedTeamRoute
   '/users': typeof AuthenticatedUsersRoute
   '/platform/analytics': typeof PlatformAnalyticsRoute
+  '/platform/audit': typeof PlatformAuditRoute
   '/platform/features': typeof PlatformFeaturesRoute
   '/platform/people': typeof PlatformPeopleRoute
   '/platform/permissions': typeof PlatformPermissionsRoute
@@ -292,6 +300,7 @@ export interface FileRoutesById {
   '/_authenticated/team': typeof AuthenticatedTeamRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
   '/platform/analytics': typeof PlatformAnalyticsRoute
+  '/platform/audit': typeof PlatformAuditRoute
   '/platform/features': typeof PlatformFeaturesRoute
   '/platform/people': typeof PlatformPeopleRoute
   '/platform/permissions': typeof PlatformPermissionsRoute
@@ -327,6 +336,7 @@ export interface FileRouteTypes {
     | '/team'
     | '/users'
     | '/platform/analytics'
+    | '/platform/audit'
     | '/platform/features'
     | '/platform/people'
     | '/platform/permissions'
@@ -359,6 +369,7 @@ export interface FileRouteTypes {
     | '/team'
     | '/users'
     | '/platform/analytics'
+    | '/platform/audit'
     | '/platform/features'
     | '/platform/people'
     | '/platform/permissions'
@@ -393,6 +404,7 @@ export interface FileRouteTypes {
     | '/_authenticated/team'
     | '/_authenticated/users'
     | '/platform/analytics'
+    | '/platform/audit'
     | '/platform/features'
     | '/platform/people'
     | '/platform/permissions'
@@ -566,6 +578,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlatformAnalyticsRouteImport
       parentRoute: typeof PlatformRouteRoute
     }
+    '/platform/audit': {
+      id: '/platform/audit'
+      path: '/audit'
+      fullPath: '/platform/audit'
+      preLoaderRoute: typeof PlatformAuditRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
     '/platform/features': {
       id: '/platform/features'
       path: '/features'
@@ -685,6 +704,7 @@ const AuthenticatedRouteRouteWithChildren =
 
 interface PlatformRouteRouteChildren {
   PlatformAnalyticsRoute: typeof PlatformAnalyticsRoute
+  PlatformAuditRoute: typeof PlatformAuditRoute
   PlatformFeaturesRoute: typeof PlatformFeaturesRoute
   PlatformPeopleRoute: typeof PlatformPeopleRoute
   PlatformPermissionsRoute: typeof PlatformPermissionsRoute
@@ -699,6 +719,7 @@ interface PlatformRouteRouteChildren {
 
 const PlatformRouteRouteChildren: PlatformRouteRouteChildren = {
   PlatformAnalyticsRoute: PlatformAnalyticsRoute,
+  PlatformAuditRoute: PlatformAuditRoute,
   PlatformFeaturesRoute: PlatformFeaturesRoute,
   PlatformPeopleRoute: PlatformPeopleRoute,
   PlatformPermissionsRoute: PlatformPermissionsRoute,
