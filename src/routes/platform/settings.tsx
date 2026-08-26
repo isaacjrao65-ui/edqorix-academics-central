@@ -132,6 +132,7 @@ function SettingsPage() {
         title="Platform settings"
         description="Global configuration. These values are stored as data, so nothing here is hardcoded."
       />
+      <PlatformOwnerEmailsCard />
       <div className="grid gap-4 lg:grid-cols-2">
         {GROUPS.map((group) => (
           <OwnerCard key={group.key} title={group.title} description={group.description}>
