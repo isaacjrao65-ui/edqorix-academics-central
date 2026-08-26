@@ -30,6 +30,7 @@ import { Route as AuthenticatedTeamRouteImport } from './routes/_authenticated/t
 import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
 import { Route as PlatformIndexRouteImport } from './routes/platform/index'
 import { Route as PlatformPeopleRouteImport } from './routes/platform/people'
+import { Route as PlatformPermissionsRouteImport } from './routes/platform/permissions'
 import { Route as AuthenticatedMarksIndexRouteImport } from './routes/_authenticated/marks.index'
 import { Route as AuthenticatedMarksSheetIdRouteImport } from './routes/_authenticated/marks.$sheetId'
 import { Route as PlatformInstitutionsIndexRouteImport } from './routes/platform/institutions.index'
@@ -139,6 +140,11 @@ const PlatformPeopleRoute = PlatformPeopleRouteImport.update({
   path: '/people',
   getParentRoute: () => PlatformRouteRoute,
 } as any)
+const PlatformPermissionsRoute = PlatformPermissionsRouteImport.update({
+  id: '/permissions',
+  path: '/permissions',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
 const AuthenticatedMarksIndexRoute = AuthenticatedMarksIndexRouteImport.update({
   id: '/marks/',
   path: '/marks/',
@@ -183,6 +189,7 @@ export interface FileRoutesByFullPath {
   '/team': typeof AuthenticatedTeamRoute
   '/users': typeof AuthenticatedUsersRoute
   '/platform/people': typeof PlatformPeopleRoute
+  '/platform/permissions': typeof PlatformPermissionsRoute
   '/platform/': typeof PlatformIndexRoute
   '/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
   '/platform/institutions/$institutionId': typeof PlatformInstitutionsInstitutionIdRoute
@@ -208,6 +215,7 @@ export interface FileRoutesByTo {
   '/team': typeof AuthenticatedTeamRoute
   '/users': typeof AuthenticatedUsersRoute
   '/platform/people': typeof PlatformPeopleRoute
+  '/platform/permissions': typeof PlatformPermissionsRoute
   '/platform': typeof PlatformIndexRoute
   '/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
   '/platform/institutions/$institutionId': typeof PlatformInstitutionsInstitutionIdRoute
@@ -236,6 +244,7 @@ export interface FileRoutesById {
   '/_authenticated/team': typeof AuthenticatedTeamRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
   '/platform/people': typeof PlatformPeopleRoute
+  '/platform/permissions': typeof PlatformPermissionsRoute
   '/platform/': typeof PlatformIndexRoute
   '/_authenticated/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
   '/platform/institutions/$institutionId': typeof PlatformInstitutionsInstitutionIdRoute
@@ -264,6 +273,7 @@ export interface FileRouteTypes {
     | '/team'
     | '/users'
     | '/platform/people'
+    | '/platform/permissions'
     | '/platform/'
     | '/marks/$sheetId'
     | '/platform/institutions/$institutionId'
@@ -289,6 +299,7 @@ export interface FileRouteTypes {
     | '/team'
     | '/users'
     | '/platform/people'
+    | '/platform/permissions'
     | '/platform'
     | '/marks/$sheetId'
     | '/platform/institutions/$institutionId'
@@ -316,6 +327,7 @@ export interface FileRouteTypes {
     | '/_authenticated/team'
     | '/_authenticated/users'
     | '/platform/people'
+    | '/platform/permissions'
     | '/platform/'
     | '/_authenticated/marks/$sheetId'
     | '/platform/institutions/$institutionId'
@@ -482,6 +494,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlatformPeopleRouteImport
       parentRoute: typeof PlatformRouteRoute
     }
+    '/platform/permissions': {
+      id: '/platform/permissions'
+      path: '/permissions'
+      fullPath: '/platform/permissions'
+      preLoaderRoute: typeof PlatformPermissionsRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
     '/_authenticated/marks/': {
       id: '/_authenticated/marks/'
       path: '/marks'
@@ -552,6 +571,7 @@ const AuthenticatedRouteRouteWithChildren =
 
 interface PlatformRouteRouteChildren {
   PlatformPeopleRoute: typeof PlatformPeopleRoute
+  PlatformPermissionsRoute: typeof PlatformPermissionsRoute
   PlatformIndexRoute: typeof PlatformIndexRoute
   PlatformInstitutionsInstitutionIdRoute: typeof PlatformInstitutionsInstitutionIdRoute
   PlatformInstitutionsIndexRoute: typeof PlatformInstitutionsIndexRoute
@@ -559,6 +579,7 @@ interface PlatformRouteRouteChildren {
 
 const PlatformRouteRouteChildren: PlatformRouteRouteChildren = {
   PlatformPeopleRoute: PlatformPeopleRoute,
+  PlatformPermissionsRoute: PlatformPermissionsRoute,
   PlatformIndexRoute: PlatformIndexRoute,
   PlatformInstitutionsInstitutionIdRoute:
     PlatformInstitutionsInstitutionIdRoute,
