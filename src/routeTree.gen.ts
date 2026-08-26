@@ -34,6 +34,7 @@ import { Route as PlatformAuditRouteImport } from './routes/platform/audit'
 import { Route as PlatformFeaturesRouteImport } from './routes/platform/features'
 import { Route as PlatformPeopleRouteImport } from './routes/platform/people'
 import { Route as PlatformPermissionsRouteImport } from './routes/platform/permissions'
+import { Route as PlatformSearchRouteImport } from './routes/platform/search'
 import { Route as PlatformSecurityRouteImport } from './routes/platform/security'
 import { Route as PlatformSettingsRouteImport } from './routes/platform/settings'
 import { Route as PlatformStorageRouteImport } from './routes/platform/storage'
@@ -168,6 +169,11 @@ const PlatformPermissionsRoute = PlatformPermissionsRouteImport.update({
   path: '/permissions',
   getParentRoute: () => PlatformRouteRoute,
 } as any)
+const PlatformSearchRoute = PlatformSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
 const PlatformSecurityRoute = PlatformSecurityRouteImport.update({
   id: '/security',
   path: '/security',
@@ -241,6 +247,7 @@ export interface FileRoutesByFullPath {
   '/platform/features': typeof PlatformFeaturesRoute
   '/platform/people': typeof PlatformPeopleRoute
   '/platform/permissions': typeof PlatformPermissionsRoute
+  '/platform/search': typeof PlatformSearchRoute
   '/platform/security': typeof PlatformSecurityRoute
   '/platform/settings': typeof PlatformSettingsRoute
   '/platform/storage': typeof PlatformStorageRoute
@@ -275,6 +282,7 @@ export interface FileRoutesByTo {
   '/platform/features': typeof PlatformFeaturesRoute
   '/platform/people': typeof PlatformPeopleRoute
   '/platform/permissions': typeof PlatformPermissionsRoute
+  '/platform/search': typeof PlatformSearchRoute
   '/platform/security': typeof PlatformSecurityRoute
   '/platform/settings': typeof PlatformSettingsRoute
   '/platform/storage': typeof PlatformStorageRoute
@@ -312,6 +320,7 @@ export interface FileRoutesById {
   '/platform/features': typeof PlatformFeaturesRoute
   '/platform/people': typeof PlatformPeopleRoute
   '/platform/permissions': typeof PlatformPermissionsRoute
+  '/platform/search': typeof PlatformSearchRoute
   '/platform/security': typeof PlatformSecurityRoute
   '/platform/settings': typeof PlatformSettingsRoute
   '/platform/storage': typeof PlatformStorageRoute
@@ -349,6 +358,7 @@ export interface FileRouteTypes {
     | '/platform/features'
     | '/platform/people'
     | '/platform/permissions'
+    | '/platform/search'
     | '/platform/security'
     | '/platform/settings'
     | '/platform/storage'
@@ -383,6 +393,7 @@ export interface FileRouteTypes {
     | '/platform/features'
     | '/platform/people'
     | '/platform/permissions'
+    | '/platform/search'
     | '/platform/security'
     | '/platform/settings'
     | '/platform/storage'
@@ -419,6 +430,7 @@ export interface FileRouteTypes {
     | '/platform/features'
     | '/platform/people'
     | '/platform/permissions'
+    | '/platform/search'
     | '/platform/security'
     | '/platform/settings'
     | '/platform/storage'
@@ -618,6 +630,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlatformPermissionsRouteImport
       parentRoute: typeof PlatformRouteRoute
     }
+    '/platform/search': {
+      id: '/platform/search'
+      path: '/search'
+      fullPath: '/platform/search'
+      preLoaderRoute: typeof PlatformSearchRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
     '/platform/security': {
       id: '/platform/security'
       path: '/security'
@@ -727,6 +746,7 @@ interface PlatformRouteRouteChildren {
   PlatformFeaturesRoute: typeof PlatformFeaturesRoute
   PlatformPeopleRoute: typeof PlatformPeopleRoute
   PlatformPermissionsRoute: typeof PlatformPermissionsRoute
+  PlatformSearchRoute: typeof PlatformSearchRoute
   PlatformSecurityRoute: typeof PlatformSecurityRoute
   PlatformSettingsRoute: typeof PlatformSettingsRoute
   PlatformStorageRoute: typeof PlatformStorageRoute
@@ -743,6 +763,7 @@ const PlatformRouteRouteChildren: PlatformRouteRouteChildren = {
   PlatformFeaturesRoute: PlatformFeaturesRoute,
   PlatformPeopleRoute: PlatformPeopleRoute,
   PlatformPermissionsRoute: PlatformPermissionsRoute,
+  PlatformSearchRoute: PlatformSearchRoute,
   PlatformSecurityRoute: PlatformSecurityRoute,
   PlatformSettingsRoute: PlatformSettingsRoute,
   PlatformStorageRoute: PlatformStorageRoute,
