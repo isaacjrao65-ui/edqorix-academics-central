@@ -283,11 +283,13 @@ export function OwnerPageHeader({
 
 export function OwnerCard({
   title,
+  description,
   children,
   actions,
   className,
 }: {
   title?: string;
+  description?: string;
   children: ReactNode;
   actions?: ReactNode;
   className?: string;
@@ -300,8 +302,17 @@ export function OwnerCard({
       )}
     >
       {title || actions ? (
-        <div className="mb-4 flex items-center justify-between gap-3">
-          {title ? <h2 className="text-sm font-semibold text-slate-200">{title}</h2> : <span />}
+        <div className="mb-4 flex items-start justify-between gap-3">
+          {title ? (
+            <div>
+              <h2 className="text-sm font-semibold text-slate-200">{title}</h2>
+              {description ? (
+                <p className="mt-1 text-xs text-slate-500">{description}</p>
+              ) : null}
+            </div>
+          ) : (
+            <span />
+          )}
           {actions}
         </div>
       ) : null}
