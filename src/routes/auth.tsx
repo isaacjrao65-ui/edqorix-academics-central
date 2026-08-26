@@ -39,10 +39,17 @@ function AuthPage() {
   const [fullName, setFullName] = useState("");
   const [sentConfirmation, setSentConfirmation] = useState(false);
 
+  /** Platform owners always land in the control plane, everyone else in the institution app. */
+  async function goAfterAuth() {
+    const { data: owner } = await supabase.rpc("is_platform_admin");
+    navigate({ to: owner === true ? "/platform" : "/dashboard", replace: true });
+  }
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/dashboard", replace: true });
+      if (data.session) void goAfterAuth();
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
   async function signIn(e: React.FormEvent) {
@@ -54,7 +61,7 @@ function AuthPage() {
       toast.error(error.message);
       return;
     }
-    navigate({ to: "/dashboard", replace: true });
+    await goAfterAuth();
   }
 
   async function signUp(e: React.FormEvent) {
@@ -74,7 +81,7 @@ function AuthPage() {
       return;
     }
     if (data.session) {
-      navigate({ to: "/dashboard", replace: true });
+      await goAfterAuth();
     } else {
       setSentConfirmation(true);
       toast.success("Check your email to confirm your account.");
@@ -92,8 +99,9 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
-    navigate({ to: "/dashboard", replace: true });
+    await goAfterAuth();
   }
+
 
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
