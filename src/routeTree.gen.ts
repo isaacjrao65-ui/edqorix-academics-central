@@ -28,6 +28,7 @@ import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedStudentsRouteImport } from './routes/_authenticated/students'
 import { Route as AuthenticatedTeamRouteImport } from './routes/_authenticated/team'
 import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
+import { Route as PlatformIndexRouteImport } from './routes/platform/index'
 import { Route as AuthenticatedMarksIndexRouteImport } from './routes/_authenticated/marks.index'
 import { Route as AuthenticatedMarksSheetIdRouteImport } from './routes/_authenticated/marks.$sheetId'
 
@@ -125,6 +126,11 @@ const AuthenticatedUsersRoute = AuthenticatedUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const PlatformIndexRoute = PlatformIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
 const AuthenticatedMarksIndexRoute = AuthenticatedMarksIndexRouteImport.update({
   id: '/marks/',
   path: '/marks/',
@@ -139,7 +145,7 @@ const AuthenticatedMarksSheetIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/platform': typeof PlatformRouteRoute
+  '/platform': typeof PlatformRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/platform-admin': typeof PlatformAdminRoute
@@ -156,12 +162,12 @@ export interface FileRoutesByFullPath {
   '/students': typeof AuthenticatedStudentsRoute
   '/team': typeof AuthenticatedTeamRoute
   '/users': typeof AuthenticatedUsersRoute
+  '/platform/': typeof PlatformIndexRoute
   '/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
   '/marks/': typeof AuthenticatedMarksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/platform': typeof PlatformRouteRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/platform-admin': typeof PlatformAdminRoute
@@ -178,6 +184,7 @@ export interface FileRoutesByTo {
   '/students': typeof AuthenticatedStudentsRoute
   '/team': typeof AuthenticatedTeamRoute
   '/users': typeof AuthenticatedUsersRoute
+  '/platform': typeof PlatformIndexRoute
   '/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
   '/marks': typeof AuthenticatedMarksIndexRoute
 }
@@ -185,7 +192,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/platform': typeof PlatformRouteRoute
+  '/platform': typeof PlatformRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
   '/platform-admin': typeof PlatformAdminRoute
@@ -202,6 +209,7 @@ export interface FileRoutesById {
   '/_authenticated/students': typeof AuthenticatedStudentsRoute
   '/_authenticated/team': typeof AuthenticatedTeamRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
+  '/platform/': typeof PlatformIndexRoute
   '/_authenticated/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
   '/_authenticated/marks/': typeof AuthenticatedMarksIndexRoute
 }
@@ -226,12 +234,12 @@ export interface FileRouteTypes {
     | '/students'
     | '/team'
     | '/users'
+    | '/platform/'
     | '/marks/$sheetId'
     | '/marks/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/platform'
     | '/auth'
     | '/contact'
     | '/platform-admin'
@@ -248,6 +256,7 @@ export interface FileRouteTypes {
     | '/students'
     | '/team'
     | '/users'
+    | '/platform'
     | '/marks/$sheetId'
     | '/marks'
   id:
@@ -271,6 +280,7 @@ export interface FileRouteTypes {
     | '/_authenticated/students'
     | '/_authenticated/team'
     | '/_authenticated/users'
+    | '/platform/'
     | '/_authenticated/marks/$sheetId'
     | '/_authenticated/marks/'
   fileRoutesById: FileRoutesById
@@ -278,7 +288,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
-  PlatformRouteRoute: typeof PlatformRouteRoute
+  PlatformRouteRoute: typeof PlatformRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
   PlatformAdminRoute: typeof PlatformAdminRoute
@@ -420,6 +430,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUsersRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/platform/': {
+      id: '/platform/'
+      path: '/'
+      fullPath: '/platform/'
+      preLoaderRoute: typeof PlatformIndexRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
     '/_authenticated/marks/': {
       id: '/_authenticated/marks/'
       path: '/marks'
@@ -474,10 +491,22 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface PlatformRouteRouteChildren {
+  PlatformIndexRoute: typeof PlatformIndexRoute
+}
+
+const PlatformRouteRouteChildren: PlatformRouteRouteChildren = {
+  PlatformIndexRoute: PlatformIndexRoute,
+}
+
+const PlatformRouteRouteWithChildren = PlatformRouteRoute._addFileChildren(
+  PlatformRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
-  PlatformRouteRoute: PlatformRouteRoute,
+  PlatformRouteRoute: PlatformRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
   PlatformAdminRoute: PlatformAdminRoute,
