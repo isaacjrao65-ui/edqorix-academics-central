@@ -1,16 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import {
-  Activity,
-  BarChart3,
-  ChevronDown,
-  GraduationCap,
-  Lock,
-  Menu,
-  ShieldCheck,
-  X,
-} from "lucide-react";
+import { Activity, BarChart3, ChevronDown, Lock, Menu, ShieldCheck, X } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
+import edqorixMark from "@/assets/edqorix-mark.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
