@@ -33,6 +33,7 @@ import { Route as PlatformAnalyticsRouteImport } from './routes/platform/analyti
 import { Route as PlatformFeaturesRouteImport } from './routes/platform/features'
 import { Route as PlatformPeopleRouteImport } from './routes/platform/people'
 import { Route as PlatformPermissionsRouteImport } from './routes/platform/permissions'
+import { Route as PlatformStorageRouteImport } from './routes/platform/storage'
 import { Route as AuthenticatedMarksIndexRouteImport } from './routes/_authenticated/marks.index'
 import { Route as AuthenticatedMarksSheetIdRouteImport } from './routes/_authenticated/marks.$sheetId'
 import { Route as PlatformInstitutionsIndexRouteImport } from './routes/platform/institutions.index'
@@ -157,6 +158,11 @@ const PlatformPermissionsRoute = PlatformPermissionsRouteImport.update({
   path: '/permissions',
   getParentRoute: () => PlatformRouteRoute,
 } as any)
+const PlatformStorageRoute = PlatformStorageRouteImport.update({
+  id: '/storage',
+  path: '/storage',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
 const AuthenticatedMarksIndexRoute = AuthenticatedMarksIndexRouteImport.update({
   id: '/marks/',
   path: '/marks/',
@@ -204,6 +210,7 @@ export interface FileRoutesByFullPath {
   '/platform/features': typeof PlatformFeaturesRoute
   '/platform/people': typeof PlatformPeopleRoute
   '/platform/permissions': typeof PlatformPermissionsRoute
+  '/platform/storage': typeof PlatformStorageRoute
   '/platform/': typeof PlatformIndexRoute
   '/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
   '/platform/institutions/$institutionId': typeof PlatformInstitutionsInstitutionIdRoute
@@ -232,6 +239,7 @@ export interface FileRoutesByTo {
   '/platform/features': typeof PlatformFeaturesRoute
   '/platform/people': typeof PlatformPeopleRoute
   '/platform/permissions': typeof PlatformPermissionsRoute
+  '/platform/storage': typeof PlatformStorageRoute
   '/platform': typeof PlatformIndexRoute
   '/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
   '/platform/institutions/$institutionId': typeof PlatformInstitutionsInstitutionIdRoute
@@ -263,6 +271,7 @@ export interface FileRoutesById {
   '/platform/features': typeof PlatformFeaturesRoute
   '/platform/people': typeof PlatformPeopleRoute
   '/platform/permissions': typeof PlatformPermissionsRoute
+  '/platform/storage': typeof PlatformStorageRoute
   '/platform/': typeof PlatformIndexRoute
   '/_authenticated/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
   '/platform/institutions/$institutionId': typeof PlatformInstitutionsInstitutionIdRoute
@@ -294,6 +303,7 @@ export interface FileRouteTypes {
     | '/platform/features'
     | '/platform/people'
     | '/platform/permissions'
+    | '/platform/storage'
     | '/platform/'
     | '/marks/$sheetId'
     | '/platform/institutions/$institutionId'
@@ -322,6 +332,7 @@ export interface FileRouteTypes {
     | '/platform/features'
     | '/platform/people'
     | '/platform/permissions'
+    | '/platform/storage'
     | '/platform'
     | '/marks/$sheetId'
     | '/platform/institutions/$institutionId'
@@ -352,6 +363,7 @@ export interface FileRouteTypes {
     | '/platform/features'
     | '/platform/people'
     | '/platform/permissions'
+    | '/platform/storage'
     | '/platform/'
     | '/_authenticated/marks/$sheetId'
     | '/platform/institutions/$institutionId'
@@ -539,6 +551,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlatformPermissionsRouteImport
       parentRoute: typeof PlatformRouteRoute
     }
+    '/platform/storage': {
+      id: '/platform/storage'
+      path: '/storage'
+      fullPath: '/platform/storage'
+      preLoaderRoute: typeof PlatformStorageRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
     '/_authenticated/marks/': {
       id: '/_authenticated/marks/'
       path: '/marks'
@@ -612,6 +631,7 @@ interface PlatformRouteRouteChildren {
   PlatformFeaturesRoute: typeof PlatformFeaturesRoute
   PlatformPeopleRoute: typeof PlatformPeopleRoute
   PlatformPermissionsRoute: typeof PlatformPermissionsRoute
+  PlatformStorageRoute: typeof PlatformStorageRoute
   PlatformIndexRoute: typeof PlatformIndexRoute
   PlatformInstitutionsInstitutionIdRoute: typeof PlatformInstitutionsInstitutionIdRoute
   PlatformInstitutionsIndexRoute: typeof PlatformInstitutionsIndexRoute
@@ -622,6 +642,7 @@ const PlatformRouteRouteChildren: PlatformRouteRouteChildren = {
   PlatformFeaturesRoute: PlatformFeaturesRoute,
   PlatformPeopleRoute: PlatformPeopleRoute,
   PlatformPermissionsRoute: PlatformPermissionsRoute,
+  PlatformStorageRoute: PlatformStorageRoute,
   PlatformIndexRoute: PlatformIndexRoute,
   PlatformInstitutionsInstitutionIdRoute:
     PlatformInstitutionsInstitutionIdRoute,
