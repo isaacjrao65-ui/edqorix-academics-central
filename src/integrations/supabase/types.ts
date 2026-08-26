@@ -427,6 +427,36 @@ export type Database = {
           },
         ]
       }
+      feature_flags: {
+        Row: {
+          created_at: string
+          description: string | null
+          enabled_globally: boolean
+          key: string
+          name: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          enabled_globally?: boolean
+          key: string
+          name: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          enabled_globally?: boolean
+          key?: string
+          name?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       grade_bands: {
         Row: {
           created_at: string
@@ -504,34 +534,147 @@ export type Database = {
           },
         ]
       }
+      impersonation_sessions: {
+        Row: {
+          actions: Json
+          ended_at: string | null
+          id: string
+          institution_id: string
+          platform_user_id: string
+          reason: string | null
+          started_at: string
+          viewed_role: string
+        }
+        Insert: {
+          actions?: Json
+          ended_at?: string | null
+          id?: string
+          institution_id: string
+          platform_user_id: string
+          reason?: string | null
+          started_at?: string
+          viewed_role: string
+        }
+        Update: {
+          actions?: Json
+          ended_at?: string | null
+          id?: string
+          institution_id?: string
+          platform_user_id?: string
+          reason?: string | null
+          started_at?: string
+          viewed_role?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "impersonation_sessions_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      institution_features: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          enabled: boolean
+          expires_at: string | null
+          feature_key: string
+          id: string
+          institution_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          enabled?: boolean
+          expires_at?: string | null
+          feature_key: string
+          id?: string
+          institution_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          enabled?: boolean
+          expires_at?: string | null
+          feature_key?: string
+          id?: string
+          institution_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institution_features_feature_key_fkey"
+            columns: ["feature_key"]
+            isOneToOne: false
+            referencedRelation: "feature_flags"
+            referencedColumns: ["key"]
+          },
+          {
+            foreignKeyName: "institution_features_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       institutions: {
         Row: {
           address: string | null
+          city: string | null
+          code: string | null
+          contact_email: string | null
+          contact_phone: string | null
+          country: string | null
           created_at: string
           created_by: string
           id: string
+          last_activity_at: string | null
           name: string
           short_name: string | null
+          state: string | null
+          status: Database["public"]["Enums"]["inst_status"]
           type: Database["public"]["Enums"]["institution_type"]
           updated_at: string
         }
         Insert: {
           address?: string | null
+          city?: string | null
+          code?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          country?: string | null
           created_at?: string
           created_by?: string
           id?: string
+          last_activity_at?: string | null
           name: string
           short_name?: string | null
+          state?: string | null
+          status?: Database["public"]["Enums"]["inst_status"]
           type?: Database["public"]["Enums"]["institution_type"]
           updated_at?: string
         }
         Update: {
           address?: string | null
+          city?: string | null
+          code?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          country?: string | null
           created_at?: string
           created_by?: string
           id?: string
+          last_activity_at?: string | null
           name?: string
           short_name?: string | null
+          state?: string | null
+          status?: Database["public"]["Enums"]["inst_status"]
           type?: Database["public"]["Enums"]["institution_type"]
           updated_at?: string
         }
@@ -786,6 +929,62 @@ export type Database = {
           },
         ]
       }
+      permission_requests: {
+        Row: {
+          created_at: string
+          decided_at: string | null
+          decided_by: string | null
+          decision_note: string | null
+          expires_at: string | null
+          id: string
+          institution_id: string
+          permission_key: string | null
+          reason: string | null
+          requested_by: string
+          status: Database["public"]["Enums"]["perm_request_status"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_note?: string | null
+          expires_at?: string | null
+          id?: string
+          institution_id: string
+          permission_key?: string | null
+          reason?: string | null
+          requested_by: string
+          status?: Database["public"]["Enums"]["perm_request_status"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          decided_at?: string | null
+          decided_by?: string | null
+          decision_note?: string | null
+          expires_at?: string | null
+          id?: string
+          institution_id?: string
+          permission_key?: string | null
+          reason?: string | null
+          requested_by?: string
+          status?: Database["public"]["Enums"]["perm_request_status"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "permission_requests_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       permissions: {
         Row: {
           grp: string
@@ -807,6 +1006,69 @@ export type Database = {
         }
         Relationships: []
       }
+      plans: {
+        Row: {
+          created_at: string
+          currency: string
+          description: string | null
+          features: Json
+          id: string
+          is_active: boolean
+          key: string
+          name: string
+          price_monthly: number
+          price_yearly: number
+          sort_order: number
+          staff_limit: number | null
+          storage_limit_mb: number | null
+          student_limit: number | null
+          teacher_limit: number | null
+          trial_days: number
+          updated_at: string
+          user_limit: number | null
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          description?: string | null
+          features?: Json
+          id?: string
+          is_active?: boolean
+          key: string
+          name: string
+          price_monthly?: number
+          price_yearly?: number
+          sort_order?: number
+          staff_limit?: number | null
+          storage_limit_mb?: number | null
+          student_limit?: number | null
+          teacher_limit?: number | null
+          trial_days?: number
+          updated_at?: string
+          user_limit?: number | null
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          description?: string | null
+          features?: Json
+          id?: string
+          is_active?: boolean
+          key?: string
+          name?: string
+          price_monthly?: number
+          price_yearly?: number
+          sort_order?: number
+          staff_limit?: number | null
+          storage_limit_mb?: number | null
+          student_limit?: number | null
+          teacher_limit?: number | null
+          trial_days?: number
+          updated_at?: string
+          user_limit?: number | null
+        }
+        Relationships: []
+      }
       platform_admins: {
         Row: {
           created_at: string
@@ -822,6 +1084,83 @@ export type Database = {
           created_at?: string
           email?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      platform_audit_logs: {
+        Row: {
+          action: string
+          actor_id: string
+          created_at: string
+          id: string
+          institution_id: string | null
+          ip: string | null
+          new_value: Json | null
+          old_value: Json | null
+          reason: string | null
+          target_id: string | null
+          target_label: string | null
+          target_type: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          action: string
+          actor_id: string
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          ip?: string | null
+          new_value?: Json | null
+          old_value?: Json | null
+          reason?: string | null
+          target_id?: string | null
+          target_label?: string | null
+          target_type?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string
+          created_at?: string
+          id?: string
+          institution_id?: string | null
+          ip?: string | null
+          new_value?: Json | null
+          old_value?: Json | null
+          reason?: string | null
+          target_id?: string | null
+          target_label?: string | null
+          target_type?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "platform_audit_logs_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_settings: {
+        Row: {
+          key: string
+          updated_at: string
+          updated_by: string | null
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
         }
         Relationships: []
       }
@@ -1048,6 +1387,53 @@ export type Database = {
           },
         ]
       }
+      security_events: {
+        Row: {
+          created_at: string
+          detail: string | null
+          email: string | null
+          event_type: string
+          id: string
+          institution_id: string | null
+          ip: string | null
+          severity: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          detail?: string | null
+          email?: string | null
+          event_type: string
+          id?: string
+          institution_id?: string | null
+          ip?: string | null
+          severity?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          detail?: string | null
+          email?: string | null
+          event_type?: string
+          id?: string
+          institution_id?: string | null
+          ip?: string | null
+          severity?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "security_events_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       students: {
         Row: {
           batch_year: number | null
@@ -1104,6 +1490,157 @@ export type Database = {
             columns: ["program_id"]
             isOneToOne: false
             referencedRelation: "programs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscriptions: {
+        Row: {
+          created_at: string
+          id: string
+          institution_id: string
+          notes: string | null
+          plan_id: string | null
+          renews_at: string | null
+          staff_limit: number | null
+          started_at: string
+          status: Database["public"]["Enums"]["sub_status"]
+          storage_limit_mb: number | null
+          student_limit: number | null
+          teacher_limit: number | null
+          trial_ends_at: string | null
+          updated_at: string
+          user_limit: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          institution_id: string
+          notes?: string | null
+          plan_id?: string | null
+          renews_at?: string | null
+          staff_limit?: number | null
+          started_at?: string
+          status?: Database["public"]["Enums"]["sub_status"]
+          storage_limit_mb?: number | null
+          student_limit?: number | null
+          teacher_limit?: number | null
+          trial_ends_at?: string | null
+          updated_at?: string
+          user_limit?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          institution_id?: string
+          notes?: string | null
+          plan_id?: string | null
+          renews_at?: string | null
+          staff_limit?: number | null
+          started_at?: string
+          status?: Database["public"]["Enums"]["sub_status"]
+          storage_limit_mb?: number | null
+          student_limit?: number | null
+          teacher_limit?: number | null
+          trial_ends_at?: string | null
+          updated_at?: string
+          user_limit?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: true
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_messages: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: string
+          from_platform: boolean
+          id: string
+          ticket_id: string
+        }
+        Insert: {
+          author_id: string
+          body: string
+          created_at?: string
+          from_platform?: boolean
+          id?: string
+          ticket_id: string
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: string
+          from_platform?: boolean
+          id?: string
+          ticket_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_messages_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "support_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      support_tickets: {
+        Row: {
+          body: string | null
+          category: Database["public"]["Enums"]["ticket_category"]
+          created_at: string
+          created_by: string
+          id: string
+          institution_id: string | null
+          priority: string
+          status: Database["public"]["Enums"]["ticket_status"]
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string | null
+          category?: Database["public"]["Enums"]["ticket_category"]
+          created_at?: string
+          created_by: string
+          id?: string
+          institution_id?: string | null
+          priority?: string
+          status?: Database["public"]["Enums"]["ticket_status"]
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string | null
+          category?: Database["public"]["Enums"]["ticket_category"]
+          created_at?: string
+          created_by?: string
+          id?: string
+          institution_id?: string | null
+          priority?: string
+          status?: Database["public"]["Enums"]["ticket_status"]
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_tickets_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
             referencedColumns: ["id"]
           },
         ]
@@ -1187,10 +1724,23 @@ export type Database = {
         | "practical"
         | "assignment"
         | "project"
+      inst_status:
+        | "active"
+        | "trial"
+        | "pending"
+        | "suspended"
+        | "expired"
+        | "archived"
       institution_type: "school" | "college" | "institute" | "university"
       invite_status: "pending" | "accepted" | "revoked"
       mark_state: "present" | "absent" | "exempt" | "malpractice"
       member_status: "active" | "suspended" | "deactivated"
+      perm_request_status:
+        | "pending"
+        | "clarification"
+        | "approved"
+        | "rejected"
+        | "expired"
       sheet_status:
         | "draft"
         | "submitted"
@@ -1199,6 +1749,21 @@ export type Database = {
         | "published"
         | "returned"
       student_status: "active" | "graduated" | "withdrawn" | "suspended"
+      sub_status:
+        | "trial"
+        | "active"
+        | "past_due"
+        | "suspended"
+        | "expired"
+        | "cancelled"
+      ticket_category:
+        | "support"
+        | "request"
+        | "technical"
+        | "feature"
+        | "permission"
+        | "feedback"
+      ticket_status: "open" | "in_progress" | "waiting" | "resolved" | "closed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1335,10 +1900,25 @@ export const Constants = {
         "assignment",
         "project",
       ],
+      inst_status: [
+        "active",
+        "trial",
+        "pending",
+        "suspended",
+        "expired",
+        "archived",
+      ],
       institution_type: ["school", "college", "institute", "university"],
       invite_status: ["pending", "accepted", "revoked"],
       mark_state: ["present", "absent", "exempt", "malpractice"],
       member_status: ["active", "suspended", "deactivated"],
+      perm_request_status: [
+        "pending",
+        "clarification",
+        "approved",
+        "rejected",
+        "expired",
+      ],
       sheet_status: [
         "draft",
         "submitted",
@@ -1348,6 +1928,23 @@ export const Constants = {
         "returned",
       ],
       student_status: ["active", "graduated", "withdrawn", "suspended"],
+      sub_status: [
+        "trial",
+        "active",
+        "past_due",
+        "suspended",
+        "expired",
+        "cancelled",
+      ],
+      ticket_category: [
+        "support",
+        "request",
+        "technical",
+        "feature",
+        "permission",
+        "feedback",
+      ],
+      ticket_status: ["open", "in_progress", "waiting", "resolved", "closed"],
     },
   },
 } as const

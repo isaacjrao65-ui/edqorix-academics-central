@@ -18,7 +18,9 @@ import {
   LogOut,
 } from "lucide-react";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+
+import { endViewAs, getViewAs, type ViewAsSession } from "@/lib/view-as";
 
 import edqorixMark from "@/assets/edqorix-mark.png.asset.json";
 import { Button } from "@/components/ui/button";
@@ -229,11 +231,49 @@ function AccountMenu() {
   );
 }
 
+function ViewAsBanner() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [session, setSession] = useState<ViewAsSession | null>(null);
+
+  useEffect(() => {
+    setSession(getViewAs());
+  }, []);
+
+  if (!session) return null;
+
+  async function exitViewAs() {
+    await endViewAs();
+    setSession(null);
+    queryClient.clear();
+    navigate({ to: "/platform/institutions/$institutionId", params: { institutionId: session!.institutionId }, search: {} });
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-3 bg-amber-400 px-4 py-2 text-sm font-medium text-amber-950 sm:px-8">
+      <ShieldCheck className="size-4" strokeWidth={2} />
+      <span>
+        PLATFORM OWNER MODE — VIEWING AS {session.roleLabel.toUpperCase()} ·{" "}
+        {session.institutionName}
+      </span>
+      <Button
+        size="sm"
+        variant="outline"
+        className="ml-auto border-amber-900/30 bg-amber-950/10 text-amber-950 hover:bg-amber-950/20"
+        onClick={exitViewAs}
+      >
+        Exit view-as mode
+      </Button>
+    </div>
+  );
+}
+
 export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
+      <ViewAsBanner />
       <aside className="fixed inset-y-0 left-0 hidden w-64 flex-col border-r border-sidebar-border bg-sidebar px-4 py-6 lg:flex">
         <Brand />
         <div className="mt-8 flex-1 overflow-y-auto">

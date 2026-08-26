@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as PlatformRouteRouteImport } from './routes/platform/route'
+import { Route as PlatformAdminRouteImport } from './routes/platform-admin'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as AuthenticatedAcademicsRouteImport } from './routes/_authenticated/academics'
 import { Route as AuthenticatedAuditRouteImport } from './routes/_authenticated/audit'
@@ -26,8 +28,22 @@ import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedStudentsRouteImport } from './routes/_authenticated/students'
 import { Route as AuthenticatedTeamRouteImport } from './routes/_authenticated/team'
 import { Route as AuthenticatedUsersRouteImport } from './routes/_authenticated/users'
+import { Route as PlatformIndexRouteImport } from './routes/platform/index'
+import { Route as PlatformAnalyticsRouteImport } from './routes/platform/analytics'
+import { Route as PlatformAuditRouteImport } from './routes/platform/audit'
+import { Route as PlatformFeaturesRouteImport } from './routes/platform/features'
+import { Route as PlatformPeopleRouteImport } from './routes/platform/people'
+import { Route as PlatformPermissionsRouteImport } from './routes/platform/permissions'
+import { Route as PlatformSearchRouteImport } from './routes/platform/search'
+import { Route as PlatformSecurityRouteImport } from './routes/platform/security'
+import { Route as PlatformSettingsRouteImport } from './routes/platform/settings'
+import { Route as PlatformStorageRouteImport } from './routes/platform/storage'
+import { Route as PlatformSubscriptionsRouteImport } from './routes/platform/subscriptions'
+import { Route as PlatformSupportRouteImport } from './routes/platform/support'
 import { Route as AuthenticatedMarksIndexRouteImport } from './routes/_authenticated/marks.index'
 import { Route as AuthenticatedMarksSheetIdRouteImport } from './routes/_authenticated/marks.$sheetId'
+import { Route as PlatformInstitutionsIndexRouteImport } from './routes/platform/institutions.index'
+import { Route as PlatformInstitutionsInstitutionIdRouteImport } from './routes/platform/institutions.$institutionId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +62,16 @@ const AuthRoute = AuthRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlatformRouteRoute = PlatformRouteRouteImport.update({
+  id: '/platform',
+  path: '/platform',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlatformAdminRoute = PlatformAdminRouteImport.update({
+  id: '/platform-admin',
+  path: '/platform-admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PricingRoute = PricingRouteImport.update({
@@ -113,6 +139,66 @@ const AuthenticatedUsersRoute = AuthenticatedUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const PlatformIndexRoute = PlatformIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
+const PlatformAnalyticsRoute = PlatformAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
+const PlatformAuditRoute = PlatformAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
+const PlatformFeaturesRoute = PlatformFeaturesRouteImport.update({
+  id: '/features',
+  path: '/features',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
+const PlatformPeopleRoute = PlatformPeopleRouteImport.update({
+  id: '/people',
+  path: '/people',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
+const PlatformPermissionsRoute = PlatformPermissionsRouteImport.update({
+  id: '/permissions',
+  path: '/permissions',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
+const PlatformSearchRoute = PlatformSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
+const PlatformSecurityRoute = PlatformSecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
+const PlatformSettingsRoute = PlatformSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
+const PlatformStorageRoute = PlatformStorageRouteImport.update({
+  id: '/storage',
+  path: '/storage',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
+const PlatformSubscriptionsRoute = PlatformSubscriptionsRouteImport.update({
+  id: '/subscriptions',
+  path: '/subscriptions',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
+const PlatformSupportRoute = PlatformSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
 const AuthenticatedMarksIndexRoute = AuthenticatedMarksIndexRouteImport.update({
   id: '/marks/',
   path: '/marks/',
@@ -124,11 +210,25 @@ const AuthenticatedMarksSheetIdRoute =
     path: '/marks/$sheetId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const PlatformInstitutionsIndexRoute =
+  PlatformInstitutionsIndexRouteImport.update({
+    id: '/institutions/',
+    path: '/institutions/',
+    getParentRoute: () => PlatformRouteRoute,
+  } as any)
+const PlatformInstitutionsInstitutionIdRoute =
+  PlatformInstitutionsInstitutionIdRouteImport.update({
+    id: '/institutions/$institutionId',
+    path: '/institutions/$institutionId',
+    getParentRoute: () => PlatformRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/platform': typeof PlatformRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/platform-admin': typeof PlatformAdminRoute
   '/pricing': typeof PricingRoute
   '/academics': typeof AuthenticatedAcademicsRoute
   '/audit': typeof AuthenticatedAuditRoute
@@ -142,13 +242,28 @@ export interface FileRoutesByFullPath {
   '/students': typeof AuthenticatedStudentsRoute
   '/team': typeof AuthenticatedTeamRoute
   '/users': typeof AuthenticatedUsersRoute
+  '/platform/analytics': typeof PlatformAnalyticsRoute
+  '/platform/audit': typeof PlatformAuditRoute
+  '/platform/features': typeof PlatformFeaturesRoute
+  '/platform/people': typeof PlatformPeopleRoute
+  '/platform/permissions': typeof PlatformPermissionsRoute
+  '/platform/search': typeof PlatformSearchRoute
+  '/platform/security': typeof PlatformSecurityRoute
+  '/platform/settings': typeof PlatformSettingsRoute
+  '/platform/storage': typeof PlatformStorageRoute
+  '/platform/subscriptions': typeof PlatformSubscriptionsRoute
+  '/platform/support': typeof PlatformSupportRoute
+  '/platform/': typeof PlatformIndexRoute
   '/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
+  '/platform/institutions/$institutionId': typeof PlatformInstitutionsInstitutionIdRoute
   '/marks/': typeof AuthenticatedMarksIndexRoute
+  '/platform/institutions/': typeof PlatformInstitutionsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/platform-admin': typeof PlatformAdminRoute
   '/pricing': typeof PricingRoute
   '/academics': typeof AuthenticatedAcademicsRoute
   '/audit': typeof AuthenticatedAuditRoute
@@ -162,15 +277,31 @@ export interface FileRoutesByTo {
   '/students': typeof AuthenticatedStudentsRoute
   '/team': typeof AuthenticatedTeamRoute
   '/users': typeof AuthenticatedUsersRoute
+  '/platform/analytics': typeof PlatformAnalyticsRoute
+  '/platform/audit': typeof PlatformAuditRoute
+  '/platform/features': typeof PlatformFeaturesRoute
+  '/platform/people': typeof PlatformPeopleRoute
+  '/platform/permissions': typeof PlatformPermissionsRoute
+  '/platform/search': typeof PlatformSearchRoute
+  '/platform/security': typeof PlatformSecurityRoute
+  '/platform/settings': typeof PlatformSettingsRoute
+  '/platform/storage': typeof PlatformStorageRoute
+  '/platform/subscriptions': typeof PlatformSubscriptionsRoute
+  '/platform/support': typeof PlatformSupportRoute
+  '/platform': typeof PlatformIndexRoute
   '/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
+  '/platform/institutions/$institutionId': typeof PlatformInstitutionsInstitutionIdRoute
   '/marks': typeof AuthenticatedMarksIndexRoute
+  '/platform/institutions': typeof PlatformInstitutionsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/platform': typeof PlatformRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/platform-admin': typeof PlatformAdminRoute
   '/pricing': typeof PricingRoute
   '/_authenticated/academics': typeof AuthenticatedAcademicsRoute
   '/_authenticated/audit': typeof AuthenticatedAuditRoute
@@ -184,15 +315,31 @@ export interface FileRoutesById {
   '/_authenticated/students': typeof AuthenticatedStudentsRoute
   '/_authenticated/team': typeof AuthenticatedTeamRoute
   '/_authenticated/users': typeof AuthenticatedUsersRoute
+  '/platform/analytics': typeof PlatformAnalyticsRoute
+  '/platform/audit': typeof PlatformAuditRoute
+  '/platform/features': typeof PlatformFeaturesRoute
+  '/platform/people': typeof PlatformPeopleRoute
+  '/platform/permissions': typeof PlatformPermissionsRoute
+  '/platform/search': typeof PlatformSearchRoute
+  '/platform/security': typeof PlatformSecurityRoute
+  '/platform/settings': typeof PlatformSettingsRoute
+  '/platform/storage': typeof PlatformStorageRoute
+  '/platform/subscriptions': typeof PlatformSubscriptionsRoute
+  '/platform/support': typeof PlatformSupportRoute
+  '/platform/': typeof PlatformIndexRoute
   '/_authenticated/marks/$sheetId': typeof AuthenticatedMarksSheetIdRoute
+  '/platform/institutions/$institutionId': typeof PlatformInstitutionsInstitutionIdRoute
   '/_authenticated/marks/': typeof AuthenticatedMarksIndexRoute
+  '/platform/institutions/': typeof PlatformInstitutionsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/platform'
     | '/auth'
     | '/contact'
+    | '/platform-admin'
     | '/pricing'
     | '/academics'
     | '/audit'
@@ -206,13 +353,28 @@ export interface FileRouteTypes {
     | '/students'
     | '/team'
     | '/users'
+    | '/platform/analytics'
+    | '/platform/audit'
+    | '/platform/features'
+    | '/platform/people'
+    | '/platform/permissions'
+    | '/platform/search'
+    | '/platform/security'
+    | '/platform/settings'
+    | '/platform/storage'
+    | '/platform/subscriptions'
+    | '/platform/support'
+    | '/platform/'
     | '/marks/$sheetId'
+    | '/platform/institutions/$institutionId'
     | '/marks/'
+    | '/platform/institutions/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/contact'
+    | '/platform-admin'
     | '/pricing'
     | '/academics'
     | '/audit'
@@ -226,14 +388,30 @@ export interface FileRouteTypes {
     | '/students'
     | '/team'
     | '/users'
+    | '/platform/analytics'
+    | '/platform/audit'
+    | '/platform/features'
+    | '/platform/people'
+    | '/platform/permissions'
+    | '/platform/search'
+    | '/platform/security'
+    | '/platform/settings'
+    | '/platform/storage'
+    | '/platform/subscriptions'
+    | '/platform/support'
+    | '/platform'
     | '/marks/$sheetId'
+    | '/platform/institutions/$institutionId'
     | '/marks'
+    | '/platform/institutions'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/platform'
     | '/auth'
     | '/contact'
+    | '/platform-admin'
     | '/pricing'
     | '/_authenticated/academics'
     | '/_authenticated/audit'
@@ -247,15 +425,31 @@ export interface FileRouteTypes {
     | '/_authenticated/students'
     | '/_authenticated/team'
     | '/_authenticated/users'
+    | '/platform/analytics'
+    | '/platform/audit'
+    | '/platform/features'
+    | '/platform/people'
+    | '/platform/permissions'
+    | '/platform/search'
+    | '/platform/security'
+    | '/platform/settings'
+    | '/platform/storage'
+    | '/platform/subscriptions'
+    | '/platform/support'
+    | '/platform/'
     | '/_authenticated/marks/$sheetId'
+    | '/platform/institutions/$institutionId'
     | '/_authenticated/marks/'
+    | '/platform/institutions/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  PlatformRouteRoute: typeof PlatformRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
+  PlatformAdminRoute: typeof PlatformAdminRoute
   PricingRoute: typeof PricingRoute
 }
 
@@ -287,6 +481,20 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/platform': {
+      id: '/platform'
+      path: '/platform'
+      fullPath: '/platform'
+      preLoaderRoute: typeof PlatformRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/platform-admin': {
+      id: '/platform-admin'
+      path: '/platform-admin'
+      fullPath: '/platform-admin'
+      preLoaderRoute: typeof PlatformAdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pricing': {
@@ -380,6 +588,90 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUsersRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/platform/': {
+      id: '/platform/'
+      path: '/'
+      fullPath: '/platform/'
+      preLoaderRoute: typeof PlatformIndexRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
+    '/platform/analytics': {
+      id: '/platform/analytics'
+      path: '/analytics'
+      fullPath: '/platform/analytics'
+      preLoaderRoute: typeof PlatformAnalyticsRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
+    '/platform/audit': {
+      id: '/platform/audit'
+      path: '/audit'
+      fullPath: '/platform/audit'
+      preLoaderRoute: typeof PlatformAuditRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
+    '/platform/features': {
+      id: '/platform/features'
+      path: '/features'
+      fullPath: '/platform/features'
+      preLoaderRoute: typeof PlatformFeaturesRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
+    '/platform/people': {
+      id: '/platform/people'
+      path: '/people'
+      fullPath: '/platform/people'
+      preLoaderRoute: typeof PlatformPeopleRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
+    '/platform/permissions': {
+      id: '/platform/permissions'
+      path: '/permissions'
+      fullPath: '/platform/permissions'
+      preLoaderRoute: typeof PlatformPermissionsRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
+    '/platform/search': {
+      id: '/platform/search'
+      path: '/search'
+      fullPath: '/platform/search'
+      preLoaderRoute: typeof PlatformSearchRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
+    '/platform/security': {
+      id: '/platform/security'
+      path: '/security'
+      fullPath: '/platform/security'
+      preLoaderRoute: typeof PlatformSecurityRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
+    '/platform/settings': {
+      id: '/platform/settings'
+      path: '/settings'
+      fullPath: '/platform/settings'
+      preLoaderRoute: typeof PlatformSettingsRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
+    '/platform/storage': {
+      id: '/platform/storage'
+      path: '/storage'
+      fullPath: '/platform/storage'
+      preLoaderRoute: typeof PlatformStorageRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
+    '/platform/subscriptions': {
+      id: '/platform/subscriptions'
+      path: '/subscriptions'
+      fullPath: '/platform/subscriptions'
+      preLoaderRoute: typeof PlatformSubscriptionsRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
+    '/platform/support': {
+      id: '/platform/support'
+      path: '/support'
+      fullPath: '/platform/support'
+      preLoaderRoute: typeof PlatformSupportRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
     '/_authenticated/marks/': {
       id: '/_authenticated/marks/'
       path: '/marks'
@@ -393,6 +685,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/marks/$sheetId'
       preLoaderRoute: typeof AuthenticatedMarksSheetIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/platform/institutions/': {
+      id: '/platform/institutions/'
+      path: '/institutions'
+      fullPath: '/platform/institutions/'
+      preLoaderRoute: typeof PlatformInstitutionsIndexRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
+    '/platform/institutions/$institutionId': {
+      id: '/platform/institutions/$institutionId'
+      path: '/institutions/$institutionId'
+      fullPath: '/platform/institutions/$institutionId'
+      preLoaderRoute: typeof PlatformInstitutionsInstitutionIdRouteImport
+      parentRoute: typeof PlatformRouteRoute
     }
   }
 }
@@ -434,11 +740,52 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface PlatformRouteRouteChildren {
+  PlatformAnalyticsRoute: typeof PlatformAnalyticsRoute
+  PlatformAuditRoute: typeof PlatformAuditRoute
+  PlatformFeaturesRoute: typeof PlatformFeaturesRoute
+  PlatformPeopleRoute: typeof PlatformPeopleRoute
+  PlatformPermissionsRoute: typeof PlatformPermissionsRoute
+  PlatformSearchRoute: typeof PlatformSearchRoute
+  PlatformSecurityRoute: typeof PlatformSecurityRoute
+  PlatformSettingsRoute: typeof PlatformSettingsRoute
+  PlatformStorageRoute: typeof PlatformStorageRoute
+  PlatformSubscriptionsRoute: typeof PlatformSubscriptionsRoute
+  PlatformSupportRoute: typeof PlatformSupportRoute
+  PlatformIndexRoute: typeof PlatformIndexRoute
+  PlatformInstitutionsInstitutionIdRoute: typeof PlatformInstitutionsInstitutionIdRoute
+  PlatformInstitutionsIndexRoute: typeof PlatformInstitutionsIndexRoute
+}
+
+const PlatformRouteRouteChildren: PlatformRouteRouteChildren = {
+  PlatformAnalyticsRoute: PlatformAnalyticsRoute,
+  PlatformAuditRoute: PlatformAuditRoute,
+  PlatformFeaturesRoute: PlatformFeaturesRoute,
+  PlatformPeopleRoute: PlatformPeopleRoute,
+  PlatformPermissionsRoute: PlatformPermissionsRoute,
+  PlatformSearchRoute: PlatformSearchRoute,
+  PlatformSecurityRoute: PlatformSecurityRoute,
+  PlatformSettingsRoute: PlatformSettingsRoute,
+  PlatformStorageRoute: PlatformStorageRoute,
+  PlatformSubscriptionsRoute: PlatformSubscriptionsRoute,
+  PlatformSupportRoute: PlatformSupportRoute,
+  PlatformIndexRoute: PlatformIndexRoute,
+  PlatformInstitutionsInstitutionIdRoute:
+    PlatformInstitutionsInstitutionIdRoute,
+  PlatformInstitutionsIndexRoute: PlatformInstitutionsIndexRoute,
+}
+
+const PlatformRouteRouteWithChildren = PlatformRouteRoute._addFileChildren(
+  PlatformRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  PlatformRouteRoute: PlatformRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
+  PlatformAdminRoute: PlatformAdminRoute,
   PricingRoute: PricingRoute,
 }
 export const routeTree = rootRouteImport
