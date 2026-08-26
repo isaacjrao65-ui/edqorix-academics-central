@@ -20,6 +20,7 @@ import {
 
 import { useState, type ReactNode } from "react";
 
+import edqorixMark from "@/assets/edqorix-mark.png.asset.json";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
