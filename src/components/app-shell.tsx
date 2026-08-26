@@ -20,6 +20,7 @@ import {
 
 import { useState, type ReactNode } from "react";
 
+import edqorixMark from "@/assets/edqorix-mark.png.asset.json";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -157,12 +158,10 @@ function QuickCreate() {
 
 function Brand() {
   return (
-    <div className="flex items-center gap-2.5">
-      <span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground">
-        <span className="font-display text-sm font-bold">E</span>
-      </span>
+    <Link to="/" className="flex items-center gap-2.5">
+      <img src={edqorixMark.url} alt="Edqorix logo" className="size-8 rounded-full" />
       <span className="font-display text-lg font-semibold tracking-tight">Edqorix</span>
-    </div>
+    </Link>
   );
 }
 

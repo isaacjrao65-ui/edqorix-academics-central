@@ -1,16 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import {
-  Activity,
-  BarChart3,
-  ChevronDown,
-  GraduationCap,
-  Lock,
-  Menu,
-  ShieldCheck,
-  X,
-} from "lucide-react";
+import { Activity, BarChart3, ChevronDown, Lock, Menu, ShieldCheck, X } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
+import edqorixMark from "@/assets/edqorix-mark.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -19,12 +11,12 @@ import { cn } from "@/lib/utils";
 export function Wordmark({ className }: { className?: string }) {
   return (
     <span className={cn("flex items-center gap-2", className)}>
-      <span className="relative grid size-9 place-items-center rounded-xl bg-gradient-brand text-primary-foreground shadow-md transition-transform duration-300 hover:scale-110 hover:rotate-6">
-        <GraduationCap className="size-5" aria-hidden />
-        <span className="absolute -right-0.5 -bottom-0.5 size-2.5 rounded-full bg-brand-4 ring-2 ring-background" />
-      </span>
+      <img
+        src={edqorixMark.url}
+        alt="Edqorix logo"
+        className="size-9 rounded-full shadow-md transition-transform duration-300 hover:scale-110 hover:rotate-6"
+      />
       <span className="font-display text-lg font-semibold tracking-tight">Edqorix</span>
-
     </span>
   );
 }
