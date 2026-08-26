@@ -33,6 +33,7 @@ import { Route as PlatformAnalyticsRouteImport } from './routes/platform/analyti
 import { Route as PlatformFeaturesRouteImport } from './routes/platform/features'
 import { Route as PlatformPeopleRouteImport } from './routes/platform/people'
 import { Route as PlatformPermissionsRouteImport } from './routes/platform/permissions'
+import { Route as PlatformSecurityRouteImport } from './routes/platform/security'
 import { Route as PlatformStorageRouteImport } from './routes/platform/storage'
 import { Route as PlatformSubscriptionsRouteImport } from './routes/platform/subscriptions'
 import { Route as PlatformSupportRouteImport } from './routes/platform/support'
@@ -160,6 +161,11 @@ const PlatformPermissionsRoute = PlatformPermissionsRouteImport.update({
   path: '/permissions',
   getParentRoute: () => PlatformRouteRoute,
 } as any)
+const PlatformSecurityRoute = PlatformSecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => PlatformRouteRoute,
+} as any)
 const PlatformStorageRoute = PlatformStorageRouteImport.update({
   id: '/storage',
   path: '/storage',
@@ -222,6 +228,7 @@ export interface FileRoutesByFullPath {
   '/platform/features': typeof PlatformFeaturesRoute
   '/platform/people': typeof PlatformPeopleRoute
   '/platform/permissions': typeof PlatformPermissionsRoute
+  '/platform/security': typeof PlatformSecurityRoute
   '/platform/storage': typeof PlatformStorageRoute
   '/platform/subscriptions': typeof PlatformSubscriptionsRoute
   '/platform/support': typeof PlatformSupportRoute
@@ -253,6 +260,7 @@ export interface FileRoutesByTo {
   '/platform/features': typeof PlatformFeaturesRoute
   '/platform/people': typeof PlatformPeopleRoute
   '/platform/permissions': typeof PlatformPermissionsRoute
+  '/platform/security': typeof PlatformSecurityRoute
   '/platform/storage': typeof PlatformStorageRoute
   '/platform/subscriptions': typeof PlatformSubscriptionsRoute
   '/platform/support': typeof PlatformSupportRoute
@@ -287,6 +295,7 @@ export interface FileRoutesById {
   '/platform/features': typeof PlatformFeaturesRoute
   '/platform/people': typeof PlatformPeopleRoute
   '/platform/permissions': typeof PlatformPermissionsRoute
+  '/platform/security': typeof PlatformSecurityRoute
   '/platform/storage': typeof PlatformStorageRoute
   '/platform/subscriptions': typeof PlatformSubscriptionsRoute
   '/platform/support': typeof PlatformSupportRoute
@@ -321,6 +330,7 @@ export interface FileRouteTypes {
     | '/platform/features'
     | '/platform/people'
     | '/platform/permissions'
+    | '/platform/security'
     | '/platform/storage'
     | '/platform/subscriptions'
     | '/platform/support'
@@ -352,6 +362,7 @@ export interface FileRouteTypes {
     | '/platform/features'
     | '/platform/people'
     | '/platform/permissions'
+    | '/platform/security'
     | '/platform/storage'
     | '/platform/subscriptions'
     | '/platform/support'
@@ -385,6 +396,7 @@ export interface FileRouteTypes {
     | '/platform/features'
     | '/platform/people'
     | '/platform/permissions'
+    | '/platform/security'
     | '/platform/storage'
     | '/platform/subscriptions'
     | '/platform/support'
@@ -575,6 +587,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlatformPermissionsRouteImport
       parentRoute: typeof PlatformRouteRoute
     }
+    '/platform/security': {
+      id: '/platform/security'
+      path: '/security'
+      fullPath: '/platform/security'
+      preLoaderRoute: typeof PlatformSecurityRouteImport
+      parentRoute: typeof PlatformRouteRoute
+    }
     '/platform/storage': {
       id: '/platform/storage'
       path: '/storage'
@@ -669,6 +688,7 @@ interface PlatformRouteRouteChildren {
   PlatformFeaturesRoute: typeof PlatformFeaturesRoute
   PlatformPeopleRoute: typeof PlatformPeopleRoute
   PlatformPermissionsRoute: typeof PlatformPermissionsRoute
+  PlatformSecurityRoute: typeof PlatformSecurityRoute
   PlatformStorageRoute: typeof PlatformStorageRoute
   PlatformSubscriptionsRoute: typeof PlatformSubscriptionsRoute
   PlatformSupportRoute: typeof PlatformSupportRoute
@@ -682,6 +702,7 @@ const PlatformRouteRouteChildren: PlatformRouteRouteChildren = {
   PlatformFeaturesRoute: PlatformFeaturesRoute,
   PlatformPeopleRoute: PlatformPeopleRoute,
   PlatformPermissionsRoute: PlatformPermissionsRoute,
+  PlatformSecurityRoute: PlatformSecurityRoute,
   PlatformStorageRoute: PlatformStorageRoute,
   PlatformSubscriptionsRoute: PlatformSubscriptionsRoute,
   PlatformSupportRoute: PlatformSupportRoute,
