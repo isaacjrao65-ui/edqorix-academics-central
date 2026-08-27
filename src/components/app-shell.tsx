@@ -6,6 +6,7 @@ import {
   FileStack,
   GraduationCap,
   KeyRound,
+  LayoutGrid,
   LayoutDashboard,
   Menu,
   PenSquare,
@@ -134,7 +135,7 @@ function QuickCreate() {
   const actions: { label: string; to: string }[] = [
     { label: "New examination", to: "/exams" },
     { label: "Add students", to: "/students" },
-    { label: "New class / section", to: "/academics" },
+    { label: "New class", to: "/classes" },
     { label: "Invite a user", to: "/users" },
     { label: "Upload a document", to: "/documents" },
   ];
