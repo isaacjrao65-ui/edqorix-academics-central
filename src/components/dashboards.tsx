@@ -420,7 +420,7 @@ export function ClassTeacherDashboard({ myClasses }: { myClasses: ClassRow[] }) 
             />
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="max-h-80 overflow-auto">
             <table className="w-full min-w-[38rem] text-sm">
               <thead className="bg-muted/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
                 <tr>
