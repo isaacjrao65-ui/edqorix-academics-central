@@ -1244,3 +1244,310 @@ function ResetPasswordDialog({
     </Dialog>
   );
 }
+
+type BulkRow = {
+  line: number;
+  fullName: string;
+  email: string;
+  password: string;
+  role: (typeof MEMBER_ROLES)[number]["key"];
+  designation?: string;
+  isClassTeacher?: boolean;
+};
+
+type BulkResult = {
+  line: number;
+  email: string;
+  fullName: string;
+  role: string;
+  status: "created" | "updated" | "failed";
+  message?: string;
+};
+
+const ROLE_ALIASES: Record<string, (typeof MEMBER_ROLES)[number]["key"]> = {
+  admin: "admin",
+  principal: "admin",
+  "super admin": "admin",
+  super_admin: "admin",
+  staff: "exam_cell",
+  management: "exam_cell",
+  exam_cell: "exam_cell",
+  "exam cell": "exam_cell",
+  hod: "hod",
+  "head of department": "hod",
+  teacher: "faculty",
+  faculty: "faculty",
+  "class teacher": "faculty",
+  "subject teacher": "faculty",
+};
+
+function splitCsvLine(line: string) {
+  const out: string[] = [];
+  let cur = "";
+  let quoted = false;
+  for (let i = 0; i < line.length; i += 1) {
+    const ch = line[i];
+    if (quoted) {
+      if (ch === '"' && line[i + 1] === '"') {
+        cur += '"';
+        i += 1;
+      } else if (ch === '"') {
+        quoted = false;
+      } else cur += ch;
+    } else if (ch === '"') quoted = true;
+    else if (ch === ",") {
+      out.push(cur);
+      cur = "";
+    } else cur += ch;
+  }
+  out.push(cur);
+  return out.map((v) => v.trim());
+}
+
+function parseUsersCsv(text: string): { rows: BulkRow[]; errors: string[] } {
+  const lines = text.split(/\r?\n/).filter((l) => l.trim().length > 0);
+  const errors: string[] = [];
+  if (lines.length < 2) return { rows: [], errors: ["The file needs a header row and at least one user."] };
+  const header = splitCsvLine(lines[0] ?? "").map((h) => h.toLowerCase().replace(/\s+/g, "_"));
+  const idx = (name: string, ...alts: string[]) =>
+    [name, ...alts].map((n) => header.indexOf(n)).find((i) => i >= 0) ?? -1;
+  const iName = idx("full_name", "name");
+  const iEmail = idx("email");
+  const iPass = idx("password", "temporary_password");
+  const iRole = idx("role");
+  const iDesig = idx("designation");
+  const iClass = idx("class_teacher", "is_class_teacher");
+
+  if (iName < 0 || iEmail < 0 || iPass < 0 || iRole < 0) {
+    return {
+      rows: [],
+      errors: ["Header must include full_name, email, password and role columns."],
+    };
+  }
+
+  const rows: BulkRow[] = [];
+  lines.slice(1).forEach((line, i) => {
+    const lineNo = i + 2;
+    const cells = splitCsvLine(line);
+    const fullName = cells[iName] ?? "";
+    const email = (cells[iEmail] ?? "").toLowerCase();
+    const password = cells[iPass] ?? "";
+    const roleRaw = (cells[iRole] ?? "").toLowerCase();
+    const role = ROLE_ALIASES[roleRaw];
+    const classFlag = (cells[iClass] ?? "").toLowerCase();
+
+    if (fullName.length < 2) errors.push(`Line ${lineNo}: full name is missing.`);
+    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) errors.push(`Line ${lineNo}: invalid email.`);
+    else if (password.length < 8) errors.push(`Line ${lineNo}: password must be 8+ characters.`);
+    else if (!role) errors.push(`Line ${lineNo}: unknown role "${cells[iRole] ?? ""}".`);
+    else
+      rows.push({
+        line: lineNo,
+        fullName,
+        email,
+        password,
+        role,
+        designation: iDesig >= 0 ? cells[iDesig] || undefined : undefined,
+        isClassTeacher:
+          roleRaw === "class teacher" || ["yes", "true", "1", "y"].includes(classFlag),
+      });
+  });
+
+  return { rows, errors };
+}
+
+const CSV_TEMPLATE =
+  "full_name,email,password,role,designation,class_teacher\n" +
+  "Anita Sharma,anita@school.edu,Passw0rd!23,principal,Principal,no\n" +
+  "Ravi Kumar,ravi@school.edu,Passw0rd!23,staff,Exam cell,no\n" +
+  "Meera Nair,meera@school.edu,Passw0rd!23,hod,Head of Science,no\n" +
+  "Sunil Das,sunil@school.edu,Passw0rd!23,teacher,Mathematics,yes\n";
+
+function BulkImportUsersDialog({
+  open,
+  onOpenChange,
+  institutionId,
+  institutionName,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  institutionId: string;
+  institutionName: string;
+}) {
+  const queryClient = useQueryClient();
+  const [rows, setRows] = useState<BulkRow[]>([]);
+  const [errors, setErrors] = useState<string[]>([]);
+  const [results, setResults] = useState<BulkResult[] | null>(null);
+  const [fileName, setFileName] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  function reset() {
+    setRows([]);
+    setErrors([]);
+    setResults(null);
+    setFileName("");
+  }
+
+  async function onFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setFileName(file.name);
+    setResults(null);
+    const text = await file.text();
+    const parsed = parseUsersCsv(text);
+    setRows(parsed.rows);
+    setErrors(parsed.errors);
+  }
+
+  function downloadTemplate() {
+    const url = URL.createObjectURL(new Blob([CSV_TEMPLATE], { type: "text/csv" }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "edqorix-users-template.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function importRows() {
+    if (rows.length === 0) return;
+    setBusy(true);
+    try {
+      const res = await bulkCreateInstitutionUsers({ data: { institutionId, rows } });
+      setResults(res.results);
+      const created = res.results.filter((r) => r.status === "created").length;
+      const updated = res.results.filter((r) => r.status === "updated").length;
+      const failed = res.results.filter((r) => r.status === "failed").length;
+      await queryClient.invalidateQueries({ queryKey: ["platform-institution", institutionId] });
+      if (failed === 0) toast.success(`${created} created, ${updated} updated in ${institutionName}.`);
+      else toast.warning(`${created} created, ${updated} updated, ${failed} failed.`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Bulk import failed");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={(v) => {
+        if (!v) reset();
+        onOpenChange(v);
+      }}
+    >
+      <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-2xl">
+        <DialogHeader>
+          <DialogTitle>Bulk import users</DialogTitle>
+          <DialogDescription>
+            Upload a CSV of principals, staff, HODs and teachers. Every row is provisioned and audited
+            individually.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4">
+          <div className="flex flex-wrap items-center gap-3">
+            <Input type="file" accept=".csv,text/csv" onChange={onFile} className="max-w-xs" />
+            <Button type="button" variant="outline" size="sm" onClick={downloadTemplate}>
+              Download template
+            </Button>
+          </div>
+          <p className="text-xs text-slate-500">
+            Columns: full_name, email, password, role (principal / staff / hod / teacher), designation,
+            class_teacher.
+          </p>
+
+          {fileName ? (
+            <p className="text-sm text-slate-300">
+              {fileName} — {rows.length} valid row{rows.length === 1 ? "" : "s"}
+              {errors.length ? `, ${errors.length} skipped` : ""}
+            </p>
+          ) : null}
+
+          {errors.length > 0 ? (
+            <div className="max-h-32 overflow-y-auto rounded-md border border-amber-400/30 bg-amber-400/10 p-3 text-xs text-amber-200">
+              {errors.map((er) => (
+                <p key={er}>{er}</p>
+              ))}
+            </div>
+          ) : null}
+
+          {rows.length > 0 && !results ? (
+            <div className="max-h-56 overflow-auto rounded-md border border-white/10">
+              <table className="w-full min-w-[36rem] text-sm">
+                <thead className="text-left text-xs uppercase tracking-[0.1em] text-slate-500">
+                  <tr>
+                    {["Line", "Name", "Email", "Role"].map((c) => (
+                      <th key={c} className="px-3 py-2 font-medium">
+                        {c}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5 text-slate-300">
+                  {rows.map((r) => (
+                    <tr key={`${r.line}-${r.email}`}>
+                      <td className="px-3 py-1.5 text-slate-500">{r.line}</td>
+                      <td className="px-3 py-1.5">{r.fullName}</td>
+                      <td className="px-3 py-1.5">{r.email}</td>
+                      <td className="px-3 py-1.5">
+                        {MEMBER_ROLES.find((m) => m.key === r.role)?.label ?? r.role}
+                        {r.isClassTeacher ? " · class teacher" : ""}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : null}
+
+          {results ? (
+            <div className="max-h-56 overflow-auto rounded-md border border-white/10">
+              <table className="w-full min-w-[36rem] text-sm">
+                <thead className="text-left text-xs uppercase tracking-[0.1em] text-slate-500">
+                  <tr>
+                    {["Line", "Email", "Result"].map((c) => (
+                      <th key={c} className="px-3 py-2 font-medium">
+                        {c}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5 text-slate-300">
+                  {results.map((r) => (
+                    <tr key={`${r.line}-${r.email}`}>
+                      <td className="px-3 py-1.5 text-slate-500">{r.line}</td>
+                      <td className="px-3 py-1.5">{r.email}</td>
+                      <td className="px-3 py-1.5">
+                        <span
+                          className={
+                            r.status === "failed"
+                              ? "text-rose-300"
+                              : r.status === "updated"
+                                ? "text-amber-300"
+                                : "text-emerald-300"
+                          }
+                        >
+                          {r.status}
+                        </span>
+                        {r.message ? <span className="ml-2 text-xs text-slate-500">{r.message}</span> : null}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : null}
+        </div>
+
+        <DialogFooter>
+          <Button variant="ghost" onClick={() => onOpenChange(false)}>
+            Close
+          </Button>
+          <Button onClick={importRows} disabled={busy || rows.length === 0 || Boolean(results)}>
+            {busy ? "Importing…" : `Import ${rows.length || ""} user${rows.length === 1 ? "" : "s"}`}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
