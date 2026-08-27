@@ -41,8 +41,12 @@ function AuthPage() {
 
   /** Platform owners always land in the control plane, everyone else in the institution app. */
   async function goAfterAuth() {
-    const { data: owner } = await supabase.rpc("is_platform_admin");
-    navigate({ to: owner === true ? "/platform" : "/dashboard", replace: true });
+    // Never let a slow round-trip hold up the redirect: fall back to the app after 1.2s.
+    const owner = await Promise.race([
+      supabase.rpc("is_platform_admin").then(({ data }) => data === true),
+      new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 1200)),
+    ]).catch(() => false);
+    navigate({ to: owner ? "/platform" : "/dashboard", replace: true });
   }
 
   useEffect(() => {
