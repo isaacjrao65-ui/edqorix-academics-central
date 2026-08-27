@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import type { ComponentType } from "react";
 
+import { CollapsibleSection, DashboardQuickActions } from "@/components/dashboard-quick-actions";
 import { EmptyState, PageHeader } from "@/components/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,7 @@ import {
   formatDateTime,
   type SheetStatus,
 } from "@/lib/format";
+import { useDashboardPrefs } from "@/lib/dashboard-prefs";
 import { useInstitution } from "@/lib/institution";
 import { useMembers } from "@/lib/permissions";
 import { useCourses, useExams, useSessions, useSheets, useStudents } from "@/lib/queries";
@@ -205,6 +207,7 @@ function AuditPanel({ institutionId, enabled }: { institutionId: string | null; 
 /* ------------------------------- Principal ------------------------------- */
 
 export function PrincipalDashboard() {
+  const { containerRef, isCollapsed, toggleSection } = useDashboardPrefs("principal");
   const { institutionId, institutionName } = useInstitution();
   const { data: sheets = [] } = useSheets(institutionId);
   const { data: students = [] } = useStudents(institutionId);
@@ -228,37 +231,39 @@ export function PrincipalDashboard() {
     : 0;
 
   return (
-    <div className="space-y-8">
+    <div ref={containerRef} className="space-y-8">
       <PageHeader
         title={institutionName || "Principal dashboard"}
         description="Complete academic oversight — people, examinations, marks and approvals."
-        actions={
-          <Button asChild>
-            <Link to="/marks">Approvals queue</Link>
-          </Button>
-        }
+        actions={<DashboardQuickActions />}
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat icon={GraduationCap} label="Students" value={students.length} />
-        <Stat icon={UsersRound} label="Teachers" value={teachers.length} />
-        <Stat icon={UsersRound} label="Staff & management" value={staff.length} />
-        <Stat icon={LayoutGrid} label="Classes" value={classes.length} />
-        <Stat icon={BookOpen} label="Subjects" value={courses.length} />
-        <Stat icon={ClipboardList} label="Examinations" value={exams.length} />
-        <Stat
-          icon={ClipboardCheck}
-          label="Pending approvals"
-          value={pendingApproval.length}
-          hint={`${awaitingVerification.length} awaiting verification`}
-        />
-        <Stat
-          icon={PenSquare}
-          label="Marks completion"
-          value={`${completion}%`}
-          hint={activeSession ? `Academic year ${activeSession.name}` : "No active academic year"}
-        />
-      </div>
+      <CollapsibleSection
+        title="Overview"
+        collapsed={isCollapsed("overview")}
+        onToggle={() => toggleSection("overview")}
+      >
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Stat icon={GraduationCap} label="Students" value={students.length} />
+          <Stat icon={UsersRound} label="Teachers" value={teachers.length} />
+          <Stat icon={UsersRound} label="Staff & management" value={staff.length} />
+          <Stat icon={LayoutGrid} label="Classes" value={classes.length} />
+          <Stat icon={BookOpen} label="Subjects" value={courses.length} />
+          <Stat icon={ClipboardList} label="Examinations" value={exams.length} />
+          <Stat
+            icon={ClipboardCheck}
+            label="Pending approvals"
+            value={pendingApproval.length}
+            hint={`${awaitingVerification.length} awaiting verification`}
+          />
+          <Stat
+            icon={PenSquare}
+            label="Marks completion"
+            value={`${completion}%`}
+            hint={activeSession ? `Academic year ${activeSession.name}` : "No active academic year"}
+          />
+        </div>
+      </CollapsibleSection>
 
       <section className="rounded-xl border border-border bg-card p-5">
         <h2 className="font-display text-sm font-semibold">Examination & marks status</h2>
@@ -288,6 +293,7 @@ export function PrincipalDashboard() {
 /* --------------------------------- Staff --------------------------------- */
 
 export function StaffDashboard() {
+  const { containerRef, isCollapsed, toggleSection } = useDashboardPrefs("staff");
   const { institutionId, institutionName } = useInstitution();
   const { data: sheets = [] } = useSheets(institutionId);
   const { data: students = [] } = useStudents(institutionId);
@@ -304,27 +310,29 @@ export function StaffDashboard() {
   const correction = sheets.filter((s) => s.status === "returned").length;
 
   return (
-    <div className="space-y-8">
+    <div ref={containerRef} className="space-y-8">
       <PageHeader
         title={`${institutionName || "School"} — management`}
         description="Run the academic structure: students, teachers, classes, subjects and marks progress."
-        actions={
-          <Button asChild>
-            <Link to="/classes">Teacher assignment</Link>
-          </Button>
-        }
+        actions={<DashboardQuickActions />}
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat icon={GraduationCap} label="Students" value={students.length} />
-        <Stat icon={UsersRound} label="Teachers" value={teachers.length} />
-        <Stat icon={LayoutGrid} label="Classes" value={classes.length} hint={`${classTeachers} with a class teacher`} />
-        <Stat icon={BookOpen} label="Subject teachers" value={subjectTeachers} />
-        <Stat icon={PenSquare} label="Marks pending entry" value={pending} />
-        <Stat icon={ClipboardList} label="Marks submitted" value={submitted} />
-        <Stat icon={ClipboardCheck} label="Marks verified" value={verified} />
-        <Stat icon={ShieldCheck} label="Correction required" value={correction} />
-      </div>
+      <CollapsibleSection
+        title="Overview"
+        collapsed={isCollapsed("overview")}
+        onToggle={() => toggleSection("overview")}
+      >
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Stat icon={GraduationCap} label="Students" value={students.length} />
+          <Stat icon={UsersRound} label="Teachers" value={teachers.length} />
+          <Stat icon={LayoutGrid} label="Classes" value={classes.length} hint={`${classTeachers} with a class teacher`} />
+          <Stat icon={BookOpen} label="Subject teachers" value={subjectTeachers} />
+          <Stat icon={PenSquare} label="Marks pending entry" value={pending} />
+          <Stat icon={ClipboardList} label="Marks submitted" value={submitted} />
+          <Stat icon={ClipboardCheck} label="Marks verified" value={verified} />
+          <Stat icon={ShieldCheck} label="Correction required" value={correction} />
+        </div>
+      </CollapsibleSection>
 
       <section className="rounded-xl border border-border bg-card p-5">
         <h2 className="font-display text-sm font-semibold">Examination progress</h2>
@@ -356,6 +364,7 @@ export function StaffDashboard() {
 /* ----------------------------- Class teacher ----------------------------- */
 
 export function ClassTeacherDashboard({ myClasses }: { myClasses: ClassRow[] }) {
+  const { containerRef, isCollapsed, toggleSection } = useDashboardPrefs("class_teacher");
   const { institutionId } = useInstitution();
   const { data: sheets = [] } = useSheets(institutionId);
   const { data: assignments = [] } = useAssignments(institutionId);
@@ -386,7 +395,7 @@ export function ClassTeacherDashboard({ myClasses }: { myClasses: ClassRow[] }) 
 
   if (!primary) {
     return (
-      <div className="space-y-8">
+      <div ref={containerRef} className="space-y-8">
         <PageHeader title="Class teacher" />
         <EmptyState
           title="No class assigned yet"
@@ -397,26 +406,33 @@ export function ClassTeacherDashboard({ myClasses }: { myClasses: ClassRow[] }) 
   }
 
   return (
-    <div className="space-y-8">
+    <div ref={containerRef} className="space-y-8">
       <PageHeader
         title={`Class ${classLabel(primary)}`}
         description="Everything happening in your class — students, subjects and marks from every subject teacher."
+        actions={<DashboardQuickActions />}
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat icon={GraduationCap} label="Students" value={students.length} />
-        <Stat icon={BookOpen} label="Subjects" value={classCourseIds.size} />
-        <Stat
-          icon={UsersRound}
-          label="Teachers on this class"
-          value={new Set(classAssignments.map((a) => a.teacher_id)).size}
-        />
-        <Stat
-          icon={ClipboardCheck}
-          label="Marks awaiting review"
-          value={classSheets.filter((s) => s.status === "submitted").length}
-        />
-      </div>
+      <CollapsibleSection
+        title="Overview"
+        collapsed={isCollapsed("overview")}
+        onToggle={() => toggleSection("overview")}
+      >
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Stat icon={GraduationCap} label="Students" value={students.length} />
+          <Stat icon={BookOpen} label="Subjects" value={classCourseIds.size} />
+          <Stat
+            icon={UsersRound}
+            label="Teachers on this class"
+            value={new Set(classAssignments.map((a) => a.teacher_id)).size}
+          />
+          <Stat
+            icon={ClipboardCheck}
+            label="Marks awaiting review"
+            value={classSheets.filter((s) => s.status === "submitted").length}
+          />
+        </div>
+      </CollapsibleSection>
 
       <section className="rounded-xl border border-border bg-card">
         <header className="border-b border-border px-4 py-4 sm:px-5">
@@ -500,6 +516,7 @@ export function ClassTeacherDashboard({ myClasses }: { myClasses: ClassRow[] }) 
 /* ---------------------------- Subject teacher ---------------------------- */
 
 export function SubjectTeacherDashboard() {
+  const { containerRef, isCollapsed, toggleSection } = useDashboardPrefs("subject_teacher");
   const { institutionId } = useInstitution();
   const { data: userId } = useCurrentUserId();
   const { data: assignments = [] } = useAssignments(institutionId);
@@ -530,7 +547,7 @@ export function SubjectTeacherDashboard() {
 
   if (mine.length === 0) {
     return (
-      <div className="space-y-8">
+      <div ref={containerRef} className="space-y-8">
         <PageHeader title="Subject teacher" />
         <EmptyState
           title="No subjects assigned yet"
@@ -541,27 +558,29 @@ export function SubjectTeacherDashboard() {
   }
 
   return (
-    <div className="space-y-8">
+    <div ref={containerRef} className="space-y-8">
       <PageHeader
         title="My subjects"
         description="Enter and submit marks for the subjects and classes assigned to you."
-        actions={
-          <Button asChild>
-            <Link to="/marks">Open marks entry</Link>
-          </Button>
-        }
+        actions={<DashboardQuickActions />}
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat icon={BookOpen} label="Assigned subjects" value={myCourseIds.size} />
-        <Stat icon={LayoutGrid} label="Assigned classes" value={myClassIds.size} />
-        <Stat icon={GraduationCap} label="Students" value={studentCount} />
-        <Stat
-          icon={PenSquare}
-          label="Marks pending entry"
-          value={mySheets.filter((s) => s.status === "draft" || s.status === "returned").length}
-        />
-      </div>
+      <CollapsibleSection
+        title="Overview"
+        collapsed={isCollapsed("overview")}
+        onToggle={() => toggleSection("overview")}
+      >
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Stat icon={BookOpen} label="Assigned subjects" value={myCourseIds.size} />
+          <Stat icon={LayoutGrid} label="Assigned classes" value={myClassIds.size} />
+          <Stat icon={GraduationCap} label="Students" value={studentCount} />
+          <Stat
+            icon={PenSquare}
+            label="Marks pending entry"
+            value={mySheets.filter((s) => s.status === "draft" || s.status === "returned").length}
+          />
+        </div>
+      </CollapsibleSection>
 
       <section className="rounded-xl border border-border bg-card">
         <header className="border-b border-border px-4 py-4 sm:px-5">

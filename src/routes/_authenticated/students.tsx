@@ -22,7 +22,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { logAudit } from "@/lib/audit";
 import { useInstitution } from "@/lib/institution";
+import { STUDENT_CSV_TEMPLATE, downloadCsv, parseStudentsCsv } from "@/lib/csv";
 import { usePrograms, useStudents } from "@/lib/queries";
+import { classLabel, useClasses } from "@/lib/school";
 
 export const Route = createFileRoute("/_authenticated/students")({
   head: () => ({
@@ -199,33 +201,47 @@ function BulkImport({
   institutionId: string | null;
   onDone: () => void;
 }) {
+  const { data: classes = [] } = useClasses(institutionId);
   const [open, setOpen] = useState(false);
   const [raw, setRaw] = useState("");
+  const [fileName, setFileName] = useState("");
   const [busy, setBusy] = useState(false);
 
+  const parsed = useMemo(() => (raw.trim() ? parseStudentsCsv(raw) : null), [raw]);
+
+  async function onFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setFileName(file.name);
+    setRaw(await file.text());
+  }
+
+  function resolveClassId(name: string | null) {
+    if (!name) return null;
+    const key = name.trim().toLowerCase();
+    const match = classes.find(
+      (c) => classLabel(c).toLowerCase() === key || c.name.toLowerCase() === key,
+    );
+    return match?.id ?? null;
+  }
+
   async function run() {
-    if (!institutionId) return;
-    const rows = raw
-      .split("\n")
-      .map((line) => line.trim())
-      .filter(Boolean)
-      .map((line) => line.split(",").map((cell) => cell.trim()))
-      .filter((cells) => cells[0]?.toLowerCase() !== "roll_number");
-
-    const payload = rows
-      .filter((cells) => cells[0] && cells[1])
-      .map((cells) => ({
-        institution_id: institutionId,
-        roll_number: cells[0] ?? "",
-        full_name: cells[1] ?? "",
-        email: cells[2] || null,
-        current_semester: cells[3] ? Number(cells[3]) : 1,
-      }));
-
-    if (payload.length === 0) {
-      toast.error("Nothing to import — expected roll_number,full_name per line");
+    if (!institutionId || !parsed || parsed.rows.length === 0) {
+      toast.error("Nothing to import — add a header row with roll_number and full_name.");
       return;
     }
+
+    const payload = parsed.rows.map((row) => ({
+      institution_id: institutionId,
+      roll_number: row.rollNumber,
+      full_name: row.fullName,
+      email: row.email,
+      phone: row.phone,
+      admission_number: row.admissionNumber,
+      current_semester: row.currentSemester,
+      batch_year: row.batchYear,
+      class_id: resolveClassId(row.className),
+    }));
 
     setBusy(true);
     const { error } = await supabase.from("students").upsert(payload, {
@@ -240,11 +256,12 @@ function BulkImport({
       institutionId,
       action: "students.imported",
       entityType: "students",
-      description: `Imported ${payload.length} students`,
-      details: { count: payload.length },
+      description: `Imported ${payload.length} students from ${fileName || "pasted CSV"}`,
+      details: { count: payload.length, file: fileName || null },
     });
     toast.success(`Imported ${payload.length} students`);
     setRaw("");
+    setFileName("");
     setOpen(false);
     onDone();
   }
@@ -257,24 +274,60 @@ function BulkImport({
           Import CSV
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Import students</DialogTitle>
           <DialogDescription>
-            One student per line: roll_number, full_name, email, semester. Existing roll numbers are
-            updated.
+            Upload a CSV (export any Excel sheet as CSV) or paste rows. Columns: roll_number,
+            full_name, email, phone, admission_number, current_semester, batch_year, class. Existing
+            roll numbers are updated.
           </DialogDescription>
         </DialogHeader>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <Input
+            type="file"
+            accept=".csv,.tsv,.txt,text/csv"
+            onChange={onFile}
+            className="max-w-xs"
+          />
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            onClick={() => downloadCsv("edqorix-students-template.csv", STUDENT_CSV_TEMPLATE)}
+          >
+            Download template
+          </Button>
+        </div>
+
         <Textarea
-          rows={10}
+          rows={8}
           className="font-mono text-xs"
-          placeholder={"21CS001, Aarav Sharma, aarav@example.edu, 5\n21CS002, Diya Menon, diya@example.edu, 5"}
+          placeholder={"roll_number,full_name,email,current_semester,class\n21CS001,Aarav Sharma,aarav@example.edu,5,10-A"}
           value={raw}
           onChange={(e) => setRaw(e.target.value)}
         />
+
+        {parsed ? (
+          <div className="space-y-2 text-xs">
+            <p className="text-muted-foreground">
+              {parsed.rows.length} valid row{parsed.rows.length === 1 ? "" : "s"}
+              {parsed.errors.length ? `, ${parsed.errors.length} skipped` : ""}
+            </p>
+            {parsed.errors.length ? (
+              <div className="max-h-28 overflow-y-auto rounded-md border border-border bg-muted/40 p-2">
+                {parsed.errors.map((er) => (
+                  <p key={er}>{er}</p>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+
         <DialogFooter>
-          <Button onClick={run} disabled={busy}>
-            Import
+          <Button onClick={run} disabled={busy || !parsed || parsed.rows.length === 0}>
+            {busy ? "Importing…" : "Import"}
           </Button>
         </DialogFooter>
       </DialogContent>
