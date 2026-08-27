@@ -797,6 +797,13 @@ const MEMBER_ROLES = [
 
 const MEMBER_STATUSES = ["active", "suspended", "deactivated"] as const;
 
+type MembershipPatch = {
+  role?: (typeof MEMBER_ROLES)[number]["key"];
+  status?: (typeof MEMBER_STATUSES)[number];
+  is_active?: boolean;
+  is_class_teacher?: boolean;
+};
+
 type MemberRecord = {
   id: string;
   user_id: string;
@@ -830,7 +837,7 @@ function MembersManager({
   const [reason, setReason] = useState("");
   const [busy, setBusy] = useState(false);
 
-  async function patch(member: MemberRecord, patchValue: Record<string, unknown>, label: string) {
+  async function patch(member: MemberRecord, patchValue: MembershipPatch, label: string) {
     const { error } = await supabase.from("memberships").update(patchValue).eq("id", member.id);
     if (error) {
       toast.error(error.message);
@@ -910,7 +917,11 @@ function MembersManager({
                       aria-label={`Role for ${m.profile?.full_name ?? "user"}`}
                       value={m.role}
                       onChange={(e) =>
-                        patch(m, { role: e.target.value }, "Role updated for this institution.")
+                        patch(
+                          m,
+                          { role: e.target.value as MembershipPatch["role"] },
+                          "Role updated for this institution.",
+                        )
                       }
                       className="h-9 rounded-md border border-white/15 bg-slate-900 px-2 text-sm text-slate-100"
                     >
@@ -941,7 +952,10 @@ function MembersManager({
                       onChange={(e) =>
                         patch(
                           m,
-                          { status: e.target.value, is_active: e.target.value === "active" },
+                          {
+                            status: e.target.value as MembershipPatch["status"],
+                            is_active: e.target.value === "active",
+                          },
                           "Account status updated.",
                         )
                       }
