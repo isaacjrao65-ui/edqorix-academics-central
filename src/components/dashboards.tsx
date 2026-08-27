@@ -176,16 +176,19 @@ function AuditPanel({ institutionId, enabled }: { institutionId: string | null; 
   const { data: entries = [] } = useRecentAudit(institutionId, enabled);
   return (
     <div className="rounded-xl border border-border bg-card">
-      <header className="flex items-center gap-2 border-b border-border px-5 py-4">
-        <ShieldCheck className="size-4 text-primary" strokeWidth={1.75} />
+      <header className="flex items-center gap-2 border-b border-border px-4 py-4 sm:px-5">
+        <ShieldCheck className="size-4 shrink-0 text-primary" strokeWidth={1.75} />
         <h2 className="font-display text-sm font-semibold">Recent activity</h2>
       </header>
       {entries.length === 0 ? (
-        <p className="px-5 py-6 text-sm text-muted-foreground">No activity recorded yet.</p>
+        <p className="px-4 py-6 text-sm text-muted-foreground sm:px-5">No activity recorded yet.</p>
       ) : (
-        <ul className="max-h-80 divide-y divide-border overflow-y-auto">
+        <ul className="max-h-[26rem] space-y-3 overflow-y-auto scroll-smooth overscroll-contain p-3 sm:max-h-80 sm:space-y-0 sm:divide-y sm:divide-border sm:p-0 [-webkit-overflow-scrolling:touch]">
           {entries.map((entry) => (
-            <li key={entry.id} className="px-5 py-3.5">
+            <li
+              key={entry.id}
+              className="rounded-lg border border-border bg-background p-4 sm:rounded-none sm:border-0 sm:bg-transparent sm:px-5 sm:py-3.5"
+            >
               <p className="text-sm">{entry.description ?? entry.action}</p>
               <p className="mt-0.5 text-xs text-muted-foreground">
                 {formatDateTime(entry.created_at)}
@@ -194,6 +197,7 @@ function AuditPanel({ institutionId, enabled }: { institutionId: string | null; 
           ))}
         </ul>
       )}
+
     </div>
   );
 }
