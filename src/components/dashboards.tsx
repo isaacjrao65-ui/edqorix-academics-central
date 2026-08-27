@@ -98,20 +98,23 @@ function SheetList({
 }) {
   return (
     <div className="rounded-xl border border-border bg-card">
-      <header className="flex items-center justify-between border-b border-border px-5 py-4">
-        <h2 className="font-display text-sm font-semibold">{title}</h2>
-        <Link to="/marks" className="text-xs text-primary hover:underline">
+      <header className="flex items-center justify-between gap-3 border-b border-border px-4 py-4 sm:px-5">
+        <h2 className="min-w-0 truncate font-display text-sm font-semibold">{title}</h2>
+        <Link to="/marks" className="shrink-0 text-xs text-primary hover:underline">
           View all
         </Link>
       </header>
       {sheets.length === 0 ? (
-        <div className="px-5 py-10">
+        <div className="px-4 py-10 sm:px-5">
           <EmptyState title="Nothing here yet" description={empty} />
         </div>
       ) : (
-        <ul className="max-h-80 divide-y divide-border overflow-y-auto">
+        <ul className="max-h-[26rem] space-y-3 overflow-y-auto scroll-smooth overscroll-contain p-3 sm:max-h-80 sm:space-y-0 sm:divide-y sm:divide-border sm:p-0 [-webkit-overflow-scrolling:touch]">
           {sheets.map((sheet) => (
-            <li key={sheet.id} className="flex flex-wrap items-center gap-3 px-5 py-4">
+            <li
+              key={sheet.id}
+              className="grid gap-3 rounded-lg border border-border bg-background p-4 sm:flex sm:flex-wrap sm:items-center sm:gap-3 sm:rounded-none sm:border-0 sm:bg-transparent sm:px-5 sm:py-4"
+            >
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium">
                   {sheet.exams?.courses?.code} · {sheet.exams?.title}
@@ -120,17 +123,19 @@ function SheetList({
                   Section {sheet.sections?.name} · updated {formatDateTime(sheet.updated_at)}
                 </p>
               </div>
-              <Badge
-                variant="secondary"
-                className={cn("shrink-0", SHEET_STATUS_CLASS[sheet.status as SheetStatus])}
-              >
-                {SHEET_STATUS_LABEL[sheet.status as SheetStatus]}
-              </Badge>
-              <Button asChild size="sm" variant="outline">
-                <Link to="/marks/$sheetId" params={{ sheetId: sheet.id }}>
-                  Open
-                </Link>
-              </Button>
+              <div className="flex items-center justify-between gap-3 sm:contents">
+                <Badge
+                  variant="secondary"
+                  className={cn("shrink-0", SHEET_STATUS_CLASS[sheet.status as SheetStatus])}
+                >
+                  {SHEET_STATUS_LABEL[sheet.status as SheetStatus]}
+                </Badge>
+                <Button asChild size="sm" variant="outline">
+                  <Link to="/marks/$sheetId" params={{ sheetId: sheet.id }}>
+                    Open
+                  </Link>
+                </Button>
+              </div>
             </li>
           ))}
         </ul>
@@ -138,6 +143,7 @@ function SheetList({
     </div>
   );
 }
+
 
 function useRecentAudit(institutionId: string | null, enabled: boolean) {
   return useQuery({
