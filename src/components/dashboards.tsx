@@ -349,7 +349,7 @@ export function ClassTeacherDashboard({ myClasses }: { myClasses: ClassRow[] }) 
   const { institutionId } = useInstitution();
   const { data: sheets = [] } = useSheets(institutionId);
   const { data: assignments = [] } = useAssignments(institutionId);
-  const { data: courses = [] } = useCourses(institutionId);
+  const { data: exams = [] } = useExams(institutionId);
   const primary = myClasses[0];
 
   const { data: students = [] } = useQuery({
