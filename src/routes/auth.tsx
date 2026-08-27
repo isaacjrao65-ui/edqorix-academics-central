@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
+import { logSecurityEvent } from "@/lib/platform";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -64,7 +65,14 @@ function AuthPage() {
       toast.error(error.message);
       return;
     }
+
+    void logSecurityEvent({
+      eventType: "sign_in",
+      email: email.toLowerCase(),
+      detail: "Signed in with email and password",
+    });
     await goAfterAuth();
+
   }
 
   async function signUp(e: React.FormEvent) {
@@ -84,7 +92,13 @@ function AuthPage() {
       return;
     }
     if (data.session) {
+      void logSecurityEvent({
+        eventType: "sign_up",
+        email: email.toLowerCase(),
+        detail: `New account created${fullName ? ` for ${fullName}` : ""}`,
+      });
       await goAfterAuth();
+
     } else {
       setSentConfirmation(true);
       toast.success("Check your email to confirm your account.");

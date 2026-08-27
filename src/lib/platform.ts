@@ -249,6 +249,45 @@ export function useSecurityEvents() {
   });
 }
 
+export type LoginEvent = {
+  id: string;
+  created_at: string;
+  email: string | null;
+  event_type: string;
+  user_id: string | null;
+  fullName: string | null;
+};
+
+/** Every sign-in on the website, newest first — name, email and time. */
+export function useRecentLogins(limit = 100) {
+  return useQuery({
+    queryKey: ["recent-logins", limit],
+    refetchInterval: 60_000,
+    queryFn: async (): Promise<LoginEvent[]> => {
+      const { data, error } = await supabase
+        .from("security_events")
+        .select("id, created_at, email, event_type, user_id")
+        .in("event_type", ["sign_in", "sign_up"])
+        .order("created_at", { ascending: false })
+        .limit(limit);
+      if (error) throw error;
+      const rows = data ?? [];
+      const ids = [...new Set(rows.map((r) => r.user_id).filter(Boolean))] as string[];
+      const { data: profiles } = ids.length
+        ? await supabase.from("profiles").select("id, full_name, email").in("id", ids)
+        : { data: [] };
+      const byId = new Map((profiles ?? []).map((p) => [p.id, p]));
+      return rows.map((r) => ({
+        ...r,
+        fullName: (r.user_id ? byId.get(r.user_id)?.full_name : null) ?? null,
+        email: r.email ?? (r.user_id ? byId.get(r.user_id)?.email ?? null : null),
+      }));
+    },
+  });
+}
+
+
+
 export function usePlatformAudit() {
   return useQuery({
     queryKey: ["platform-audit"],
