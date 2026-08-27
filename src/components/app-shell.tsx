@@ -356,7 +356,9 @@ export function AppShell({ children }: { children: ReactNode }) {
 
         </header>
         <main className="mx-auto w-full max-w-7xl px-4 py-8 pb-24 sm:px-8 sm:py-10 lg:pb-10">
-          <InstitutionGate>{children}</InstitutionGate>
+          <div className="max-h-[calc(100vh-9rem)] overflow-y-auto overscroll-contain pr-1 [-webkit-overflow-scrolling:touch] lg:max-h-[calc(100vh-7rem)]">
+            <InstitutionGate>{children}</InstitutionGate>
+          </div>
         </main>
         <MobileTabBar onOpenMenu={() => setOpen(true)} />
       </div>
