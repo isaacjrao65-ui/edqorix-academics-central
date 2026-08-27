@@ -13,6 +13,8 @@ export type ViewAsSession = {
   roleLabel: string;
   reason: string;
   startedAt: string;
+  userId?: string;
+  userName?: string;
 };
 
 export function getViewAs(): ViewAsSession | null {
@@ -32,6 +34,8 @@ export async function startViewAs(input: {
   role: string;
   roleLabel: string;
   reason: string;
+  userId?: string;
+  userName?: string;
 }) {
   const { data: auth } = await supabase.auth.getUser();
   if (!auth.user) throw new Error("Not signed in");
@@ -42,10 +46,12 @@ export async function startViewAs(input: {
       institution_id: input.institutionId,
       viewed_role: input.role,
       reason: input.reason,
+      actions: input.userId ? { target_user_id: input.userId, target_user: input.userName } : {},
     })
     .select("id, started_at")
     .single();
   if (error) throw error;
+
 
   const session: ViewAsSession = {
     sessionId: data.id,
