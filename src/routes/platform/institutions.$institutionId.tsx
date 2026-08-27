@@ -919,7 +919,7 @@ function MembersManager({
                       onChange={(e) =>
                         patch(
                           m,
-                          { role: e.target.value as MembershipPatch["role"] },
+                          { role: e.target.value as (typeof MEMBER_ROLES)[number]["key"] },
                           "Role updated for this institution.",
                         )
                       }
@@ -953,7 +953,7 @@ function MembersManager({
                         patch(
                           m,
                           {
-                            status: e.target.value as MembershipPatch["status"],
+                            status: e.target.value as (typeof MEMBER_STATUSES)[number],
                             is_active: e.target.value === "active",
                           },
                           "Account status updated.",
