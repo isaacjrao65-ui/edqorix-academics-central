@@ -105,6 +105,109 @@ export type Database = {
           },
         ]
       }
+      class_subject_teachers: {
+        Row: {
+          class_id: string
+          course_id: string
+          created_at: string
+          created_by: string | null
+          id: string
+          institution_id: string
+          teacher_id: string
+        }
+        Insert: {
+          class_id: string
+          course_id: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          institution_id: string
+          teacher_id: string
+        }
+        Update: {
+          class_id?: string
+          course_id?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          institution_id?: string
+          teacher_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "class_subject_teachers_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "class_subject_teachers_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "class_subject_teachers_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      classes: {
+        Row: {
+          class_teacher_id: string | null
+          created_at: string
+          id: string
+          institution_id: string
+          name: string
+          room: string | null
+          section: string
+          session_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          class_teacher_id?: string | null
+          created_at?: string
+          id?: string
+          institution_id: string
+          name: string
+          room?: string | null
+          section?: string
+          session_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          class_teacher_id?: string | null
+          created_at?: string
+          id?: string
+          institution_id?: string
+          name?: string
+          room?: string | null
+          section?: string
+          session_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "classes_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "classes_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "academic_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       courses: {
         Row: {
           code: string
@@ -735,6 +838,7 @@ export type Database = {
         Row: {
           approved_at: string | null
           approved_by: string | null
+          class_id: string | null
           created_at: string
           exam_id: string
           id: string
@@ -752,6 +856,7 @@ export type Database = {
         Insert: {
           approved_at?: string | null
           approved_by?: string | null
+          class_id?: string | null
           created_at?: string
           exam_id: string
           id?: string
@@ -769,6 +874,7 @@ export type Database = {
         Update: {
           approved_at?: string | null
           approved_by?: string | null
+          class_id?: string | null
           created_at?: string
           exam_id?: string
           id?: string
@@ -784,6 +890,13 @@ export type Database = {
           verified_by?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "mark_sheets_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "mark_sheets_exam_id_fkey"
             columns: ["exam_id"]
@@ -809,8 +922,12 @@ export type Database = {
       }
       marks: {
         Row: {
+          assessment_marks: number | null
+          copy_correction_marks: number | null
+          external_marks: number | null
           id: string
           institution_id: string
+          internal_marks: number | null
           mark_sheet_id: string
           score: number | null
           state: Database["public"]["Enums"]["mark_state"]
@@ -819,8 +936,12 @@ export type Database = {
           updated_by: string | null
         }
         Insert: {
+          assessment_marks?: number | null
+          copy_correction_marks?: number | null
+          external_marks?: number | null
           id?: string
           institution_id: string
+          internal_marks?: number | null
           mark_sheet_id: string
           score?: number | null
           state?: Database["public"]["Enums"]["mark_state"]
@@ -829,8 +950,12 @@ export type Database = {
           updated_by?: string | null
         }
         Update: {
+          assessment_marks?: number | null
+          copy_correction_marks?: number | null
+          external_marks?: number | null
           id?: string
           institution_id?: string
+          internal_marks?: number | null
           mark_sheet_id?: string
           score?: number | null
           state?: Database["public"]["Enums"]["mark_state"]
@@ -1457,7 +1582,9 @@ export type Database = {
       }
       students: {
         Row: {
+          admission_number: string | null
           batch_year: number | null
+          class_id: string | null
           created_at: string
           current_semester: number
           email: string | null
@@ -1471,7 +1598,9 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          admission_number?: string | null
           batch_year?: number | null
+          class_id?: string | null
           created_at?: string
           current_semester?: number
           email?: string | null
@@ -1485,7 +1614,9 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          admission_number?: string | null
           batch_year?: number | null
+          class_id?: string | null
           created_at?: string
           current_semester?: number
           email?: string | null
@@ -1499,6 +1630,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "students_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "students_institution_id_fkey"
             columns: ["institution_id"]
@@ -1718,6 +1856,7 @@ export type Database = {
     Functions: {
       can_edit_marks: { Args: { _sheet: string }; Returns: boolean }
       can_manage: { Args: { _institution: string }; Returns: boolean }
+      can_see_class: { Args: { _class: string }; Returns: boolean }
       has_inst_role: {
         Args: {
           _institution: string
@@ -1730,11 +1869,17 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: { _institution: string }; Returns: boolean }
+      is_class_teacher_of: { Args: { _class: string }; Returns: boolean }
       is_member: { Args: { _institution: string }; Returns: boolean }
       is_platform_admin: { Args: never; Returns: boolean }
       is_section_faculty: { Args: { _section: string }; Returns: boolean }
       my_departments: { Args: { _institution: string }; Returns: string[] }
       seed_default_roles: { Args: { _institution: string }; Returns: undefined }
+      teaches_class: { Args: { _class: string }; Returns: boolean }
+      teaches_class_subject: {
+        Args: { _class: string; _course: string }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "admin" | "exam_cell" | "hod" | "faculty"
