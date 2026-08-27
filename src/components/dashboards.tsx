@@ -109,7 +109,7 @@ function SheetList({
           <EmptyState title="Nothing here yet" description={empty} />
         </div>
       ) : (
-        <ul className="divide-y divide-border">
+        <ul className="max-h-80 divide-y divide-border overflow-y-auto">
           {sheets.map((sheet) => (
             <li key={sheet.id} className="flex flex-wrap items-center gap-3 px-5 py-4">
               <div className="min-w-0 flex-1">
@@ -177,7 +177,7 @@ function AuditPanel({ institutionId, enabled }: { institutionId: string | null; 
       {entries.length === 0 ? (
         <p className="px-5 py-6 text-sm text-muted-foreground">No activity recorded yet.</p>
       ) : (
-        <ul className="divide-y divide-border">
+        <ul className="max-h-80 divide-y divide-border overflow-y-auto">
           {entries.map((entry) => (
             <li key={entry.id} className="px-5 py-3.5">
               <p className="text-sm">{entry.description ?? entry.action}</p>
@@ -420,7 +420,7 @@ export function ClassTeacherDashboard({ myClasses }: { myClasses: ClassRow[] }) 
             />
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="max-h-80 overflow-auto">
             <table className="w-full min-w-[38rem] text-sm">
               <thead className="bg-muted/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
                 <tr>
@@ -528,7 +528,7 @@ export function SubjectTeacherDashboard() {
         <header className="border-b border-border px-5 py-4">
           <h2 className="font-display text-sm font-semibold">My assignments</h2>
         </header>
-        <ul className="divide-y divide-border">
+        <ul className="max-h-80 divide-y divide-border overflow-y-auto">
           {mine.map((a) => {
             const cls = classes.find((c) => c.id === a.class_id);
             const course = courses.find((c) => c.id === a.course_id);
