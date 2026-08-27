@@ -62,9 +62,21 @@ function AuthPage() {
     setBusy(false);
     if (error) {
       toast.error(error.message);
+      void logSecurityEvent({
+        eventType: "sign_in_failed",
+        severity: "warning",
+        email: email.toLowerCase(),
+        detail: error.message,
+      });
       return;
     }
+    void logSecurityEvent({
+      eventType: "sign_in",
+      email: email.toLowerCase(),
+      detail: "Signed in with email and password",
+    });
     await goAfterAuth();
+
   }
 
   async function signUp(e: React.FormEvent) {
