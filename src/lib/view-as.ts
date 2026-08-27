@@ -61,6 +61,8 @@ export async function startViewAs(input: {
     roleLabel: input.roleLabel,
     reason: input.reason,
     startedAt: data.started_at,
+    ...(input.userId ? { userId: input.userId } : {}),
+    ...(input.userName ? { userName: input.userName } : {}),
   };
   window.localStorage.setItem(KEY, JSON.stringify(session));
   window.localStorage.setItem(INSTITUTION_KEY, input.institutionId);
@@ -68,12 +70,13 @@ export async function startViewAs(input: {
   await logPlatformAudit({
     action: "impersonation.started",
     institutionId: input.institutionId,
-    targetType: "institution",
-    targetId: input.institutionId,
-    targetLabel: input.institutionName,
+    targetType: input.userId ? "user" : "institution",
+    targetId: input.userId ?? input.institutionId,
+    targetLabel: input.userName ?? input.institutionName,
     reason: input.reason,
-    newValue: { role: input.role },
+    newValue: { role: input.role, institution: input.institutionName },
   });
+
   return session;
 }
 
