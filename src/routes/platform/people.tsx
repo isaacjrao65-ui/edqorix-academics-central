@@ -428,6 +428,66 @@ function PeoplePage() {
           </table>
         </div>
       </OwnerCard>
+
+      <Dialog open={!!assignTarget} onOpenChange={(open) => !open && setAssignTarget(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Assign to an institution</DialogTitle>
+            <DialogDescription>
+              {assignTarget
+                ? `Place ${assignTarget.full_name || assignTarget.email} in an institution and give them a role.`
+                : null}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>Institution</Label>
+              <Select value={assignInstitution} onValueChange={setAssignInstitution}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Choose institution" />
+                </SelectTrigger>
+                <SelectContent>
+                  {institutions.map((inst) => (
+                    <SelectItem key={inst.id} value={inst.id}>
+                      {inst.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Role</Label>
+              <Select value={assignRole} onValueChange={(v) => setAssignRole(v as AssignRole)}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {(["admin", "exam_cell", "hod", "faculty"] as AssignRole[]).map((r) => (
+                    <SelectItem key={r} value={r}>
+                      {ROLE_LABELS[r]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <label className="flex items-center gap-2 text-sm">
+              <Checkbox
+                checked={assignClassTeacher}
+                onCheckedChange={(v) => setAssignClassTeacher(v === true)}
+              />
+              Also mark as class teacher
+            </label>
+          </div>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setAssignTarget(null)}>
+              Cancel
+            </Button>
+            <Button onClick={assignToInstitution} disabled={!assignInstitution || assignBusy}>
+              {assignBusy ? "Saving…" : "Save assignment"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
