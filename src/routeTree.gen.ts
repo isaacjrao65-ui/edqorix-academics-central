@@ -18,6 +18,7 @@ import { Route as PlatformAdminRouteImport } from './routes/platform-admin'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as AuthenticatedAcademicsRouteImport } from './routes/_authenticated/academics'
 import { Route as AuthenticatedAuditRouteImport } from './routes/_authenticated/audit'
+import { Route as AuthenticatedClassesRouteImport } from './routes/_authenticated/classes'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDocumentsRouteImport } from './routes/_authenticated/documents'
 import { Route as AuthenticatedExamsRouteImport } from './routes/_authenticated/exams'
@@ -87,6 +88,11 @@ const AuthenticatedAcademicsRoute = AuthenticatedAcademicsRouteImport.update({
 const AuthenticatedAuditRoute = AuthenticatedAuditRouteImport.update({
   id: '/audit',
   path: '/audit',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedClassesRoute = AuthenticatedClassesRouteImport.update({
+  id: '/classes',
+  path: '/classes',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
@@ -232,6 +238,7 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/academics': typeof AuthenticatedAcademicsRoute
   '/audit': typeof AuthenticatedAuditRoute
+  '/classes': typeof AuthenticatedClassesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documents': typeof AuthenticatedDocumentsRoute
   '/exams': typeof AuthenticatedExamsRoute
@@ -267,6 +274,7 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/academics': typeof AuthenticatedAcademicsRoute
   '/audit': typeof AuthenticatedAuditRoute
+  '/classes': typeof AuthenticatedClassesRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documents': typeof AuthenticatedDocumentsRoute
   '/exams': typeof AuthenticatedExamsRoute
@@ -305,6 +313,7 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/_authenticated/academics': typeof AuthenticatedAcademicsRoute
   '/_authenticated/audit': typeof AuthenticatedAuditRoute
+  '/_authenticated/classes': typeof AuthenticatedClassesRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/documents': typeof AuthenticatedDocumentsRoute
   '/_authenticated/exams': typeof AuthenticatedExamsRoute
@@ -343,6 +352,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/academics'
     | '/audit'
+    | '/classes'
     | '/dashboard'
     | '/documents'
     | '/exams'
@@ -378,6 +388,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/academics'
     | '/audit'
+    | '/classes'
     | '/dashboard'
     | '/documents'
     | '/exams'
@@ -415,6 +426,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/_authenticated/academics'
     | '/_authenticated/audit'
+    | '/_authenticated/classes'
     | '/_authenticated/dashboard'
     | '/_authenticated/documents'
     | '/_authenticated/exams'
@@ -516,6 +528,13 @@ declare module '@tanstack/react-router' {
       path: '/audit'
       fullPath: '/audit'
       preLoaderRoute: typeof AuthenticatedAuditRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/classes': {
+      id: '/_authenticated/classes'
+      path: '/classes'
+      fullPath: '/classes'
+      preLoaderRoute: typeof AuthenticatedClassesRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard': {
@@ -706,6 +725,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAcademicsRoute: typeof AuthenticatedAcademicsRoute
   AuthenticatedAuditRoute: typeof AuthenticatedAuditRoute
+  AuthenticatedClassesRoute: typeof AuthenticatedClassesRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDocumentsRoute: typeof AuthenticatedDocumentsRoute
   AuthenticatedExamsRoute: typeof AuthenticatedExamsRoute
@@ -723,6 +743,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAcademicsRoute: AuthenticatedAcademicsRoute,
   AuthenticatedAuditRoute: AuthenticatedAuditRoute,
+  AuthenticatedClassesRoute: AuthenticatedClassesRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDocumentsRoute: AuthenticatedDocumentsRoute,
   AuthenticatedExamsRoute: AuthenticatedExamsRoute,
