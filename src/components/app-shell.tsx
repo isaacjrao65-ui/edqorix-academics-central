@@ -6,6 +6,7 @@ import {
   FileStack,
   GraduationCap,
   KeyRound,
+  LayoutGrid,
   LayoutDashboard,
   Menu,
   PenSquare,
@@ -63,7 +64,8 @@ const NAV_GROUPS: NavGroup[] = [
   {
     label: "Academic",
     items: [
-      { to: "/academics", label: "Departments & classes", icon: BookOpen },
+      { to: "/classes", label: "Classes & assignment", icon: LayoutGrid, manageOnly: true },
+      { to: "/academics", label: "Departments & subjects", icon: BookOpen },
       { to: "/exams", label: "Examinations", icon: ClipboardList },
       { to: "/marks", label: "Marks & approvals", icon: PenSquare },
     ],
@@ -133,7 +135,7 @@ function QuickCreate() {
   const actions: { label: string; to: string }[] = [
     { label: "New examination", to: "/exams" },
     { label: "Add students", to: "/students" },
-    { label: "New class / section", to: "/academics" },
+    { label: "New class", to: "/classes" },
     { label: "Invite a user", to: "/users" },
     { label: "Upload a document", to: "/documents" },
   ];
