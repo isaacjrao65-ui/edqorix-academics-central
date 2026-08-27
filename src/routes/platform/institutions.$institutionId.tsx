@@ -889,6 +889,25 @@ function MembersManager({
       title={`Institution users (${members.length})`}
       description="Assign principals, staff, class teachers and subject teachers, change account status, or open the institution through any user's account."
     >
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-xs text-slate-500">
+          Create login IDs directly — the account can sign in immediately with the password you set.
+        </p>
+        <Button size="sm" onClick={() => setCreateOpen(true)}>
+          Create new user ID
+        </Button>
+      </div>
+      <CreateUserDialog
+        open={createOpen}
+        onOpenChange={setCreateOpen}
+        institutionId={institutionId}
+        institutionName={institutionName}
+      />
+      <ResetPasswordDialog
+        member={resetTarget}
+        institutionId={institutionId}
+        onClose={() => setResetTarget(null)}
+      />
       <div className="overflow-x-auto">
         <table className="w-full min-w-[54rem] text-sm">
           <thead>
