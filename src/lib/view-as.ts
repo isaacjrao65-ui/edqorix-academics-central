@@ -13,6 +13,8 @@ export type ViewAsSession = {
   roleLabel: string;
   reason: string;
   startedAt: string;
+  userId?: string;
+  userName?: string;
 };
 
 export function getViewAs(): ViewAsSession | null {
@@ -32,6 +34,8 @@ export async function startViewAs(input: {
   role: string;
   roleLabel: string;
   reason: string;
+  userId?: string;
+  userName?: string;
 }) {
   const { data: auth } = await supabase.auth.getUser();
   if (!auth.user) throw new Error("Not signed in");
@@ -42,10 +46,12 @@ export async function startViewAs(input: {
       institution_id: input.institutionId,
       viewed_role: input.role,
       reason: input.reason,
+      actions: input.userId ? { target_user_id: input.userId, target_user: input.userName } : {},
     })
     .select("id, started_at")
     .single();
   if (error) throw error;
+
 
   const session: ViewAsSession = {
     sessionId: data.id,
@@ -55,6 +61,8 @@ export async function startViewAs(input: {
     roleLabel: input.roleLabel,
     reason: input.reason,
     startedAt: data.started_at,
+    ...(input.userId ? { userId: input.userId } : {}),
+    ...(input.userName ? { userName: input.userName } : {}),
   };
   window.localStorage.setItem(KEY, JSON.stringify(session));
   window.localStorage.setItem(INSTITUTION_KEY, input.institutionId);
@@ -62,12 +70,13 @@ export async function startViewAs(input: {
   await logPlatformAudit({
     action: "impersonation.started",
     institutionId: input.institutionId,
-    targetType: "institution",
-    targetId: input.institutionId,
-    targetLabel: input.institutionName,
+    targetType: input.userId ? "user" : "institution",
+    targetId: input.userId ?? input.institutionId,
+    targetLabel: input.userName ?? input.institutionName,
     reason: input.reason,
-    newValue: { role: input.role },
+    newValue: { role: input.role, institution: input.institutionName },
   });
+
   return session;
 }
 

@@ -232,18 +232,13 @@ function InstitutionDetail() {
       ) : null}
 
       {active === "users" ? (
-        <SimpleTable
-          columns={["Name", "Email", "Role", "Status", "Class teacher", "Joined"]}
-          rows={data.members.map((m) => [
-            m.profile?.full_name ?? "Unknown",
-            m.profile?.email ?? "—",
-            m.role,
-            m.status,
-            m.is_class_teacher ? "Yes" : "No",
-            new Date(m.created_at).toLocaleDateString(),
-          ])}
+        <MembersManager
+          institutionId={institutionId}
+          institutionName={inst.name}
+          members={data.members}
         />
       ) : null}
+
 
       {active === "students" ? (
         <SimpleTable
@@ -790,5 +785,240 @@ function ViewAsDialog({
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  );
+}
+
+const MEMBER_ROLES = [
+  { key: "admin", label: "Principal / Super Admin" },
+  { key: "exam_cell", label: "Staff / Management" },
+  { key: "hod", label: "Head of Department" },
+  { key: "faculty", label: "Teacher" },
+] as const;
+
+const MEMBER_STATUSES = ["active", "suspended", "deactivated"] as const;
+
+type MembershipPatch = {
+  role?: (typeof MEMBER_ROLES)[number]["key"];
+  status?: (typeof MEMBER_STATUSES)[number];
+  is_active?: boolean;
+  is_class_teacher?: boolean;
+};
+
+type MemberRecord = {
+  id: string;
+  user_id: string;
+  role: string;
+  status: string;
+  is_class_teacher: boolean;
+  designation: string | null;
+  created_at: string;
+  profile: { id: string; full_name: string; email: string } | null;
+};
+
+function viewAsKeyFor(member: MemberRecord) {
+  if (member.role === "admin") return "admin";
+  if (member.role === "exam_cell") return "staff";
+  if (member.role === "hod") return "principal";
+  return member.is_class_teacher ? "class_teacher" : "subject_teacher";
+}
+
+function MembersManager({
+  institutionId,
+  institutionName,
+  members,
+}: {
+  institutionId: string;
+  institutionName: string;
+  members: MemberRecord[];
+}) {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const [target, setTarget] = useState<MemberRecord | null>(null);
+  const [reason, setReason] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  async function patch(member: MemberRecord, patchValue: MembershipPatch, label: string) {
+    const { error } = await supabase.from("memberships").update(patchValue).eq("id", member.id);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    await logPlatformAudit({
+      action: "institution_user.updated",
+      institutionId,
+      targetType: "membership",
+      targetId: member.id,
+      targetLabel: member.profile?.full_name ?? member.user_id,
+      oldValue: { role: member.role, status: member.status, is_class_teacher: member.is_class_teacher },
+      newValue: patchValue,
+    });
+    await queryClient.invalidateQueries({ queryKey: ["platform-institution", institutionId] });
+    toast.success(label);
+  }
+
+  async function openAsUser() {
+    if (!target) return;
+    if (reason.trim().length < 5) {
+      toast.error("A reason is required before entering a user's account view.");
+      return;
+    }
+    setBusy(true);
+    try {
+      const roleKey = viewAsKeyFor(target);
+      await startViewAs({
+        institutionId,
+        institutionName,
+        role: roleKey,
+        roleLabel: VIEW_AS_ROLES.find((r) => r.key === roleKey)?.label ?? roleKey,
+        reason: reason.trim(),
+        userId: target.user_id,
+        userName: target.profile?.full_name ?? target.profile?.email ?? "Institution user",
+      });
+      navigate({ to: "/dashboard" });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not open that account");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <OwnerCard
+      title={`Institution users (${members.length})`}
+      description="Assign principals, staff, class teachers and subject teachers, change account status, or open the institution through any user's account."
+    >
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[54rem] text-sm">
+          <thead>
+            <tr className="border-b border-white/10 text-left text-xs uppercase tracking-[0.1em] text-slate-500">
+              {["User", "Role", "Class teacher", "Status", "Joined", ""].map((c) => (
+                <th key={c} className="py-2 pr-4 font-medium">
+                  {c}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-white/5">
+            {members.length === 0 ? (
+              <tr>
+                <td colSpan={6} className="py-6 text-center text-slate-500">
+                  No users in this institution yet.
+                </td>
+              </tr>
+            ) : (
+              members.map((m) => (
+                <tr key={m.id} className="text-slate-300">
+                  <td className="py-2.5 pr-4">
+                    <p className="font-medium text-slate-100">{m.profile?.full_name ?? "Unknown"}</p>
+                    <p className="text-xs text-slate-500">{m.profile?.email ?? "—"}</p>
+                  </td>
+                  <td className="py-2.5 pr-4">
+                    <select
+                      aria-label={`Role for ${m.profile?.full_name ?? "user"}`}
+                      value={m.role}
+                      onChange={(e) =>
+                        patch(
+                          m,
+                          { role: e.target.value as (typeof MEMBER_ROLES)[number]["key"] },
+                          "Role updated for this institution.",
+                        )
+                      }
+                      className="h-9 rounded-md border border-white/15 bg-slate-900 px-2 text-sm text-slate-100"
+                    >
+                      {MEMBER_ROLES.map((r) => (
+                        <option key={r.key} value={r.key}>
+                          {r.label}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                  <td className="py-2.5 pr-4">
+                    <Switch
+                      checked={m.is_class_teacher}
+                      onCheckedChange={(v) =>
+                        patch(
+                          m,
+                          { is_class_teacher: v },
+                          v ? "Marked as class teacher." : "Class teacher flag removed.",
+                        )
+                      }
+                      aria-label={`Class teacher for ${m.profile?.full_name ?? "user"}`}
+                    />
+                  </td>
+                  <td className="py-2.5 pr-4">
+                    <select
+                      aria-label={`Status for ${m.profile?.full_name ?? "user"}`}
+                      value={m.status}
+                      onChange={(e) =>
+                        patch(
+                          m,
+                          {
+                            status: e.target.value as (typeof MEMBER_STATUSES)[number],
+                            is_active: e.target.value === "active",
+                          },
+                          "Account status updated.",
+                        )
+                      }
+                      className="h-9 rounded-md border border-white/15 bg-slate-900 px-2 text-sm capitalize text-slate-100"
+                    >
+                      {MEMBER_STATUSES.map((s) => (
+                        <option key={s} value={s}>
+                          {s}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                  <td className="py-2.5 pr-4 text-xs text-slate-500">
+                    {new Date(m.created_at).toLocaleDateString()}
+                  </td>
+                  <td className="py-2.5">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="border-white/15 bg-white/5 text-slate-200"
+                      onClick={() => {
+                        setTarget(m);
+                        setReason("");
+                      }}
+                    >
+                      Open their account
+                    </Button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      <Dialog open={Boolean(target)} onOpenChange={(v) => (v ? null : setTarget(null))}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Open {target?.profile?.full_name ?? "this user"}'s account</DialogTitle>
+            <DialogDescription>
+              You enter {institutionName} with this user's role and screens. The session is audited and
+              a banner stays visible until you exit.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-2">
+            <Label htmlFor="open-reason">Reason</Label>
+            <Textarea
+              id="open-reason"
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              placeholder="Support request #1234 — verifying marks entry access"
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setTarget(null)}>
+              Cancel
+            </Button>
+            <Button onClick={openAsUser} disabled={busy}>
+              {busy ? "Opening…" : "Open account"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </OwnerCard>
   );
 }

@@ -299,9 +299,10 @@ function ViewAsBanner() {
     <div className="flex flex-wrap items-center gap-3 bg-amber-400 px-4 py-2 text-sm font-medium text-amber-950 sm:px-8">
       <ShieldCheck className="size-4" strokeWidth={2} />
       <span>
-        PLATFORM OWNER MODE — VIEWING AS {session.roleLabel.toUpperCase()} ·{" "}
-        {session.institutionName}
+        PLATFORM OWNER MODE — {session.userName ? `SIGNED INTO ${session.userName.toUpperCase()}'S VIEW · ` : ""}
+        {session.roleLabel.toUpperCase()} · {session.institutionName}
       </span>
+
       <Button
         size="sm"
         variant="outline"
