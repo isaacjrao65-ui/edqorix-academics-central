@@ -1857,6 +1857,7 @@ export type Database = {
       can_edit_marks: { Args: { _sheet: string }; Returns: boolean }
       can_manage: { Args: { _institution: string }; Returns: boolean }
       can_see_class: { Args: { _class: string }; Returns: boolean }
+      can_see_student: { Args: { _student: string }; Returns: boolean }
       has_inst_role: {
         Args: {
           _institution: string
