@@ -1004,6 +1004,14 @@ function MembersManager({
                     >
                       Open their account
                     </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="ml-2 text-slate-300"
+                      onClick={() => setResetTarget(m)}
+                    >
+                      Set password
+                    </Button>
                   </td>
                 </tr>
               ))
