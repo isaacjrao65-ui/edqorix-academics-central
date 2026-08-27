@@ -89,21 +89,30 @@ function PeoplePage() {
   async function assignToInstitution() {
     if (!assignTarget || !assignInstitution) return;
     setAssignBusy(true);
-    const { data, error } = await supabase
+    // One membership per user per institution: update the existing row when there is one.
+    const { data: existing } = await supabase
       .from("memberships")
-      .upsert(
-        {
-          institution_id: assignInstitution,
-          user_id: assignTarget.user_id,
-          role: assignRole,
-          is_class_teacher: assignClassTeacher,
-          is_active: true,
-          status: "active" as const,
-        },
-        { onConflict: "institution_id,user_id" },
-      )
       .select("id")
-      .single();
+      .eq("institution_id", assignInstitution)
+      .eq("user_id", assignTarget.user_id)
+      .maybeSingle();
+    const patch = {
+      role: assignRole,
+      is_class_teacher: assignClassTeacher,
+      is_active: true,
+      status: "active" as const,
+    };
+    const { data, error } = existing
+      ? await supabase.from("memberships").update(patch).eq("id", existing.id).select("id").single()
+      : await supabase
+          .from("memberships")
+          .insert({
+            institution_id: assignInstitution,
+            user_id: assignTarget.user_id,
+            ...patch,
+          })
+          .select("id")
+          .single();
     setAssignBusy(false);
     if (error) {
       toast.error(error.message);
