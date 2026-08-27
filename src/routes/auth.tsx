@@ -91,7 +91,13 @@ function AuthPage() {
       return;
     }
     if (data.session) {
+      void logSecurityEvent({
+        eventType: "sign_up",
+        email: email.toLowerCase(),
+        detail: `New account created${fullName ? ` for ${fullName}` : ""}`,
+      });
       await goAfterAuth();
+
     } else {
       setSentConfirmation(true);
       toast.success("Check your email to confirm your account.");
