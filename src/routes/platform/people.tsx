@@ -15,8 +15,27 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
-import { logPlatformAudit, usePlatformUsers } from "@/lib/platform";
+import { logPlatformAudit, usePlatformInstitutions, usePlatformUsers } from "@/lib/platform";
+
+type AssignRole = "admin" | "exam_cell" | "hod" | "faculty";
 
 const ROLE_LABELS: Record<string, string> = {
   admin: "Principal / Super Admin",
@@ -58,6 +77,50 @@ function PeoplePage() {
   const queryClient = useQueryClient();
   const { data: users = [], isLoading } = usePlatformUsers();
   const [q, setQ] = useState("");
+  const { data: institutions = [] } = usePlatformInstitutions();
+  const [assignTarget, setAssignTarget] = useState<
+    { user_id: string; full_name: string; email: string; institution_id: string } | null
+  >(null);
+  const [assignInstitution, setAssignInstitution] = useState("");
+  const [assignRole, setAssignRole] = useState<AssignRole>("faculty");
+  const [assignClassTeacher, setAssignClassTeacher] = useState(false);
+  const [assignBusy, setAssignBusy] = useState(false);
+
+  async function assignToInstitution() {
+    if (!assignTarget || !assignInstitution) return;
+    setAssignBusy(true);
+    const { data, error } = await supabase
+      .from("memberships")
+      .upsert(
+        {
+          institution_id: assignInstitution,
+          user_id: assignTarget.user_id,
+          role: assignRole,
+          is_class_teacher: assignClassTeacher,
+          is_active: true,
+          status: "active" as const,
+        },
+        { onConflict: "institution_id,user_id" },
+      )
+      .select("id")
+      .single();
+    setAssignBusy(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    await logPlatformAudit({
+      action: "user.institution_assigned",
+      institutionId: assignInstitution,
+      targetType: "membership",
+      targetId: data?.id ?? assignTarget.user_id,
+      targetLabel: assignTarget.full_name || assignTarget.email,
+      newValue: { role: assignRole, is_class_teacher: assignClassTeacher },
+    });
+    await queryClient.invalidateQueries({ queryKey: ["platform-users"] });
+    toast.success(`${assignTarget.full_name} added as ${ROLE_LABELS[assignRole]}.`);
+    setAssignTarget(null);
+  }
 
   const rows = useMemo(() => {
     const needle = q.trim().toLowerCase();
