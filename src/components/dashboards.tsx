@@ -564,22 +564,28 @@ export function SubjectTeacherDashboard() {
       </div>
 
       <section className="rounded-xl border border-border bg-card">
-        <header className="border-b border-border px-5 py-4">
+        <header className="border-b border-border px-4 py-4 sm:px-5">
           <h2 className="font-display text-sm font-semibold">My assignments</h2>
         </header>
-        <ul className="max-h-80 divide-y divide-border overflow-y-auto">
+        <ul className="max-h-[26rem] space-y-3 overflow-y-auto scroll-smooth overscroll-contain p-3 sm:max-h-80 sm:space-y-0 sm:divide-y sm:divide-border sm:p-0 [-webkit-overflow-scrolling:touch]">
           {mine.map((a) => {
             const cls = classes.find((c) => c.id === a.class_id);
             const course = courses.find((c) => c.id === a.course_id);
             return (
-              <li key={a.id} className="flex flex-wrap items-center gap-3 px-5 py-3.5 text-sm">
-                <Badge variant="secondary">{cls ? classLabel(cls) : "Class"}</Badge>
+              <li
+                key={a.id}
+                className="grid gap-1.5 rounded-lg border border-border bg-background p-4 text-sm sm:flex sm:flex-wrap sm:items-center sm:gap-3 sm:rounded-none sm:border-0 sm:bg-transparent sm:px-5 sm:py-3.5"
+              >
+                <Badge variant="secondary" className="w-fit">
+                  {cls ? classLabel(cls) : "Class"}
+                </Badge>
                 <span className="font-medium">{course?.code}</span>
                 <span className="text-muted-foreground">{course?.title}</span>
               </li>
             );
           })}
         </ul>
+
       </section>
 
       <SheetList
