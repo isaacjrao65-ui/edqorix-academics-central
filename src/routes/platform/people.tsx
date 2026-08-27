@@ -10,11 +10,21 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { logPlatformAudit, usePlatformUsers } from "@/lib/platform";
+
+const ROLE_LABELS: Record<string, string> = {
+  admin: "Principal / Super Admin",
+  exam_cell: "Staff / Management",
+  hod: "HOD",
+  faculty: "Subject Teacher",
+  unassigned: "No institution yet",
+};
 
 const ROLE_FILTERS = [
   { key: "admin", label: "Admins" },
@@ -86,6 +96,59 @@ function PeoplePage() {
     toast.success(`${user} is now ${next}.`);
   }
 
+  async function setRole(
+    u: { membership_id: string; full_name: string; institution_id: string; role: string },
+    next: "admin" | "exam_cell" | "hod" | "faculty",
+  ) {
+    const { error } = await supabase
+      .from("memberships")
+      .update({ role: next })
+      .eq("id", u.membership_id);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    await logPlatformAudit({
+      action: "user.role_changed",
+      institutionId: u.institution_id,
+      targetType: "membership",
+      targetId: u.membership_id,
+      targetLabel: u.full_name,
+      oldValue: { role: u.role },
+      newValue: { role: next },
+    });
+    await queryClient.invalidateQueries({ queryKey: ["platform-users"] });
+    toast.success(`${u.full_name} is now ${ROLE_LABELS[next]}.`);
+  }
+
+  async function toggleClassTeacher(u: {
+    membership_id: string;
+    full_name: string;
+    institution_id: string;
+    is_class_teacher: boolean;
+  }) {
+    const next = !u.is_class_teacher;
+    const { error } = await supabase
+      .from("memberships")
+      .update({ is_class_teacher: next })
+      .eq("id", u.membership_id);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    await logPlatformAudit({
+      action: next ? "user.class_teacher_assigned" : "user.class_teacher_removed",
+      institutionId: u.institution_id,
+      targetType: "membership",
+      targetId: u.membership_id,
+      targetLabel: u.full_name,
+      oldValue: { is_class_teacher: u.is_class_teacher },
+      newValue: { is_class_teacher: next },
+    });
+    await queryClient.invalidateQueries({ queryKey: ["platform-users"] });
+    toast.success(next ? `${u.full_name} is now a class teacher.` : `Class teacher role removed.`);
+  }
+
   async function resetPassword(email: string) {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/reset-password`,
@@ -142,7 +205,7 @@ function PeoplePage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-white/10 text-left text-xs uppercase tracking-[0.1em] text-slate-500">
-                {["Name", "Email", "Institution", "Role", "Status", "Created", ""].map((c) => (
+                {["Name", "Email", "Institution", "Role", "Status", "Last login", ""].map((c) => (
                   <th key={c} className="py-2 pr-4 font-medium">
                     {c}
                   </th>
@@ -177,12 +240,17 @@ function PeoplePage() {
                         {u.institution}
                       </Link>
                     </td>
-                    <td className="py-2.5 pr-4 capitalize">{u.role.replace(/_/g, " ")}</td>
+                    <td className="py-2.5 pr-4">
+                      {ROLE_LABELS[u.role] ?? u.role.replace(/_/g, " ")}
+                      {u.is_class_teacher ? (
+                        <span className="ml-2 text-xs text-cyan-300">· class teacher</span>
+                      ) : null}
+                    </td>
                     <td className="py-2.5 pr-4">
                       <OwnerBadge value={u.status} />
                     </td>
                     <td className="py-2.5 pr-4 text-xs text-slate-500">
-                      {new Date(u.created_at).toLocaleDateString()}
+                      {u.last_login_at ? new Date(u.last_login_at).toLocaleString() : "Never"}
                     </td>
                     <td className="py-2.5">
                       <DropdownMenu>
@@ -191,8 +259,28 @@ function PeoplePage() {
                             <MoreHorizontal className="size-4" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-48">
-                          {u.status !== "active" ? (
+                        <DropdownMenuContent align="end" className="w-56">
+                          {u.institution_id ? (
+                            <>
+                              <DropdownMenuLabel className="text-xs text-slate-500">
+                                Assign role
+                              </DropdownMenuLabel>
+                              {(["admin", "exam_cell", "hod", "faculty"] as const).map((r) => (
+                                <DropdownMenuItem
+                                  key={r}
+                                  disabled={u.role === r}
+                                  onClick={() => setRole(u, r)}
+                                >
+                                  {ROLE_LABELS[r]}
+                                </DropdownMenuItem>
+                              ))}
+                              <DropdownMenuItem onClick={() => toggleClassTeacher(u)}>
+                                {u.is_class_teacher ? "Remove class teacher" : "Make class teacher"}
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                            </>
+                          ) : null}
+                          {u.institution_id && u.status !== "active" ? (
                             <DropdownMenuItem
                               onClick={() =>
                                 setStatus(u.membership_id, u.full_name, u.institution_id, "active", u.status)
@@ -201,7 +289,7 @@ function PeoplePage() {
                               Activate
                             </DropdownMenuItem>
                           ) : null}
-                          {u.status !== "suspended" ? (
+                          {u.institution_id && u.status !== "suspended" ? (
                             <DropdownMenuItem
                               onClick={() =>
                                 setStatus(u.membership_id, u.full_name, u.institution_id, "suspended", u.status)
@@ -210,7 +298,7 @@ function PeoplePage() {
                               Suspend
                             </DropdownMenuItem>
                           ) : null}
-                          {u.status !== "deactivated" ? (
+                          {u.institution_id && u.status !== "deactivated" ? (
                             <DropdownMenuItem
                               onClick={() =>
                                 setStatus(u.membership_id, u.full_name, u.institution_id, "deactivated", u.status)
@@ -224,6 +312,7 @@ function PeoplePage() {
                               Send password reset
                             </DropdownMenuItem>
                           ) : null}
+                          {u.institution_id ? (
                           <DropdownMenuItem
                             onClick={() =>
                               navigate({
@@ -235,6 +324,11 @@ function PeoplePage() {
                           >
                             View permissions
                           </DropdownMenuItem>
+                          ) : (
+                            <DropdownMenuItem onClick={() => navigate({ to: "/platform/institutions" })}>
+                              Add to an institution
+                            </DropdownMenuItem>
+                          )}
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </td>
