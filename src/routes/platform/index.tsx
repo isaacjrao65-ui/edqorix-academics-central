@@ -245,6 +245,37 @@ function PlatformDashboard() {
         </OwnerCard>
       </div>
 
+      <OwnerCard
+        title="Recent logins"
+        actions={
+          <Button asChild variant="outline" className="border-white/15 bg-white/5 text-slate-200">
+            <Link to="/platform/security">Security log</Link>
+          </Button>
+        }
+      >
+        {logins.length === 0 ? (
+          <p className="text-sm text-slate-500">No sign-ins recorded yet.</p>
+        ) : (
+          <ul className="max-h-80 divide-y divide-white/5 overflow-y-auto overscroll-contain pr-1 [-webkit-overflow-scrolling:touch]">
+            {logins.map((row) => (
+              <li
+                key={row.id}
+                className="flex flex-wrap items-center gap-x-3 gap-y-1 py-2.5 text-sm"
+              >
+                <span className="font-medium text-slate-200">{row.fullName ?? "Unknown user"}</span>
+                <span className="text-slate-400">{row.email ?? "—"}</span>
+                {row.event_type === "sign_up" ? (
+                  <OwnerBadge value="new account" />
+                ) : null}
+                <span className="ml-auto text-xs text-slate-500">
+                  {new Date(row.created_at).toLocaleString()}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </OwnerCard>
+
       <OwnerCard title="Recent platform activity">
         {audit.length === 0 ? (
           <p className="text-sm text-slate-500">No platform-level actions recorded yet.</p>
