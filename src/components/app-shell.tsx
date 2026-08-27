@@ -233,6 +233,50 @@ function AccountMenu() {
   );
 }
 
+const MOBILE_TABS: { to: string; label: string; icon: typeof LayoutDashboard }[] = [
+  { to: "/dashboard", label: "Home", icon: LayoutDashboard },
+  { to: "/students", label: "Students", icon: GraduationCap },
+  { to: "/exams", label: "Exams", icon: ClipboardList },
+  { to: "/marks", label: "Marks", icon: PenSquare },
+];
+
+function MobileTabBar({ onOpenMenu }: { onOpenMenu: () => void }) {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  return (
+    <nav
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
+      aria-label="Primary mobile navigation"
+    >
+      <div className="grid grid-cols-5">
+        {MOBILE_TABS.map((tab) => {
+          const active = pathname === tab.to || pathname.startsWith(`${tab.to}/`);
+          return (
+            <Link
+              key={tab.to}
+              to={tab.to}
+              className={cn(
+                "flex flex-col items-center gap-1 py-2.5 text-[0.68rem] font-medium transition-colors",
+                active ? "text-primary" : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              <tab.icon className="size-5" strokeWidth={active ? 2.25 : 1.75} />
+              {tab.label}
+            </Link>
+          );
+        })}
+        <button
+          type="button"
+          onClick={onOpenMenu}
+          className="flex flex-col items-center gap-1 py-2.5 text-[0.68rem] font-medium text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <Menu className="size-5" strokeWidth={1.75} />
+          More
+        </button>
+      </div>
+    </nav>
+  );
+}
+
 function ViewAsBanner() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -309,10 +353,10 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
 
         </header>
-        <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-8 sm:py-10">
+        <main className="mx-auto w-full max-w-7xl px-4 py-8 pb-24 sm:px-8 sm:py-10 lg:pb-10">
           <InstitutionGate>{children}</InstitutionGate>
         </main>
-
+        <MobileTabBar onOpenMenu={() => setOpen(true)} />
       </div>
     </div>
   );
