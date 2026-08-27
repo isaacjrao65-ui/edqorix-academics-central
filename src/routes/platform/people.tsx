@@ -396,11 +396,28 @@ function PeoplePage() {
                           >
                             View permissions
                           </DropdownMenuItem>
-                          ) : (
-                            <DropdownMenuItem onClick={() => navigate({ to: "/platform/institutions" })}>
-                              Add to an institution
-                            </DropdownMenuItem>
-                          )}
+                          ) : null}
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setAssignTarget({
+                                user_id: u.user_id,
+                                full_name: u.full_name,
+                                email: u.email,
+                                institution_id: u.institution_id,
+                              });
+                              setAssignInstitution(u.institution_id || "");
+                              setAssignRole(
+                                (["admin", "exam_cell", "hod", "faculty"] as AssignRole[]).includes(
+                                  u.role as AssignRole,
+                                )
+                                  ? (u.role as AssignRole)
+                                  : "faculty",
+                              );
+                              setAssignClassTeacher(u.is_class_teacher);
+                            }}
+                          >
+                            {u.institution_id ? "Move / reassign institution" : "Assign to institution"}
+                          </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </td>
