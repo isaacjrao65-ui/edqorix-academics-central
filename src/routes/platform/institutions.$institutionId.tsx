@@ -25,6 +25,10 @@ import {
   useFeatureFlags,
   usePlans,
 } from "@/lib/platform";
+import {
+  createInstitutionUser,
+  setInstitutionUserPassword,
+} from "@/lib/platform-users.functions";
 import { startViewAs } from "@/lib/view-as";
 
 const TABS = [
