@@ -25,6 +25,10 @@ import {
   useFeatureFlags,
   usePlans,
 } from "@/lib/platform";
+import {
+  createInstitutionUser,
+  setInstitutionUserPassword,
+} from "@/lib/platform-users.functions";
 import { startViewAs } from "@/lib/view-as";
 
 const TABS = [
@@ -834,6 +838,8 @@ function MembersManager({
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [target, setTarget] = useState<MemberRecord | null>(null);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [resetTarget, setResetTarget] = useState<MemberRecord | null>(null);
   const [reason, setReason] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -887,6 +893,25 @@ function MembersManager({
       title={`Institution users (${members.length})`}
       description="Assign principals, staff, class teachers and subject teachers, change account status, or open the institution through any user's account."
     >
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <p className="text-xs text-slate-500">
+          Create login IDs directly — the account can sign in immediately with the password you set.
+        </p>
+        <Button size="sm" onClick={() => setCreateOpen(true)}>
+          Create new user ID
+        </Button>
+      </div>
+      <CreateUserDialog
+        open={createOpen}
+        onOpenChange={setCreateOpen}
+        institutionId={institutionId}
+        institutionName={institutionName}
+      />
+      <ResetPasswordDialog
+        member={resetTarget}
+        institutionId={institutionId}
+        onClose={() => setResetTarget(null)}
+      />
       <div className="overflow-x-auto">
         <table className="w-full min-w-[54rem] text-sm">
           <thead>
@@ -983,6 +1008,14 @@ function MembersManager({
                     >
                       Open their account
                     </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="ml-2 text-slate-300"
+                      onClick={() => setResetTarget(m)}
+                    >
+                      Set password
+                    </Button>
                   </td>
                 </tr>
               ))
@@ -1020,5 +1053,194 @@ function MembersManager({
         </DialogContent>
       </Dialog>
     </OwnerCard>
+  );
+}
+
+function CreateUserDialog({
+  open,
+  onOpenChange,
+  institutionId,
+  institutionName,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  institutionId: string;
+  institutionName: string;
+}) {
+  const queryClient = useQueryClient();
+  const [busy, setBusy] = useState(false);
+  const [form, setForm] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    designation: "",
+    role: "faculty" as (typeof MEMBER_ROLES)[number]["key"],
+    isClassTeacher: false,
+  });
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setBusy(true);
+    try {
+      const res = await createInstitutionUser({
+        data: {
+          institutionId,
+          email: form.email.trim(),
+          password: form.password,
+          fullName: form.fullName.trim(),
+          designation: form.designation.trim() || undefined,
+          role: form.role,
+          isClassTeacher: form.isClassTeacher,
+        },
+      });
+      await logPlatformAudit({
+        action: "institution_user.created",
+        institutionId,
+        targetType: "user",
+        targetId: res.userId,
+        targetLabel: `${form.fullName} (${form.email})`,
+        newValue: { role: form.role, institution: institutionName, reused: res.reused },
+      });
+      await queryClient.invalidateQueries({ queryKey: ["platform-institution", institutionId] });
+      toast.success(
+        res.reused
+          ? "Existing account linked to this institution with the new password."
+          : "Account created and ready to sign in.",
+      );
+      setForm({ fullName: "", email: "", password: "", designation: "", role: "faculty", isClassTeacher: false });
+      onOpenChange(false);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not create that account");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle>Create user ID</DialogTitle>
+          <DialogDescription>
+            Creates a confirmed login for {institutionName} as principal, staff, HOD or teacher.
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={submit} className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="space-y-2 sm:col-span-2">
+              <Label htmlFor="cu-name">Full name</Label>
+              <Input id="cu-name" required value={form.fullName} onChange={(e) => setForm((f) => ({ ...f, fullName: e.target.value }))} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="cu-email">Email (login ID)</Label>
+              <Input id="cu-email" type="email" required value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="cu-pass">Temporary password</Label>
+              <Input id="cu-pass" required minLength={8} value={form.password} onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="cu-role">Role</Label>
+              <select
+                id="cu-role"
+                value={form.role}
+                onChange={(e) => setForm((f) => ({ ...f, role: e.target.value as typeof f.role }))}
+                className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm"
+              >
+                {MEMBER_ROLES.map((r) => (
+                  <option key={r.key} value={r.key}>
+                    {r.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="cu-desig">Designation (optional)</Label>
+              <Input id="cu-desig" value={form.designation} onChange={(e) => setForm((f) => ({ ...f, designation: e.target.value }))} />
+            </div>
+            <div className="flex items-center gap-3 sm:col-span-2">
+              <Switch
+                id="cu-ct"
+                checked={form.isClassTeacher}
+                onCheckedChange={(v) => setForm((f) => ({ ...f, isClassTeacher: v }))}
+              />
+              <Label htmlFor="cu-ct">Also a class teacher</Label>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={busy}>
+              {busy ? "Creating…" : "Create user"}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function ResetPasswordDialog({
+  member,
+  institutionId,
+  onClose,
+}: {
+  member: MemberRecord | null;
+  institutionId: string;
+  onClose: () => void;
+}) {
+  const [password, setPassword] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  async function submit() {
+    if (!member) return;
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters.");
+      return;
+    }
+    setBusy(true);
+    try {
+      await setInstitutionUserPassword({ data: { userId: member.user_id, password } });
+      await logPlatformAudit({
+        action: "institution_user.password_reset",
+        institutionId,
+        targetType: "user",
+        targetId: member.user_id,
+        targetLabel: member.profile?.full_name ?? member.user_id,
+      });
+      toast.success("Password updated.");
+      setPassword("");
+      onClose();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not update the password");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <Dialog open={Boolean(member)} onOpenChange={(v) => (!v ? onClose() : null)}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Set password</DialogTitle>
+          <DialogDescription>
+            Sets a new sign-in password for {member?.profile?.full_name ?? "this user"}.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-2">
+          <Label htmlFor="rp-pass">New password</Label>
+          <Input id="rp-pass" minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} />
+        </div>
+        <DialogFooter>
+          <Button variant="ghost" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button onClick={submit} disabled={busy}>
+            {busy ? "Saving…" : "Save password"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
