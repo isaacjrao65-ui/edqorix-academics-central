@@ -38,13 +38,18 @@ const bulkSchema = z.object({
     .max(200),
 });
 
-type RpcClient = { rpc: (fn: string, args?: Record<string, unknown>) => Promise<{ data: unknown }> };
-
 /** Platform owners may provision anywhere; institution admins only inside their own institution. */
-async function assertCanProvision(client: RpcClient, institutionId: string) {
-  const { data: isOwner } = await client.rpc("is_platform_admin");
+async function assertCanProvision(
+  client: { rpc: (fn: never, args?: never) => Promise<{ data: unknown }> },
+  institutionId: string,
+) {
+  const rpc = client.rpc as unknown as (
+    fn: string,
+    args?: Record<string, unknown>,
+  ) => Promise<{ data: unknown }>;
+  const { data: isOwner } = await rpc("is_platform_admin");
   if (isOwner === true) return;
-  const { data: isAdmin } = await client.rpc("is_admin", { _institution: institutionId });
+  const { data: isAdmin } = await rpc("is_admin", { _institution: institutionId });
   if (isAdmin === true) return;
   throw new Error("Only the platform owner or an institution administrator can manage accounts.");
 }
