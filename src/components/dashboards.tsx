@@ -369,10 +369,10 @@ export function ClassTeacherDashboard({ myClasses }: { myClasses: ClassRow[] }) 
 
   const classAssignments = assignments.filter((a) => a.class_id === primary?.id);
   const classCourseIds = new Set(classAssignments.map((a) => a.course_id));
-  const classSheets = sheets.filter((s) => {
-    const code = courses.find((c) => classCourseIds.has(c.id));
-    return code ? classCourseIds.size > 0 : false;
-  });
+  const classExamIds = new Set(
+    exams.filter((e) => classCourseIds.has(e.course_id)).map((e) => e.id),
+  );
+  const classSheets = sheets.filter((s) => classExamIds.has(s.exam_id));
 
   if (!primary) {
     return (
