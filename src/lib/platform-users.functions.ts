@@ -20,6 +20,24 @@ const passwordSchema = z.object({
   password: z.string().min(8),
 });
 
+const bulkSchema = z.object({
+  institutionId: z.string().uuid(),
+  rows: z
+    .array(
+      z.object({
+        line: z.number(),
+        fullName: z.string().min(2),
+        email: z.string().email(),
+        password: z.string().min(8),
+        role: roleEnum,
+        designation: z.string().optional(),
+        isClassTeacher: z.boolean().optional(),
+      }),
+    )
+    .min(1)
+    .max(200),
+});
+
 export const createInstitutionUser = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => createSchema.parse(data))
@@ -27,69 +45,81 @@ export const createInstitutionUser = createServerFn({ method: "POST" })
     const { data: isOwner, error: ownerError } = await context.supabase.rpc("is_platform_admin");
     if (ownerError || !isOwner) throw new Error("Only the platform owner can create accounts.");
 
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const email = data.email.trim().toLowerCase();
+    const { provisionInstitutionUser } = await import("./platform-users.server");
+    return provisionInstitutionUser(data);
+  });
 
-    let userId: string | null = null;
-    const created = await supabaseAdmin.auth.admin.createUser({
-      email,
-      password: data.password,
-      email_confirm: true,
-      user_metadata: { full_name: data.fullName },
-    });
+export const bulkCreateInstitutionUsers = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) => bulkSchema.parse(data))
+  .handler(async ({ data, context }) => {
+    const { data: isOwner, error: ownerError } = await context.supabase.rpc("is_platform_admin");
+    if (ownerError || !isOwner) throw new Error("Only the platform owner can create accounts.");
 
-    if (created.error) {
-      // Account may already exist — reuse it and update the password.
-      const { data: existing } = await supabaseAdmin
-        .from("profiles")
-        .select("id")
-        .eq("email", email)
-        .maybeSingle();
-      if (!existing) throw new Error(created.error.message);
-      userId = existing.id;
-      await supabaseAdmin.auth.admin.updateUserById(userId, { password: data.password });
-    } else {
-      userId = created.data.user?.id ?? null;
+    const { provisionInstitutionUser, logPlatformAuditServer } = await import(
+      "./platform-users.server"
+    );
+
+    const results: {
+      line: number;
+      email: string;
+      fullName: string;
+      role: string;
+      status: "created" | "updated" | "failed";
+      message?: string;
+    }[] = [];
+
+    for (const row of data.rows) {
+      try {
+        const res = await provisionInstitutionUser({
+          institutionId: data.institutionId,
+          email: row.email,
+          password: row.password,
+          fullName: row.fullName,
+          designation: row.designation,
+          role: row.role,
+          isClassTeacher: row.isClassTeacher,
+        });
+        await logPlatformAuditServer({
+          actorId: context.userId,
+          action: res.reused ? "institution_user.bulk_updated" : "institution_user.bulk_created",
+          institutionId: data.institutionId,
+          targetType: "user",
+          targetId: res.userId,
+          targetLabel: `${row.fullName} (${res.email})`,
+          reason: "CSV bulk import",
+          newValue: { role: row.role, line: row.line, is_class_teacher: row.isClassTeacher ?? false },
+        });
+        results.push({
+          line: row.line,
+          email: res.email,
+          fullName: row.fullName,
+          role: row.role,
+          status: res.reused ? "updated" : "created",
+        });
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Unknown error";
+        await logPlatformAuditServer({
+          actorId: context.userId,
+          action: "institution_user.bulk_failed",
+          institutionId: data.institutionId,
+          targetType: "user",
+          targetLabel: `${row.fullName} (${row.email})`,
+          reason: "CSV bulk import",
+          newValue: { role: row.role, line: row.line, error: message },
+        });
+        results.push({
+          line: row.line,
+          email: row.email,
+          fullName: row.fullName,
+          role: row.role,
+          status: "failed",
+          message,
+        });
+      }
     }
 
-    if (!userId) throw new Error("Could not create the account.");
-
-    await supabaseAdmin
-      .from("profiles")
-      .upsert(
-        { id: userId, full_name: data.fullName, email, designation: data.designation ?? null },
-        { onConflict: "id" },
-      );
-
-    const { data: existingMember } = await supabaseAdmin
-      .from("memberships")
-      .select("id")
-      .eq("institution_id", data.institutionId)
-      .eq("user_id", userId)
-      .maybeSingle();
-
-    const payload = {
-      institution_id: data.institutionId,
-      user_id: userId,
-      role: data.role,
-      status: "active" as const,
-      is_active: true,
-      is_class_teacher: data.isClassTeacher ?? false,
-      designation: data.designation ?? null,
-    };
-
-    if (existingMember) {
-      const { error } = await supabaseAdmin
-        .from("memberships")
-        .update(payload)
-        .eq("id", existingMember.id);
-      if (error) throw new Error(error.message);
-    } else {
-      const { error } = await supabaseAdmin.from("memberships").insert(payload);
-      if (error) throw new Error(error.message);
-    }
-
-    return { userId, email, reused: Boolean(created.error) };
+    return { results };
   });
 
 export const setInstitutionUserPassword = createServerFn({ method: "POST" })

@@ -205,10 +205,13 @@ export function PlatformShell({ children }: { children: ReactNode }) {
                   <Menu className="size-5" strokeWidth={1.75} />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-72 border-white/10 bg-slate-950 px-4 py-6">
+              <SheetContent
+                side="left"
+                className="flex h-full w-72 flex-col overflow-hidden border-white/10 bg-slate-950 px-4 py-6"
+              >
                 <SheetTitle className="sr-only">Platform navigation</SheetTitle>
                 <OwnerBrand />
-                <div className="mt-8 overflow-y-auto">
+                <div className="mt-8 min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1 [-webkit-overflow-scrolling:touch]">
                   <NavList onNavigate={() => setOpen(false)} />
                 </div>
               </SheetContent>
