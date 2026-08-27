@@ -4,6 +4,7 @@ import { Search, ShieldAlert, UserCog } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
+import { BulkImportUsers } from "@/components/bulk-import-users";
 import { PageHeader, EmptyState } from "@/components/page-header";
 import { ReasonDialog } from "@/components/reason-dialog";
 import { Badge } from "@/components/ui/badge";
@@ -53,7 +54,7 @@ const STATUS_VARIANT: Record<string, "default" | "secondary" | "destructive"> = 
 };
 
 function UsersPage() {
-  const { institutionId, isAdmin, canManage } = useInstitution();
+  const { institutionId, institutionName, isAdmin, canManage } = useInstitution();
   const queryClient = useQueryClient();
   const { data: members = [], isLoading } = useMembers(institutionId);
   const { data: roles = [] } = useRoles(institutionId);
@@ -171,6 +172,11 @@ function UsersPage() {
       <PageHeader
         title="Users & access"
         description="Every staff account in this institution — assign roles, designations, class ownership and account status. Students never receive logins."
+        actions={
+          isAdmin ? (
+            <BulkImportUsers institutionId={institutionId} institutionName={institutionName} />
+          ) : null
+        }
       />
 
       <div className="flex flex-wrap items-center gap-3">
