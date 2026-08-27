@@ -347,26 +347,40 @@ export type PlatformUser = {
   institution: string;
   created_at: string;
   membership_id: string;
+  last_login_at: string | null;
 };
 
 export function usePlatformUsers() {
   return useQuery({
     queryKey: ["platform-users"],
+    refetchInterval: 60_000,
     queryFn: async (): Promise<PlatformUser[]> => {
-      const [{ data: members, error }, { data: profiles }, { data: insts }] = await Promise.all([
-        supabase
-          .from("memberships")
-          .select(
-            "id, user_id, role, status, is_active, is_class_teacher, institution_id, created_at",
-          )
-          .order("created_at", { ascending: false }),
-        supabase.from("profiles").select("id, full_name, email"),
-        supabase.from("institutions").select("id, name"),
-      ]);
+      const [{ data: members, error }, { data: profiles }, { data: insts }, { data: logins }] =
+        await Promise.all([
+          supabase
+            .from("memberships")
+            .select(
+              "id, user_id, role, status, is_active, is_class_teacher, institution_id, created_at",
+            )
+            .order("created_at", { ascending: false }),
+          supabase.from("profiles").select("id, full_name, email, created_at"),
+          supabase.from("institutions").select("id, name"),
+          supabase
+            .from("security_events")
+            .select("user_id, created_at")
+            .in("event_type", ["sign_in", "sign_up"])
+            .order("created_at", { ascending: false })
+            .limit(1000),
+        ]);
       if (error) throw error;
       const p = new Map((profiles ?? []).map((r) => [r.id, r]));
       const i = new Map((insts ?? []).map((r) => [r.id, r.name]));
-      return (members ?? []).map((m) => ({
+      const lastLogin = new Map<string, string>();
+      for (const l of logins ?? []) {
+        if (l.user_id && !lastLogin.has(l.user_id)) lastLogin.set(l.user_id, l.created_at);
+      }
+
+      const rows: PlatformUser[] = (members ?? []).map((m) => ({
         membership_id: m.id,
         user_id: m.user_id,
         full_name: p.get(m.user_id)?.full_name ?? "Unknown",
@@ -378,10 +392,34 @@ export function usePlatformUsers() {
         institution_id: m.institution_id,
         institution: i.get(m.institution_id) ?? "—",
         created_at: m.created_at,
+        last_login_at: lastLogin.get(m.user_id) ?? null,
       }));
+
+      // Anyone who has signed in but has no institution membership yet still shows up here,
+      // so the owner can place them straight away.
+      const placed = new Set(rows.map((r) => r.user_id));
+      for (const prof of profiles ?? []) {
+        if (placed.has(prof.id)) continue;
+        rows.push({
+          membership_id: `profile:${prof.id}`,
+          user_id: prof.id,
+          full_name: prof.full_name || "Unknown",
+          email: prof.email ?? "",
+          role: "unassigned",
+          status: "unassigned",
+          is_active: false,
+          is_class_teacher: false,
+          institution_id: "",
+          institution: "No institution",
+          created_at: prof.created_at,
+          last_login_at: lastLogin.get(prof.id) ?? null,
+        });
+      }
+      return rows;
     },
   });
 }
+
 
 export function useGlobalUsage() {
   return useQuery({
