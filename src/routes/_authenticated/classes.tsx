@@ -115,7 +115,7 @@ function ClassesPage() {
         institutionId: institutionId as string,
         action: "class.class_teacher.change",
         entityType: "class",
-        entityId: before?.id,
+        entityId: before?.id ?? null,
         description: `Class teacher for ${before ? classLabel(before) : "class"} set to ${nameOf(teacherId)}`,
         oldValue: { class_teacher_id: before?.class_teacher_id ?? null },
         newValue: { class_teacher_id: teacherId },
