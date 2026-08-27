@@ -177,7 +177,7 @@ function AuditPanel({ institutionId, enabled }: { institutionId: string | null; 
       {entries.length === 0 ? (
         <p className="px-5 py-6 text-sm text-muted-foreground">No activity recorded yet.</p>
       ) : (
-        <ul className="divide-y divide-border">
+        <ul className="max-h-80 divide-y divide-border overflow-y-auto">
           {entries.map((entry) => (
             <li key={entry.id} className="px-5 py-3.5">
               <p className="text-sm">{entry.description ?? entry.action}</p>
