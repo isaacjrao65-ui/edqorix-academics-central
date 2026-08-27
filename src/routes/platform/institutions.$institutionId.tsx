@@ -232,18 +232,13 @@ function InstitutionDetail() {
       ) : null}
 
       {active === "users" ? (
-        <SimpleTable
-          columns={["Name", "Email", "Role", "Status", "Class teacher", "Joined"]}
-          rows={data.members.map((m) => [
-            m.profile?.full_name ?? "Unknown",
-            m.profile?.email ?? "—",
-            m.role,
-            m.status,
-            m.is_class_teacher ? "Yes" : "No",
-            new Date(m.created_at).toLocaleDateString(),
-          ])}
+        <MembersManager
+          institutionId={institutionId}
+          institutionName={inst.name}
+          members={data.members}
         />
       ) : null}
+
 
       {active === "students" ? (
         <SimpleTable
