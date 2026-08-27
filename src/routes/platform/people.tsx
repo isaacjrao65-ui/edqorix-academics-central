@@ -89,21 +89,30 @@ function PeoplePage() {
   async function assignToInstitution() {
     if (!assignTarget || !assignInstitution) return;
     setAssignBusy(true);
-    const { data, error } = await supabase
+    // One membership per user per institution: update the existing row when there is one.
+    const { data: existing } = await supabase
       .from("memberships")
-      .upsert(
-        {
-          institution_id: assignInstitution,
-          user_id: assignTarget.user_id,
-          role: assignRole,
-          is_class_teacher: assignClassTeacher,
-          is_active: true,
-          status: "active" as const,
-        },
-        { onConflict: "institution_id,user_id" },
-      )
       .select("id")
-      .single();
+      .eq("institution_id", assignInstitution)
+      .eq("user_id", assignTarget.user_id)
+      .maybeSingle();
+    const patch = {
+      role: assignRole,
+      is_class_teacher: assignClassTeacher,
+      is_active: true,
+      status: "active" as const,
+    };
+    const { data, error } = existing
+      ? await supabase.from("memberships").update(patch).eq("id", existing.id).select("id").single()
+      : await supabase
+          .from("memberships")
+          .insert({
+            institution_id: assignInstitution,
+            user_id: assignTarget.user_id,
+            ...patch,
+          })
+          .select("id")
+          .single();
     setAssignBusy(false);
     if (error) {
       toast.error(error.message);
@@ -387,11 +396,28 @@ function PeoplePage() {
                           >
                             View permissions
                           </DropdownMenuItem>
-                          ) : (
-                            <DropdownMenuItem onClick={() => navigate({ to: "/platform/institutions" })}>
-                              Add to an institution
-                            </DropdownMenuItem>
-                          )}
+                          ) : null}
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setAssignTarget({
+                                user_id: u.user_id,
+                                full_name: u.full_name,
+                                email: u.email,
+                                institution_id: u.institution_id,
+                              });
+                              setAssignInstitution(u.institution_id || "");
+                              setAssignRole(
+                                (["admin", "exam_cell", "hod", "faculty"] as AssignRole[]).includes(
+                                  u.role as AssignRole,
+                                )
+                                  ? (u.role as AssignRole)
+                                  : "faculty",
+                              );
+                              setAssignClassTeacher(u.is_class_teacher);
+                            }}
+                          >
+                            {u.institution_id ? "Move / reassign institution" : "Assign to institution"}
+                          </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </td>
@@ -402,6 +428,66 @@ function PeoplePage() {
           </table>
         </div>
       </OwnerCard>
+
+      <Dialog open={!!assignTarget} onOpenChange={(open) => !open && setAssignTarget(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Assign to an institution</DialogTitle>
+            <DialogDescription>
+              {assignTarget
+                ? `Place ${assignTarget.full_name || assignTarget.email} in an institution and give them a role.`
+                : null}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>Institution</Label>
+              <Select value={assignInstitution} onValueChange={setAssignInstitution}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Choose institution" />
+                </SelectTrigger>
+                <SelectContent>
+                  {institutions.map((inst) => (
+                    <SelectItem key={inst.id} value={inst.id}>
+                      {inst.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Role</Label>
+              <Select value={assignRole} onValueChange={(v) => setAssignRole(v as AssignRole)}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {(["admin", "exam_cell", "hod", "faculty"] as AssignRole[]).map((r) => (
+                    <SelectItem key={r} value={r}>
+                      {ROLE_LABELS[r]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <label className="flex items-center gap-2 text-sm">
+              <Checkbox
+                checked={assignClassTeacher}
+                onCheckedChange={(v) => setAssignClassTeacher(v === true)}
+              />
+              Also mark as class teacher
+            </label>
+          </div>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setAssignTarget(null)}>
+              Cancel
+            </Button>
+            <Button onClick={assignToInstitution} disabled={!assignInstitution || assignBusy}>
+              {assignBusy ? "Saving…" : "Save assignment"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
