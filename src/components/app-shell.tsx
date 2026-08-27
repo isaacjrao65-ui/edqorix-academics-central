@@ -338,12 +338,13 @@ export function AppShell({ children }: { children: ReactNode }) {
                   <Menu className="size-5" strokeWidth={1.75} />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-72 bg-sidebar px-4 py-6">
+              <SheetContent side="left" className="flex h-full w-72 flex-col bg-sidebar px-4 py-6">
                 <SheetTitle className="sr-only">Navigation</SheetTitle>
                 <Brand />
-                <div className="mt-8">
+                <div className="mt-8 flex-1 overflow-y-auto overscroll-contain [-webkit-overflow-scrolling:touch]">
                   <NavList onNavigate={() => setOpen(false)} />
                 </div>
+                <p className="px-3 text-xs text-muted-foreground">Staff access only</p>
               </SheetContent>
             </Sheet>
             <span className="font-display text-base font-semibold lg:hidden">Edqorix</span>
