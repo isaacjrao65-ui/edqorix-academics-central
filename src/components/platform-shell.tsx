@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 
-import edqorixMark from "@/assets/edqorix-mark.png.asset.json";
+import { edqorixMark } from "@/lib/brand";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
