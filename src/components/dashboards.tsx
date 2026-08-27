@@ -98,20 +98,23 @@ function SheetList({
 }) {
   return (
     <div className="rounded-xl border border-border bg-card">
-      <header className="flex items-center justify-between border-b border-border px-5 py-4">
-        <h2 className="font-display text-sm font-semibold">{title}</h2>
-        <Link to="/marks" className="text-xs text-primary hover:underline">
+      <header className="flex items-center justify-between gap-3 border-b border-border px-4 py-4 sm:px-5">
+        <h2 className="min-w-0 truncate font-display text-sm font-semibold">{title}</h2>
+        <Link to="/marks" className="shrink-0 text-xs text-primary hover:underline">
           View all
         </Link>
       </header>
       {sheets.length === 0 ? (
-        <div className="px-5 py-10">
+        <div className="px-4 py-10 sm:px-5">
           <EmptyState title="Nothing here yet" description={empty} />
         </div>
       ) : (
-        <ul className="max-h-80 divide-y divide-border overflow-y-auto">
+        <ul className="max-h-[26rem] space-y-3 overflow-y-auto scroll-smooth overscroll-contain p-3 sm:max-h-80 sm:space-y-0 sm:divide-y sm:divide-border sm:p-0 [-webkit-overflow-scrolling:touch]">
           {sheets.map((sheet) => (
-            <li key={sheet.id} className="flex flex-wrap items-center gap-3 px-5 py-4">
+            <li
+              key={sheet.id}
+              className="grid gap-3 rounded-lg border border-border bg-background p-4 sm:flex sm:flex-wrap sm:items-center sm:gap-3 sm:rounded-none sm:border-0 sm:bg-transparent sm:px-5 sm:py-4"
+            >
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium">
                   {sheet.exams?.courses?.code} · {sheet.exams?.title}
@@ -120,17 +123,19 @@ function SheetList({
                   Section {sheet.sections?.name} · updated {formatDateTime(sheet.updated_at)}
                 </p>
               </div>
-              <Badge
-                variant="secondary"
-                className={cn("shrink-0", SHEET_STATUS_CLASS[sheet.status as SheetStatus])}
-              >
-                {SHEET_STATUS_LABEL[sheet.status as SheetStatus]}
-              </Badge>
-              <Button asChild size="sm" variant="outline">
-                <Link to="/marks/$sheetId" params={{ sheetId: sheet.id }}>
-                  Open
-                </Link>
-              </Button>
+              <div className="flex items-center justify-between gap-3 sm:contents">
+                <Badge
+                  variant="secondary"
+                  className={cn("shrink-0", SHEET_STATUS_CLASS[sheet.status as SheetStatus])}
+                >
+                  {SHEET_STATUS_LABEL[sheet.status as SheetStatus]}
+                </Badge>
+                <Button asChild size="sm" variant="outline">
+                  <Link to="/marks/$sheetId" params={{ sheetId: sheet.id }}>
+                    Open
+                  </Link>
+                </Button>
+              </div>
             </li>
           ))}
         </ul>
@@ -138,6 +143,7 @@ function SheetList({
     </div>
   );
 }
+
 
 function useRecentAudit(institutionId: string | null, enabled: boolean) {
   return useQuery({
@@ -170,16 +176,19 @@ function AuditPanel({ institutionId, enabled }: { institutionId: string | null; 
   const { data: entries = [] } = useRecentAudit(institutionId, enabled);
   return (
     <div className="rounded-xl border border-border bg-card">
-      <header className="flex items-center gap-2 border-b border-border px-5 py-4">
-        <ShieldCheck className="size-4 text-primary" strokeWidth={1.75} />
+      <header className="flex items-center gap-2 border-b border-border px-4 py-4 sm:px-5">
+        <ShieldCheck className="size-4 shrink-0 text-primary" strokeWidth={1.75} />
         <h2 className="font-display text-sm font-semibold">Recent activity</h2>
       </header>
       {entries.length === 0 ? (
-        <p className="px-5 py-6 text-sm text-muted-foreground">No activity recorded yet.</p>
+        <p className="px-4 py-6 text-sm text-muted-foreground sm:px-5">No activity recorded yet.</p>
       ) : (
-        <ul className="max-h-80 divide-y divide-border overflow-y-auto">
+        <ul className="max-h-[26rem] space-y-3 overflow-y-auto scroll-smooth overscroll-contain p-3 sm:max-h-80 sm:space-y-0 sm:divide-y sm:divide-border sm:p-0 [-webkit-overflow-scrolling:touch]">
           {entries.map((entry) => (
-            <li key={entry.id} className="px-5 py-3.5">
+            <li
+              key={entry.id}
+              className="rounded-lg border border-border bg-background p-4 sm:rounded-none sm:border-0 sm:bg-transparent sm:px-5 sm:py-3.5"
+            >
               <p className="text-sm">{entry.description ?? entry.action}</p>
               <p className="mt-0.5 text-xs text-muted-foreground">
                 {formatDateTime(entry.created_at)}
@@ -188,6 +197,7 @@ function AuditPanel({ institutionId, enabled }: { institutionId: string | null; 
           ))}
         </ul>
       )}
+
     </div>
   );
 }
@@ -409,45 +419,74 @@ export function ClassTeacherDashboard({ myClasses }: { myClasses: ClassRow[] }) 
       </div>
 
       <section className="rounded-xl border border-border bg-card">
-        <header className="border-b border-border px-5 py-4">
+        <header className="border-b border-border px-4 py-4 sm:px-5">
           <h2 className="font-display text-sm font-semibold">Class list</h2>
         </header>
         {students.length === 0 ? (
-          <div className="px-5 py-10">
+          <div className="px-4 py-10 sm:px-5">
             <EmptyState
               title="No students in this class"
               description="Management adds students and places them into classes."
             />
           </div>
         ) : (
-          <div className="max-h-80 overflow-auto">
-            <table className="w-full min-w-[38rem] text-sm">
-              <thead className="bg-muted/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
-                <tr>
-                  <th className="px-5 py-3">Roll no.</th>
-                  <th className="px-5 py-3">Student</th>
-                  <th className="px-5 py-3">Admission no.</th>
-                  <th className="px-5 py-3">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {students.map((s) => (
-                  <tr key={s.id}>
-                    <td className="px-5 py-3 tabular-nums">{s.roll_number}</td>
-                    <td className="px-5 py-3 font-medium">{s.full_name}</td>
-                    <td className="px-5 py-3 text-muted-foreground">
-                      {s.admission_number ?? "—"}
-                    </td>
-                    <td className="px-5 py-3">
-                      <Badge variant="secondary">{s.status}</Badge>
-                    </td>
+          <>
+            {/* Mobile: stacked cards */}
+            <ul className="max-h-[28rem] space-y-3 overflow-y-auto scroll-smooth overscroll-contain p-3 sm:hidden [-webkit-overflow-scrolling:touch]">
+              {students.map((s) => (
+                <li key={s.id} className="rounded-lg border border-border bg-background p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="min-w-0 flex-1 truncate text-sm font-medium">{s.full_name}</p>
+                    <Badge variant="secondary" className="shrink-0">
+                      {s.status}
+                    </Badge>
+                  </div>
+                  <dl className="mt-2 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+                    <div>
+                      <dt className="uppercase tracking-wide">Roll no.</dt>
+                      <dd className="mt-0.5 tabular-nums text-foreground">{s.roll_number}</dd>
+                    </div>
+                    <div className="min-w-0">
+                      <dt className="uppercase tracking-wide">Admission no.</dt>
+                      <dd className="mt-0.5 truncate text-foreground">
+                        {s.admission_number ?? "—"}
+                      </dd>
+                    </div>
+                  </dl>
+                </li>
+              ))}
+            </ul>
+            {/* Tablet and up: table */}
+            <div className="hidden max-h-80 overflow-auto scroll-smooth overscroll-contain sm:block">
+              <table className="w-full min-w-[38rem] text-sm">
+                <thead className="bg-muted/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
+                  <tr>
+                    <th className="px-5 py-3">Roll no.</th>
+                    <th className="px-5 py-3">Student</th>
+                    <th className="px-5 py-3">Admission no.</th>
+                    <th className="px-5 py-3">Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {students.map((s) => (
+                    <tr key={s.id}>
+                      <td className="px-5 py-3 tabular-nums">{s.roll_number}</td>
+                      <td className="px-5 py-3 font-medium">{s.full_name}</td>
+                      <td className="px-5 py-3 text-muted-foreground">
+                        {s.admission_number ?? "—"}
+                      </td>
+                      <td className="px-5 py-3">
+                        <Badge variant="secondary">{s.status}</Badge>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </section>
+
 
       <SheetList
         title="Subject marks for review"
@@ -525,22 +564,28 @@ export function SubjectTeacherDashboard() {
       </div>
 
       <section className="rounded-xl border border-border bg-card">
-        <header className="border-b border-border px-5 py-4">
+        <header className="border-b border-border px-4 py-4 sm:px-5">
           <h2 className="font-display text-sm font-semibold">My assignments</h2>
         </header>
-        <ul className="max-h-80 divide-y divide-border overflow-y-auto">
+        <ul className="max-h-[26rem] space-y-3 overflow-y-auto scroll-smooth overscroll-contain p-3 sm:max-h-80 sm:space-y-0 sm:divide-y sm:divide-border sm:p-0 [-webkit-overflow-scrolling:touch]">
           {mine.map((a) => {
             const cls = classes.find((c) => c.id === a.class_id);
             const course = courses.find((c) => c.id === a.course_id);
             return (
-              <li key={a.id} className="flex flex-wrap items-center gap-3 px-5 py-3.5 text-sm">
-                <Badge variant="secondary">{cls ? classLabel(cls) : "Class"}</Badge>
+              <li
+                key={a.id}
+                className="grid gap-1.5 rounded-lg border border-border bg-background p-4 text-sm sm:flex sm:flex-wrap sm:items-center sm:gap-3 sm:rounded-none sm:border-0 sm:bg-transparent sm:px-5 sm:py-3.5"
+              >
+                <Badge variant="secondary" className="w-fit">
+                  {cls ? classLabel(cls) : "Class"}
+                </Badge>
                 <span className="font-medium">{course?.code}</span>
                 <span className="text-muted-foreground">{course?.title}</span>
               </li>
             );
           })}
         </ul>
+
       </section>
 
       <SheetList

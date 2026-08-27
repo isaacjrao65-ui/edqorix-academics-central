@@ -23,7 +23,7 @@ import { useEffect, useState, type ReactNode } from "react";
 
 import { endViewAs, getViewAs, type ViewAsSession } from "@/lib/view-as";
 
-import edqorixMark from "@/assets/edqorix-mark.png.asset.json";
+import { edqorixMark } from "@/lib/brand";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, KeyRound, ShieldCheck } from "lucide-react";
 
-import edqorixMark from "@/assets/edqorix-mark.png.asset.json";
+import { edqorixMark } from "@/lib/brand";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
