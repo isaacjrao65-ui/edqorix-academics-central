@@ -834,6 +834,8 @@ function MembersManager({
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [target, setTarget] = useState<MemberRecord | null>(null);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [resetTarget, setResetTarget] = useState<MemberRecord | null>(null);
   const [reason, setReason] = useState("");
   const [busy, setBusy] = useState(false);
 
