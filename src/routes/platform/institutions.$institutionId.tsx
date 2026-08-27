@@ -1264,8 +1264,8 @@ type BulkRow = {
   email: string;
   password: string;
   role: (typeof MEMBER_ROLES)[number]["key"];
-  designation?: string;
-  isClassTeacher?: boolean;
+  designation?: string | undefined;
+  isClassTeacher?: boolean | undefined;
 };
 
 type BulkResult = {
