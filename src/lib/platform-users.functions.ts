@@ -38,12 +38,22 @@ const bulkSchema = z.object({
     .max(200),
 });
 
+type RpcClient = { rpc: (fn: string, args?: Record<string, unknown>) => Promise<{ data: unknown }> };
+
+/** Platform owners may provision anywhere; institution admins only inside their own institution. */
+async function assertCanProvision(client: RpcClient, institutionId: string) {
+  const { data: isOwner } = await client.rpc("is_platform_admin");
+  if (isOwner === true) return;
+  const { data: isAdmin } = await client.rpc("is_admin", { _institution: institutionId });
+  if (isAdmin === true) return;
+  throw new Error("Only the platform owner or an institution administrator can manage accounts.");
+}
+
 export const createInstitutionUser = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => createSchema.parse(data))
   .handler(async ({ data, context }) => {
-    const { data: isOwner, error: ownerError } = await context.supabase.rpc("is_platform_admin");
-    if (ownerError || !isOwner) throw new Error("Only the platform owner can create accounts.");
+    await assertCanProvision(context.supabase, data.institutionId);
 
     const { provisionInstitutionUser } = await import("./platform-users.server");
     return provisionInstitutionUser(data);
@@ -53,8 +63,7 @@ export const bulkCreateInstitutionUsers = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => bulkSchema.parse(data))
   .handler(async ({ data, context }) => {
-    const { data: isOwner, error: ownerError } = await context.supabase.rpc("is_platform_admin");
-    if (ownerError || !isOwner) throw new Error("Only the platform owner can create accounts.");
+    await assertCanProvision(context.supabase, data.institutionId);
 
     const { provisionInstitutionUser, logPlatformAuditServer } = await import(
       "./platform-users.server"
