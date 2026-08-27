@@ -109,7 +109,7 @@ function SheetList({
           <EmptyState title="Nothing here yet" description={empty} />
         </div>
       ) : (
-        <ul className="divide-y divide-border">
+        <ul className="max-h-80 divide-y divide-border overflow-y-auto">
           {sheets.map((sheet) => (
             <li key={sheet.id} className="flex flex-wrap items-center gap-3 px-5 py-4">
               <div className="min-w-0 flex-1">
