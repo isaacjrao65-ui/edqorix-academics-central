@@ -21,6 +21,7 @@ import {
   usePlatformAudit,
   usePlatformInstitutions,
   usePlatformUsers,
+  useRecentLogins,
 } from "@/lib/platform";
 
 export const Route = createFileRoute("/platform/")({
@@ -47,6 +48,7 @@ function PlatformDashboard() {
   const { data: users = [] } = usePlatformUsers();
   const { data: usage } = useGlobalUsage();
   const { data: audit = [] } = usePlatformAudit();
+  const { data: logins = [] } = useRecentLogins();
   const [grain, setGrain] = useState<(typeof GRAINS)[number]>("month");
 
   const totals = useMemo(() => {
