@@ -26,6 +26,7 @@ import {
   usePlans,
 } from "@/lib/platform";
 import {
+  bulkCreateInstitutionUsers,
   createInstitutionUser,
   setInstitutionUserPassword,
 } from "@/lib/platform-users.functions";
@@ -839,6 +840,7 @@ function MembersManager({
   const navigate = useNavigate();
   const [target, setTarget] = useState<MemberRecord | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
+  const [bulkOpen, setBulkOpen] = useState(false);
   const [resetTarget, setResetTarget] = useState<MemberRecord | null>(null);
   const [reason, setReason] = useState("");
   const [busy, setBusy] = useState(false);
@@ -897,10 +899,21 @@ function MembersManager({
         <p className="text-xs text-slate-500">
           Create login IDs directly — the account can sign in immediately with the password you set.
         </p>
-        <Button size="sm" onClick={() => setCreateOpen(true)}>
-          Create new user ID
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button size="sm" variant="outline" className="border-white/15 bg-white/5 text-slate-200" onClick={() => setBulkOpen(true)}>
+            Bulk import CSV
+          </Button>
+          <Button size="sm" onClick={() => setCreateOpen(true)}>
+            Create new user ID
+          </Button>
+        </div>
       </div>
+      <BulkImportUsersDialog
+        open={bulkOpen}
+        onOpenChange={setBulkOpen}
+        institutionId={institutionId}
+        institutionName={institutionName}
+      />
       <CreateUserDialog
         open={createOpen}
         onOpenChange={setCreateOpen}
