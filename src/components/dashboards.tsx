@@ -528,7 +528,7 @@ export function SubjectTeacherDashboard() {
         <header className="border-b border-border px-5 py-4">
           <h2 className="font-display text-sm font-semibold">My assignments</h2>
         </header>
-        <ul className="divide-y divide-border">
+        <ul className="max-h-80 divide-y divide-border overflow-y-auto">
           {mine.map((a) => {
             const cls = classes.find((c) => c.id === a.class_id);
             const course = courses.find((c) => c.id === a.course_id);
