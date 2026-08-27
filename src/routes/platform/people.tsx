@@ -15,8 +15,27 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
-import { logPlatformAudit, usePlatformUsers } from "@/lib/platform";
+import { logPlatformAudit, usePlatformInstitutions, usePlatformUsers } from "@/lib/platform";
+
+type AssignRole = "admin" | "exam_cell" | "hod" | "faculty";
 
 const ROLE_LABELS: Record<string, string> = {
   admin: "Principal / Super Admin",
