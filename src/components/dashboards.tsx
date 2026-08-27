@@ -419,45 +419,74 @@ export function ClassTeacherDashboard({ myClasses }: { myClasses: ClassRow[] }) 
       </div>
 
       <section className="rounded-xl border border-border bg-card">
-        <header className="border-b border-border px-5 py-4">
+        <header className="border-b border-border px-4 py-4 sm:px-5">
           <h2 className="font-display text-sm font-semibold">Class list</h2>
         </header>
         {students.length === 0 ? (
-          <div className="px-5 py-10">
+          <div className="px-4 py-10 sm:px-5">
             <EmptyState
               title="No students in this class"
               description="Management adds students and places them into classes."
             />
           </div>
         ) : (
-          <div className="max-h-80 overflow-auto">
-            <table className="w-full min-w-[38rem] text-sm">
-              <thead className="bg-muted/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
-                <tr>
-                  <th className="px-5 py-3">Roll no.</th>
-                  <th className="px-5 py-3">Student</th>
-                  <th className="px-5 py-3">Admission no.</th>
-                  <th className="px-5 py-3">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {students.map((s) => (
-                  <tr key={s.id}>
-                    <td className="px-5 py-3 tabular-nums">{s.roll_number}</td>
-                    <td className="px-5 py-3 font-medium">{s.full_name}</td>
-                    <td className="px-5 py-3 text-muted-foreground">
-                      {s.admission_number ?? "—"}
-                    </td>
-                    <td className="px-5 py-3">
-                      <Badge variant="secondary">{s.status}</Badge>
-                    </td>
+          <>
+            {/* Mobile: stacked cards */}
+            <ul className="max-h-[28rem] space-y-3 overflow-y-auto scroll-smooth overscroll-contain p-3 sm:hidden [-webkit-overflow-scrolling:touch]">
+              {students.map((s) => (
+                <li key={s.id} className="rounded-lg border border-border bg-background p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="min-w-0 flex-1 truncate text-sm font-medium">{s.full_name}</p>
+                    <Badge variant="secondary" className="shrink-0">
+                      {s.status}
+                    </Badge>
+                  </div>
+                  <dl className="mt-2 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+                    <div>
+                      <dt className="uppercase tracking-wide">Roll no.</dt>
+                      <dd className="mt-0.5 tabular-nums text-foreground">{s.roll_number}</dd>
+                    </div>
+                    <div className="min-w-0">
+                      <dt className="uppercase tracking-wide">Admission no.</dt>
+                      <dd className="mt-0.5 truncate text-foreground">
+                        {s.admission_number ?? "—"}
+                      </dd>
+                    </div>
+                  </dl>
+                </li>
+              ))}
+            </ul>
+            {/* Tablet and up: table */}
+            <div className="hidden max-h-80 overflow-auto scroll-smooth overscroll-contain sm:block">
+              <table className="w-full min-w-[38rem] text-sm">
+                <thead className="bg-muted/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
+                  <tr>
+                    <th className="px-5 py-3">Roll no.</th>
+                    <th className="px-5 py-3">Student</th>
+                    <th className="px-5 py-3">Admission no.</th>
+                    <th className="px-5 py-3">Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {students.map((s) => (
+                    <tr key={s.id}>
+                      <td className="px-5 py-3 tabular-nums">{s.roll_number}</td>
+                      <td className="px-5 py-3 font-medium">{s.full_name}</td>
+                      <td className="px-5 py-3 text-muted-foreground">
+                        {s.admission_number ?? "—"}
+                      </td>
+                      <td className="px-5 py-3">
+                        <Badge variant="secondary">{s.status}</Badge>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </section>
+
 
       <SheetList
         title="Subject marks for review"
