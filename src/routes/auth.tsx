@@ -160,17 +160,16 @@ function AuthPage() {
               </Button>
             </div>
           ) : (
-            <Tabs defaultValue="signin">
-              <TabsList className="w-full">
-                <TabsTrigger value="signin" className="flex-1">
-                  Sign in
-                </TabsTrigger>
-                <TabsTrigger value="signup" className="flex-1">
-                  Create account
-                </TabsTrigger>
-              </TabsList>
+            <div>
+              <div className="space-y-1">
+                <h1 className="text-xl font-semibold">Sign in</h1>
+                <p className="text-sm text-muted-foreground">
+                  Accounts are issued by your principal or management staff. There is no public
+                  sign-up.
+                </p>
+              </div>
 
-              <TabsContent value="signin" className="mt-6">
+              <div className="mt-6">
                 <form onSubmit={signIn} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="email">Work email</Label>
