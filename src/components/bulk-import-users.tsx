@@ -21,6 +21,7 @@ import {
   parseUsersCsv,
   type UserCsvRow,
 } from "@/lib/csv";
+import { IMPORT_FILE_ACCEPT, readTabularFile } from "@/lib/import-file";
 import { bulkCreateInstitutionUsers } from "@/lib/platform-users.functions";
 
 type BulkResult = {
@@ -63,9 +64,14 @@ export function BulkImportUsers({
     if (!file) return;
     setFileName(file.name);
     setResults(null);
-    const parsed = parseUsersCsv(await file.text());
-    setRows(parsed.rows);
-    setErrors(parsed.errors);
+    try {
+      const parsed = parseUsersCsv(await readTabularFile(file));
+      setRows(parsed.rows);
+      setErrors(parsed.errors);
+    } catch (err) {
+      setRows([]);
+      setErrors([err instanceof Error ? err.message : "Could not read that file."]);
+    }
   }
 
   async function importRows() {
@@ -105,7 +111,7 @@ export function BulkImportUsers({
         <DialogHeader>
           <DialogTitle>Bulk import staff accounts</DialogTitle>
           <DialogDescription>
-            Upload a CSV (export any Excel sheet as CSV) of principals, staff, HODs and teachers for{" "}
+            Upload an Excel workbook (.xlsx), Word table (.docx) or CSV of principals, staff, HODs and teachers for{" "}
             {institutionName || "this institution"}. Each row is created and audited individually.
           </DialogDescription>
         </DialogHeader>
@@ -114,7 +120,7 @@ export function BulkImportUsers({
           <div className="flex flex-wrap items-center gap-3">
             <Input
               type="file"
-              accept=".csv,.tsv,.txt,text/csv"
+              accept={IMPORT_FILE_ACCEPT}
               onChange={onFile}
               className="max-w-xs"
             />

@@ -23,6 +23,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { logAudit } from "@/lib/audit";
 import { useInstitution } from "@/lib/institution";
 import { STUDENT_CSV_TEMPLATE, downloadCsv, parseStudentsCsv } from "@/lib/csv";
+import { IMPORT_FILE_ACCEPT, readTabularFile } from "@/lib/import-file";
 import { usePrograms, useStudents } from "@/lib/queries";
 import { classLabel, useClasses } from "@/lib/school";
 
@@ -213,7 +214,12 @@ function BulkImport({
     const file = e.target.files?.[0];
     if (!file) return;
     setFileName(file.name);
-    setRaw(await file.text());
+    try {
+      setRaw(await readTabularFile(file));
+    } catch (err) {
+      setRaw("");
+      toast.error(err instanceof Error ? err.message : "Could not read that file.");
+    }
   }
 
   function resolveClassId(name: string | null) {
@@ -271,14 +277,14 @@ function BulkImport({
       <DialogTrigger asChild>
         <Button size="sm" variant="outline">
           <Upload className="size-4" strokeWidth={1.75} />
-          Import CSV
+          Import students
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Import students</DialogTitle>
           <DialogDescription>
-            Upload a CSV (export any Excel sheet as CSV) or paste rows. Columns: roll_number,
+            Upload an Excel workbook (.xlsx), Word table (.docx) or CSV — or paste rows. Columns: roll_number,
             full_name, email, phone, admission_number, current_semester, batch_year, class. Existing
             roll numbers are updated.
           </DialogDescription>
@@ -287,7 +293,7 @@ function BulkImport({
         <div className="flex flex-wrap items-center gap-3">
           <Input
             type="file"
-            accept=".csv,.tsv,.txt,text/csv"
+            accept={IMPORT_FILE_ACCEPT}
             onChange={onFile}
             className="max-w-xs"
           />

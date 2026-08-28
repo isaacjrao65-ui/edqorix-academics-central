@@ -54,7 +54,10 @@ async function assertCanProvision(
   if (isOwner === true) return;
   const { data: isAdmin } = await call("is_admin", { _institution: institutionId });
   if (isAdmin === true) return;
-  throw new Error("Only the platform owner or an institution administrator can manage accounts.");
+  // Staff / exam-cell members may also provision accounts inside their own institution.
+  const { data: canManage } = await call("can_manage", { _institution: institutionId });
+  if (canManage === true) return;
+  throw new Error("Only the platform owner, principal or management staff can manage accounts.");
 }
 
 export const createInstitutionUser = createServerFn({ method: "POST" })
