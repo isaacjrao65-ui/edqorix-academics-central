@@ -7,7 +7,6 @@ import { edqorixMark } from "@/lib/brand";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { logSecurityEvent } from "@/lib/platform";
 
@@ -36,7 +35,6 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
   const [sentConfirmation, setSentConfirmation] = useState(false);
 
   /** Platform owners always land in the control plane, everyone else in the institution app. */
@@ -75,35 +73,7 @@ function AuthPage() {
 
   }
 
-  async function signUp(e: React.FormEvent) {
-    e.preventDefault();
-    setBusy(true);
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: window.location.origin,
-        data: { full_name: fullName },
-      },
-    });
-    setBusy(false);
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
-    if (data.session) {
-      void logSecurityEvent({
-        eventType: "sign_up",
-        email: email.toLowerCase(),
-        detail: `New account created${fullName ? ` for ${fullName}` : ""}`,
-      });
-      await goAfterAuth();
 
-    } else {
-      setSentConfirmation(true);
-      toast.success("Check your email to confirm your account.");
-    }
-  }
 
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
