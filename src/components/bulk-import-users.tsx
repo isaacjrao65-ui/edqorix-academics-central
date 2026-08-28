@@ -63,9 +63,14 @@ export function BulkImportUsers({
     if (!file) return;
     setFileName(file.name);
     setResults(null);
-    const parsed = parseUsersCsv(await file.text());
-    setRows(parsed.rows);
-    setErrors(parsed.errors);
+    try {
+      const parsed = parseUsersCsv(await readTabularFile(file));
+      setRows(parsed.rows);
+      setErrors(parsed.errors);
+    } catch (err) {
+      setRows([]);
+      setErrors([err instanceof Error ? err.message : "Could not read that file."]);
+    }
   }
 
   async function importRows() {
