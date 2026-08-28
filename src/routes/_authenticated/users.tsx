@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import { BulkImportUsers } from "@/components/bulk-import-users";
+import { CreateStaffUser } from "@/components/create-staff-user";
 import { PageHeader, EmptyState } from "@/components/page-header";
 import { ReasonDialog } from "@/components/reason-dialog";
 import { Badge } from "@/components/ui/badge";
