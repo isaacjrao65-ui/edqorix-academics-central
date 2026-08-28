@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import { BulkImportUsers } from "@/components/bulk-import-users";
+import { CreateStaffUser } from "@/components/create-staff-user";
 import { PageHeader, EmptyState } from "@/components/page-header";
 import { ReasonDialog } from "@/components/reason-dialog";
 import { Badge } from "@/components/ui/badge";
@@ -174,7 +175,10 @@ function UsersPage() {
         description="Every staff account in this institution — assign roles, designations, class ownership and account status. Students never receive logins."
         actions={
           canManage ? (
-            <BulkImportUsers institutionId={institutionId} institutionName={institutionName} />
+            <div className="flex flex-wrap gap-2">
+              <CreateStaffUser institutionId={institutionId} />
+              <BulkImportUsers institutionId={institutionId} institutionName={institutionName} />
+            </div>
           ) : null
         }
       />

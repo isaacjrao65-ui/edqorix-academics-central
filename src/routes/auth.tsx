@@ -7,7 +7,6 @@ import { edqorixMark } from "@/lib/brand";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { logSecurityEvent } from "@/lib/platform";
 
@@ -36,7 +35,6 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
   const [sentConfirmation, setSentConfirmation] = useState(false);
 
   /** Platform owners always land in the control plane, everyone else in the institution app. */
@@ -75,35 +73,7 @@ function AuthPage() {
 
   }
 
-  async function signUp(e: React.FormEvent) {
-    e.preventDefault();
-    setBusy(true);
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: window.location.origin,
-        data: { full_name: fullName },
-      },
-    });
-    setBusy(false);
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
-    if (data.session) {
-      void logSecurityEvent({
-        eventType: "sign_up",
-        email: email.toLowerCase(),
-        detail: `New account created${fullName ? ` for ${fullName}` : ""}`,
-      });
-      await goAfterAuth();
 
-    } else {
-      setSentConfirmation(true);
-      toast.success("Check your email to confirm your account.");
-    }
-  }
 
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
@@ -160,17 +130,16 @@ function AuthPage() {
               </Button>
             </div>
           ) : (
-            <Tabs defaultValue="signin">
-              <TabsList className="w-full">
-                <TabsTrigger value="signin" className="flex-1">
-                  Sign in
-                </TabsTrigger>
-                <TabsTrigger value="signup" className="flex-1">
-                  Create account
-                </TabsTrigger>
-              </TabsList>
+            <div>
+              <div className="space-y-1">
+                <h1 className="text-xl font-semibold">Sign in</h1>
+                <p className="text-sm text-muted-foreground">
+                  Accounts are issued by your principal or management staff. There is no public
+                  sign-up.
+                </p>
+              </div>
 
-              <TabsContent value="signin" className="mt-6">
+              <div className="mt-6">
                 <form onSubmit={signIn} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="email">Work email</Label>
@@ -198,49 +167,8 @@ function AuthPage() {
                     Sign in
                   </Button>
                 </form>
-              </TabsContent>
-
-              <TabsContent value="signup" className="mt-6">
-                <form onSubmit={signUp} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Full name</Label>
-                    <Input
-                      id="name"
-                      required
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email-up">Work email</Label>
-                    <Input
-                      id="email-up"
-                      type="email"
-                      required
-                      autoComplete="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="password-up">Password</Label>
-                    <Input
-                      id="password-up"
-                      type="password"
-                      required
-                      minLength={8}
-                      autoComplete="new-password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
-                  <Button type="submit" className="w-full" disabled={busy}>
-                    Create staff account
-                  </Button>
-                </form>
-              </TabsContent>
-
-            </Tabs>
+              </div>
+            </div>
           )}
         </div>
       </div>
