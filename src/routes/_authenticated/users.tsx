@@ -173,7 +173,7 @@ function UsersPage() {
         title="Users & access"
         description="Every staff account in this institution — assign roles, designations, class ownership and account status. Students never receive logins."
         actions={
-          isAdmin ? (
+          canManage ? (
             <BulkImportUsers institutionId={institutionId} institutionName={institutionName} />
           ) : null
         }
