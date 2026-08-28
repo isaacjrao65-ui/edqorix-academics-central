@@ -174,7 +174,10 @@ function UsersPage() {
         description="Every staff account in this institution — assign roles, designations, class ownership and account status. Students never receive logins."
         actions={
           canManage ? (
-            <BulkImportUsers institutionId={institutionId} institutionName={institutionName} />
+            <div className="flex flex-wrap gap-2">
+              <CreateStaffUser institutionId={institutionId} />
+              <BulkImportUsers institutionId={institutionId} institutionName={institutionName} />
+            </div>
           ) : null
         }
       />
