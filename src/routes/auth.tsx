@@ -197,49 +197,8 @@ function AuthPage() {
                     Sign in
                   </Button>
                 </form>
-              </TabsContent>
-
-              <TabsContent value="signup" className="mt-6">
-                <form onSubmit={signUp} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Full name</Label>
-                    <Input
-                      id="name"
-                      required
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email-up">Work email</Label>
-                    <Input
-                      id="email-up"
-                      type="email"
-                      required
-                      autoComplete="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="password-up">Password</Label>
-                    <Input
-                      id="password-up"
-                      type="password"
-                      required
-                      minLength={8}
-                      autoComplete="new-password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
-                  <Button type="submit" className="w-full" disabled={busy}>
-                    Create staff account
-                  </Button>
-                </form>
-              </TabsContent>
-
-            </Tabs>
+              </div>
+            </div>
           )}
         </div>
       </div>
