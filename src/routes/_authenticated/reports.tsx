@@ -239,6 +239,87 @@ function Reports() {
           </div>
         </>
       )}
+
+      {institutionId ? <SignInAttempts institutionId={institutionId} /> : null}
     </div>
+  );
+}
+
+function SignInAttempts({ institutionId }: { institutionId: string }) {
+  const [filter, setFilter] = useState<"all" | "success" | "failed">("all");
+  const { data: events = [], isLoading } = useQuery({
+    queryKey: ["inst-auth-events", institutionId],
+    refetchInterval: 60_000,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("security_events")
+        .select("id, event_type, email, detail, ip, user_agent, created_at")
+        .eq("institution_id", institutionId)
+        .in("event_type", ["sign_in", "sign_in_failed"])
+        .order("created_at", { ascending: false })
+        .limit(300);
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+  const shown = events.filter((e) =>
+    filter === "all" ? true : filter === "success" ? e.event_type === "sign_in" : e.event_type !== "sign_in",
+  );
+
+  return (
+    <section className="space-y-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-semibold">Sign-in attempts</h2>
+          <p className="text-sm text-muted-foreground">
+            Every staff login attempt with result, reason, IP address and device. Visible to administrators only.
+          </p>
+        </div>
+        <Select value={filter} onValueChange={(v) => setFilter(v as typeof filter)}>
+          <SelectTrigger className="w-40"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All attempts</SelectItem>
+            <SelectItem value="success">Successful</SelectItem>
+            <SelectItem value="failed">Failed</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      {isLoading ? (
+        <div className="h-32 animate-pulse rounded-xl bg-muted" />
+      ) : shown.length === 0 ? (
+        <EmptyState title="No sign-in attempts" description="Login attempts by your staff will appear here." />
+      ) : (
+        <div className="max-h-[480px] overflow-auto rounded-xl border border-border bg-card">
+          <table className="w-full min-w-[720px] text-sm">
+            <thead className="sticky top-0 bg-card text-left text-xs text-muted-foreground">
+              <tr>
+                <th className="px-4 py-2">Time</th>
+                <th className="px-4 py-2">Login ID</th>
+                <th className="px-4 py-2">Result</th>
+                <th className="px-4 py-2">IP</th>
+                <th className="px-4 py-2">Device</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {shown.map((e) => (
+                <tr key={e.id}>
+                  <td className="whitespace-nowrap px-4 py-2">{new Date(e.created_at).toLocaleString()}</td>
+                  <td className="px-4 py-2">{e.email ?? "—"}</td>
+                  <td className="px-4 py-2">
+                    <span className={e.event_type === "sign_in" ? "text-emerald-600" : "text-destructive"}>
+                      {e.event_type === "sign_in" ? "Success" : e.detail ?? "Failed"}
+                    </span>
+                  </td>
+                  <td className="px-4 py-2 font-mono text-xs">{e.ip ?? "—"}</td>
+                  <td className="max-w-[260px] truncate px-4 py-2 text-xs text-muted-foreground" title={e.user_agent ?? ""}>
+                    {e.user_agent ?? "—"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
   );
 }

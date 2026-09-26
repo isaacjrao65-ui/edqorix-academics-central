@@ -107,6 +107,12 @@ function SecurityPage() {
                   {e.email ?? "—"} {e.institutions?.name ? `· ${e.institutions.name}` : ""}
                 </span>
                 {e.detail ? <span className="text-xs text-slate-500">{e.detail}</span> : null}
+                {e.ip ? <span className="font-mono text-xs text-slate-400">IP {e.ip}</span> : null}
+                {e.user_agent ? (
+                  <span className="max-w-[240px] truncate text-xs text-slate-500" title={e.user_agent}>
+                    {e.user_agent}
+                  </span>
+                ) : null}
                 <span className="ml-auto text-xs text-slate-500">
                   {new Date(e.created_at).toLocaleString()}
                 </span>
