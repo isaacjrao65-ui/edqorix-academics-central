@@ -1,0 +1,2 @@
+CREATE POLICY "security events institution admin read" ON public.security_events FOR SELECT TO authenticated USING (institution_id IS NOT NULL AND public.is_admin(institution_id));
+CREATE INDEX IF NOT EXISTS security_events_inst_created_idx ON public.security_events (institution_id, created_at DESC);
