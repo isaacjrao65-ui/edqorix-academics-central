@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
-import { logSecurityEvent } from "@/lib/platform";
+import { recordAuthAttempt } from "@/lib/auth-events.functions";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -60,15 +60,16 @@ function AuthPage() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setBusy(false);
     if (error) {
+      void recordAuthAttempt({
+        data: { email: email.toLowerCase(), success: false, reason: error.message },
+      }).catch(() => undefined);
       toast.error(error.message);
       return;
     }
 
-    void logSecurityEvent({
-      eventType: "sign_in",
-      email: email.toLowerCase(),
-      detail: "Signed in with email and password",
-    });
+    void recordAuthAttempt({ data: { email: email.toLowerCase(), success: true } }).catch(
+      () => undefined,
+    );
     await goAfterAuth();
 
   }
