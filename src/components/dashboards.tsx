@@ -25,6 +25,7 @@ import {
 } from "@/lib/format";
 import { useDashboardPrefs } from "@/lib/dashboard-prefs";
 import { useInstitution } from "@/lib/institution";
+import { useLiveInstitution } from "@/lib/live-institution";
 import { useMembers } from "@/lib/permissions";
 import { useCourses, useExams, useSessions, useSheets, useStudents } from "@/lib/queries";
 import {
@@ -147,19 +148,26 @@ function SheetList({
 }
 
 
-function useRecentAudit(institutionId: string | null, enabled: boolean) {
+function useRecentAudit(institutionId: string | null, enabled: boolean, limit = 8) {
   return useQuery({
-    queryKey: ["audit-recent", institutionId],
+    queryKey: ["audit-recent", institutionId, limit],
     enabled: Boolean(institutionId) && enabled,
+    refetchInterval: 60_000,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("audit_logs")
-        .select("id, action, description, created_at")
+        .select("id, action, description, created_at, actor_id, entity_type")
         .eq("institution_id", institutionId as string)
         .order("created_at", { ascending: false })
-        .limit(8);
+        .limit(limit);
       if (error) throw error;
-      return data ?? [];
+      const rows = data ?? [];
+      const ids = [...new Set(rows.map((r) => r.actor_id))];
+      const { data: profiles } = ids.length
+        ? await supabase.from("profiles").select("id, full_name, email").in("id", ids)
+        : { data: [] as { id: string; full_name: string; email: string }[] };
+      const byId = new Map((profiles ?? []).map((p) => [p.id, p.full_name || p.email]));
+      return rows.map((r) => ({ ...r, actor: byId.get(r.actor_id) ?? "Someone" }));
     },
   });
 }
@@ -174,32 +182,49 @@ function statusCounts(sheets: { status: string }[]) {
   return counts;
 }
 
-function AuditPanel({ institutionId, enabled }: { institutionId: string | null; enabled: boolean }) {
-  const { data: entries = [] } = useRecentAudit(institutionId, enabled);
+function AuditPanel({
+  institutionId,
+  enabled,
+  live = false,
+}: {
+  institutionId: string | null;
+  enabled: boolean;
+  live?: boolean;
+}) {
+  const { data: entries = [] } = useRecentAudit(institutionId, enabled, live ? 40 : 8);
   return (
     <div className="rounded-xl border border-border bg-card">
       <header className="flex items-center gap-2 border-b border-border px-4 py-4 sm:px-5">
         <ShieldCheck className="size-4 shrink-0 text-primary" strokeWidth={1.75} />
-        <h2 className="font-display text-sm font-semibold">Recent activity</h2>
+        <h2 className="font-display text-sm font-semibold">
+          {live ? "Live activity — everyone" : "Recent activity"}
+        </h2>
+        {live && (
+          <span className="ml-auto flex items-center gap-1.5 text-xs text-muted-foreground">
+            <span className="size-2 animate-pulse rounded-full bg-emerald-500" /> Live
+          </span>
+        )}
       </header>
       {entries.length === 0 ? (
         <p className="px-4 py-6 text-sm text-muted-foreground sm:px-5">No activity recorded yet.</p>
       ) : (
-        <ul className="max-h-[26rem] space-y-3 overflow-y-auto scroll-smooth overscroll-contain p-3 sm:max-h-80 sm:space-y-0 sm:divide-y sm:divide-border sm:p-0 [-webkit-overflow-scrolling:touch]">
+        <ul className="max-h-[26rem] space-y-3 overflow-y-auto scroll-smooth overscroll-contain p-3 sm:max-h-96 sm:space-y-0 sm:divide-y sm:divide-border sm:p-0 [-webkit-overflow-scrolling:touch]">
           {entries.map((entry) => (
             <li
               key={entry.id}
               className="rounded-lg border border-border bg-background p-4 sm:rounded-none sm:border-0 sm:bg-transparent sm:px-5 sm:py-3.5"
             >
-              <p className="text-sm">{entry.description ?? entry.action}</p>
+              <p className="text-sm">
+                <span className="font-medium">{entry.actor}</span>{" "}
+                <span className="text-muted-foreground">·</span> {entry.description ?? entry.action}
+              </p>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                {formatDateTime(entry.created_at)}
+                {entry.entity_type} · {formatDateTime(entry.created_at)}
               </p>
             </li>
           ))}
         </ul>
       )}
-
     </div>
   );
 }
@@ -209,6 +234,7 @@ function AuditPanel({ institutionId, enabled }: { institutionId: string | null; 
 export function PrincipalDashboard() {
   const { containerRef, isCollapsed, toggleSection } = useDashboardPrefs("principal");
   const { institutionId, institutionName } = useInstitution();
+  useLiveInstitution(institutionId);
   const { data: sheets = [] } = useSheets(institutionId);
   const { data: students = [] } = useStudents(institutionId);
   const { data: courses = [] } = useCourses(institutionId);
@@ -284,7 +310,7 @@ export function PrincipalDashboard() {
             empty="Every mark sheet has been approved."
           />
         </div>
-        <AuditPanel institutionId={institutionId} enabled />
+        <AuditPanel institutionId={institutionId} enabled live />
       </section>
     </div>
   );
