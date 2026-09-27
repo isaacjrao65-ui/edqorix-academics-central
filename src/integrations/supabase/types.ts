@@ -990,6 +990,7 @@ export type Database = {
       memberships: {
         Row: {
           created_at: string
+          created_by: string | null
           department_id: string | null
           designation: string | null
           id: string
@@ -998,12 +999,15 @@ export type Database = {
           is_class_teacher: boolean
           role: Database["public"]["Enums"]["app_role"]
           role_id: string | null
+          staff_id: string | null
+          staff_type: string | null
           status: Database["public"]["Enums"]["member_status"]
           updated_at: string
           user_id: string
         }
         Insert: {
           created_at?: string
+          created_by?: string | null
           department_id?: string | null
           designation?: string | null
           id?: string
@@ -1012,12 +1016,15 @@ export type Database = {
           is_class_teacher?: boolean
           role?: Database["public"]["Enums"]["app_role"]
           role_id?: string | null
+          staff_id?: string | null
+          staff_type?: string | null
           status?: Database["public"]["Enums"]["member_status"]
           updated_at?: string
           user_id: string
         }
         Update: {
           created_at?: string
+          created_by?: string | null
           department_id?: string | null
           designation?: string | null
           id?: string
@@ -1026,6 +1033,8 @@ export type Database = {
           is_class_teacher?: boolean
           role?: Database["public"]["Enums"]["app_role"]
           role_id?: string | null
+          staff_id?: string | null
+          staff_type?: string | null
           status?: Database["public"]["Enums"]["member_status"]
           updated_at?: string
           user_id?: string
@@ -1312,6 +1321,7 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_path: string | null
           created_at: string
           designation: string | null
           email: string
@@ -1321,6 +1331,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          avatar_path?: string | null
           created_at?: string
           designation?: string | null
           email?: string
@@ -1330,6 +1341,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          avatar_path?: string | null
           created_at?: string
           designation?: string | null
           email?: string
@@ -1872,6 +1884,10 @@ export type Database = {
       is_admin: { Args: { _institution: string }; Returns: boolean }
       is_class_teacher_of: { Args: { _class: string }; Returns: boolean }
       is_member: { Args: { _institution: string }; Returns: boolean }
+      is_permission_managed: {
+        Args: { _institution: string }
+        Returns: boolean
+      }
       is_platform_admin: { Args: never; Returns: boolean }
       is_section_faculty: { Args: { _section: string }; Returns: boolean }
       my_departments: { Args: { _institution: string }; Returns: string[] }
