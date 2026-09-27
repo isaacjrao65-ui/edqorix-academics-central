@@ -56,6 +56,7 @@ const NAV_GROUPS: NavGroup[] = [
   {
     label: "People",
     items: [
+      { to: "/staff", label: "Staff management", icon: UsersRound, adminOnly: true },
       { to: "/users", label: "Users & access", icon: UsersRound, manageOnly: true },
       { to: "/roles", label: "Roles & permissions", icon: KeyRound, adminOnly: true },
       { to: "/students", label: "Students", icon: GraduationCap },

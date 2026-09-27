@@ -14,6 +14,7 @@ import type { ComponentType } from "react";
 
 import { CollapsibleSection, DashboardQuickActions } from "@/components/dashboard-quick-actions";
 import { EmptyState, PageHeader } from "@/components/page-header";
+import { CreateStaffAccountButton } from "@/components/staff/create-staff-wizard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -261,7 +262,13 @@ export function PrincipalDashboard() {
       <PageHeader
         title={institutionName || "Principal dashboard"}
         description="Complete academic oversight — people, examinations, marks and approvals."
-        actions={<DashboardQuickActions />}
+        actions={
+          <div className="flex flex-wrap gap-2">
+            <CreateStaffAccountButton />
+            <Button asChild variant="outline"><Link to="/staff">Staff management</Link></Button>
+            <DashboardQuickActions />
+          </div>
+        }
       />
 
       <CollapsibleSection
