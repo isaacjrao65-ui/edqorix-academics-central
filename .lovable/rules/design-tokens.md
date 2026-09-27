@@ -85,6 +85,8 @@ Reference via `var(--name)` in inline styles or CSS.
 |---|
 | `--animate-float-slow` |
 | `--animate-float-slower` |
+| `--animate-float-y` |
+| `--animate-marquee` |
 | `--animate-gradient-pan` |
 | `--animate-shimmer` |
 | `--animate-rise` |

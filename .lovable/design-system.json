@@ -2,7 +2,7 @@
   "meta": {
     "name": "Edqorix Academic Hub",
     "package": "@ws-hstme9tke2fthtwxi1ku/af61079d-2ba1-4173-ad26-c7ed3b50d83c",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "framework": "react",
     "css_framework": "tailwind",
     "starter_template": "custom_design_system_tailwind",
@@ -11,11 +11,13 @@
     ],
     "source_type": "local",
     "source_manifest": {
-      "#enrichment": "fd510e6ee6a168deed01e4cc948c207edc7b946a970ac899bf909f5dab9a63c0",
+      "#enrichment": "b56898e0f74e3f3165abdfeb24e8cfe2411d76e4e0e41584460e75aae2566949",
       ".gitignore": "6d9e901a692b46a83707c245fb03bc91",
+      ".lovable/meta.yaml": "954a981e8847ec1692669dbb04ae9ae9",
       ".lovable/plan/edqorix-digital-examination-marks-academic-records-system-2026-08-25.md": "3e80f902e0bc8284a3889d634c00dd25",
       ".lovable/plan/super-admin-full-institution-authority-2026-08-25.md": "ef1f03d90a86471f05065d651f9b86cc",
       ".lovable/project.json": "683a7777285ec09604e1030ddf427ac5",
+      ".lovable/sources.yaml": "ee6247f6fe77fe1387244cd3c757e6a3",
       ".prettierignore": "7279a476f196a2da5f7edd18db568dc6",
       ".prettierrc": "185ef0234746ab738ac1ab6cec5e2bd9",
       "AGENTS.md": "3da3c4cd15b686e79a248c25735d6aaf",
@@ -43,7 +45,7 @@
       "src/components/create-staff-user.tsx": "9102231da698585d2f80096d74af3560",
       "src/components/dashboard-quick-actions.tsx": "f1ec9c118a9f822d0a6bc4ecaa51a58f",
       "src/components/dashboards.tsx": "d2ef88e305a6468da21556d23dbcd567",
-      "src/components/marketing.tsx": "c4bbc232fec68ef4e6a4830b07693d25",
+      "src/components/marketing.tsx": "25415bfef5b3393d939c71ca05ceb52b",
       "src/components/page-header.tsx": "d06177a7455655b1a64fca955e902fc3",
       "src/components/platform-owner-emails.tsx": "e4e47fbb97855145ffb19abb114d94eb",
       "src/components/platform-shell.tsx": "fb0ac346af7302797793d3f3514f2ac2",
@@ -98,6 +100,7 @@
       "src/components/ui/toggle.tsx": "ee8c5adac74e7242b85b544db1a8fbad",
       "src/components/ui/tooltip.tsx": "67d71db5a1ab935695d1def497f5b8a6",
       "src/hooks/use-mobile.tsx": "c0a0bdd4638c391a1dd06ac82074e60b",
+      "src/index.ts": "7c424a5943a006b5e05e130411408ae8",
       "src/integrations/lovable/index.ts": "c997b4d5cc51f8fe73119e270709d8f1",
       "src/integrations/supabase/auth-attacher.ts": "dad043cda134d909e52de0346c16625e",
       "src/integrations/supabase/auth-middleware.ts": "5d9d831f79177b7c6327cbd794a97367",
@@ -132,7 +135,7 @@
       "src/routeTree.gen.ts": "84781d1c0ac585f8a79cf9bd7b3462da",
       "src/router.tsx": "403c3dc5f4c1dfd81d2fbf402775158b",
       "src/routes/README.md": "b3a2f259b66fd1a11f54b6d5ac83bf57",
-      "src/routes/__root.tsx": "f0b81f7afaa9f690cf35f72ec96350c7",
+      "src/routes/__root.tsx": "83e6fd4331210a53645d2fd5e39d12bc",
       "src/routes/_authenticated/academics.tsx": "7062e1911b4634e93903fa26c2bccbcf",
       "src/routes/_authenticated/audit.tsx": "a542f4ceede0ed4633d29e539ca38451",
       "src/routes/_authenticated/classes.tsx": "516e000613fb76f2d3f9993f4e2b26b2",
@@ -152,7 +155,7 @@
       "src/routes/_authenticated/users.tsx": "73963966b430223c07e2e9eca89cae3f",
       "src/routes/auth.tsx": "e83c2c20e7ef27149cfa5df7e44e564a",
       "src/routes/contact.tsx": "382910b0f75306bfe2cd2045efe571eb",
-      "src/routes/index.tsx": "01da916dc818a2e6ce3a29d5f936553d",
+      "src/routes/index.tsx": "6cba920146df6a83a761934c2898f583",
       "src/routes/platform-admin.tsx": "deec54845662073c918315f32cd9473c",
       "src/routes/platform/analytics.tsx": "3aa10cc774c5d65854491edbc9dfc441",
       "src/routes/platform/audit.tsx": "5fd3f76237cdafd452190d754ffe5846",
@@ -172,7 +175,7 @@
       "src/routes/pricing.tsx": "d335fabf406fcb81b276cff73b8334f1",
       "src/server.ts": "c7bbc49bb70e318af618d92775ee0f27",
       "src/start.ts": "d77c1c12904be5077c6955d9b30071af",
-      "src/styles.css": "71d72a90bdcf7f2de9d4fefa2891e5cc",
+      "src/styles.css": "2a23286af1d8d2c66d22e8f86c88d091",
       "supabase/config.toml": "fb1329541b9cd339438067accc508eef",
       "supabase/migrations/20260825115205_8ce8d4db-f0d3-4bc7-9155-23ed661bcaa9.sql": "ab88d06658d1b28f5c1b787de34afca8",
       "supabase/migrations/20260825115231_8dcf3cd1-83ec-46ea-a871-25de15b6416a.sql": "730ba9ab10387276e0ccedcf3a516ee7",
@@ -196,12 +199,12 @@
     "color": [
       {
         "name": "--background",
-        "raw": "oklch(0.994 0.003 106)",
+        "raw": "oklch(0.984 0.012 95)",
         "source": "src/styles.css"
       },
       {
         "name": "--foreground",
-        "raw": "oklch(0.24 0.014 200)",
+        "raw": "oklch(0.35 0.115 285)",
         "source": "src/styles.css"
       },
       {
@@ -211,7 +214,7 @@
       },
       {
         "name": "--card-foreground",
-        "raw": "oklch(0.24 0.014 200)",
+        "raw": "oklch(0.35 0.115 285)",
         "source": "src/styles.css"
       },
       {
@@ -221,47 +224,47 @@
       },
       {
         "name": "--popover-foreground",
-        "raw": "oklch(0.24 0.014 200)",
+        "raw": "oklch(0.35 0.115 285)",
         "source": "src/styles.css"
       },
       {
         "name": "--primary",
-        "raw": "oklch(0.46 0.082 175)",
+        "raw": "oklch(0.35 0.115 285)",
         "source": "src/styles.css"
       },
       {
         "name": "--primary-foreground",
-        "raw": "oklch(0.985 0.005 175)",
+        "raw": "oklch(0.984 0.012 95)",
         "source": "src/styles.css"
       },
       {
         "name": "--secondary",
-        "raw": "oklch(0.965 0.008 180)",
+        "raw": "oklch(0.95 0.02 285)",
         "source": "src/styles.css"
       },
       {
         "name": "--secondary-foreground",
-        "raw": "oklch(0.3 0.02 190)",
+        "raw": "oklch(0.35 0.115 285)",
         "source": "src/styles.css"
       },
       {
         "name": "--muted",
-        "raw": "oklch(0.968 0.005 150)",
+        "raw": "oklch(0.965 0.012 95)",
         "source": "src/styles.css"
       },
       {
         "name": "--muted-foreground",
-        "raw": "oklch(0.52 0.015 195)",
+        "raw": "oklch(0.5 0.05 285)",
         "source": "src/styles.css"
       },
       {
         "name": "--accent",
-        "raw": "oklch(0.945 0.02 175)",
+        "raw": "oklch(0.94 0.03 285)",
         "source": "src/styles.css"
       },
       {
         "name": "--accent-foreground",
-        "raw": "oklch(0.34 0.05 175)",
+        "raw": "oklch(0.4 0.12 285)",
         "source": "src/styles.css"
       },
       {
@@ -286,52 +289,52 @@
       },
       {
         "name": "--warning",
-        "raw": "oklch(0.72 0.13 75)",
+        "raw": "oklch(0.77 0.16 75)",
         "source": "src/styles.css"
       },
       {
         "name": "--warning-foreground",
-        "raw": "oklch(0.25 0.04 75)",
+        "raw": "oklch(0.3 0.06 75)",
         "source": "src/styles.css"
       },
       {
         "name": "--info",
-        "raw": "oklch(0.55 0.09 235)",
+        "raw": "oklch(0.585 0.2 278)",
         "source": "src/styles.css"
       },
       {
         "name": "--info-foreground",
-        "raw": "oklch(0.99 0.005 235)",
+        "raw": "oklch(0.99 0.005 278)",
         "source": "src/styles.css"
       },
       {
         "name": "--border",
-        "raw": "oklch(0.915 0.006 190)",
+        "raw": "oklch(0.9 0.02 285)",
         "source": "src/styles.css"
       },
       {
         "name": "--input",
-        "raw": "oklch(0.9 0.008 190)",
+        "raw": "oklch(0.88 0.025 285)",
         "source": "src/styles.css"
       },
       {
         "name": "--ring",
-        "raw": "oklch(0.46 0.082 175)",
+        "raw": "oklch(0.585 0.2 278)",
         "source": "src/styles.css"
       },
       {
         "name": "--chart-1",
-        "raw": "oklch(0.46 0.082 175)",
+        "raw": "oklch(0.585 0.2 278)",
         "source": "src/styles.css"
       },
       {
         "name": "--chart-2",
-        "raw": "oklch(0.62 0.1 210)",
+        "raw": "oklch(0.77 0.16 75)",
         "source": "src/styles.css"
       },
       {
         "name": "--chart-3",
-        "raw": "oklch(0.72 0.13 75)",
+        "raw": "oklch(0.35 0.115 285)",
         "source": "src/styles.css"
       },
       {
@@ -341,77 +344,77 @@
       },
       {
         "name": "--chart-5",
-        "raw": "oklch(0.55 0.14 25)",
+        "raw": "oklch(0.65 0.17 60)",
         "source": "src/styles.css"
       },
       {
         "name": "--sidebar",
-        "raw": "oklch(0.985 0.004 180)",
+        "raw": "oklch(0.975 0.014 95)",
         "source": "src/styles.css"
       },
       {
         "name": "--sidebar-foreground",
-        "raw": "oklch(0.3 0.014 200)",
+        "raw": "oklch(0.35 0.115 285)",
         "source": "src/styles.css"
       },
       {
         "name": "--sidebar-primary",
-        "raw": "oklch(0.46 0.082 175)",
+        "raw": "oklch(0.35 0.115 285)",
         "source": "src/styles.css"
       },
       {
         "name": "--sidebar-primary-foreground",
-        "raw": "oklch(0.985 0.005 175)",
+        "raw": "oklch(0.984 0.012 95)",
         "source": "src/styles.css"
       },
       {
         "name": "--sidebar-accent",
-        "raw": "oklch(0.945 0.018 175)",
+        "raw": "oklch(0.94 0.03 285)",
         "source": "src/styles.css"
       },
       {
         "name": "--sidebar-accent-foreground",
-        "raw": "oklch(0.3 0.04 175)",
+        "raw": "oklch(0.4 0.12 285)",
         "source": "src/styles.css"
       },
       {
         "name": "--sidebar-border",
-        "raw": "oklch(0.91 0.006 190)",
+        "raw": "oklch(0.9 0.02 285)",
         "source": "src/styles.css"
       },
       {
         "name": "--sidebar-ring",
-        "raw": "oklch(0.46 0.082 175)",
+        "raw": "oklch(0.585 0.2 278)",
         "source": "src/styles.css"
       },
       {
         "name": "--brand-1",
-        "raw": "oklch(0.55 0.22 285)",
+        "raw": "oklch(0.585 0.2 278)",
         "source": "src/styles.css"
       },
       {
         "name": "--brand-2",
-        "raw": "oklch(0.62 0.24 330)",
+        "raw": "oklch(0.77 0.16 75)",
         "source": "src/styles.css"
       },
       {
         "name": "--brand-3",
-        "raw": "oklch(0.66 0.15 205)",
+        "raw": "oklch(0.35 0.115 285)",
         "source": "src/styles.css"
       },
       {
         "name": "--brand-4",
-        "raw": "oklch(0.75 0.16 80)",
+        "raw": "oklch(0.83 0.15 85)",
         "source": "src/styles.css"
       },
       {
         "name": "--brand-5",
-        "raw": "oklch(0.62 0.16 155)",
+        "raw": "oklch(0.68 0.16 278)",
         "source": "src/styles.css"
       },
       {
         "name": "--brand-6",
-        "raw": "oklch(0.6 0.2 25)",
+        "raw": "oklch(0.65 0.17 60)",
         "source": "src/styles.css"
       },
       {
@@ -428,7 +431,7 @@
       },
       {
         "name": "--font-sans",
-        "raw": "\"Plus Jakarta Sans\", ui-sans-serif, system-ui, sans-serif",
+        "raw": "\"DM Sans\", ui-sans-serif, system-ui, sans-serif",
         "source": "src/styles.css"
       }
     ],
@@ -478,6 +481,16 @@
       {
         "name": "--animate-float-slower",
         "raw": "float-slow 20s ease-in-out infinite",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--animate-float-y",
+        "raw": "float-y 7s ease-in-out infinite",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--animate-marquee",
+        "raw": "marquee 30s linear infinite",
         "source": "src/styles.css"
       },
       {
@@ -555,6 +568,11 @@
     },
     {
       "name": "Reveal",
+      "file": "src/components/marketing",
+      "import_path": ""
+    },
+    {
+      "name": "CountUp",
       "file": "src/components/marketing",
       "import_path": ""
     },

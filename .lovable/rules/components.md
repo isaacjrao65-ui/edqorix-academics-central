@@ -136,6 +136,12 @@ import { CollapsibleSection } from "@ws-hstme9tke2fthtwxi1ku/af61079d-2ba1-4173-
 import { Constants } from "@ws-hstme9tke2fthtwxi1ku/af61079d-2ba1-4173-ad26-c7ed3b50d83c"
 ```
 
+### CountUp
+
+```ts
+import { CountUp } from "@ws-hstme9tke2fthtwxi1ku/af61079d-2ba1-4173-ad26-c7ed3b50d83c"
+```
+
 ### CreateStaffAccountButton
 
 ```ts
