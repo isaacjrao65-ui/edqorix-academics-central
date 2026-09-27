@@ -552,7 +552,7 @@ function Landing() {
               return (
                 <Reveal key={item.title} delay={index * 60} className={style.span}>
                   <div
-                    className={`group h-full rounded-3xl border p-6 transition-all duration-300 hover:-translate-y-1.5 hover:card-glow ${style.card}`}
+                    className={`group flex h-full flex-col rounded-3xl border p-6 transition-all duration-300 hover:-translate-y-1.5 hover:card-glow ${style.card}`}
                   >
                     <span
                       className={`grid size-10 place-items-center rounded-xl transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 ${style.icon}`}
@@ -563,6 +563,20 @@ function Landing() {
                       {item.title}
                     </h3>
                     <p className={`mt-2 text-sm leading-relaxed ${style.body}`}>{item.body}</p>
+                    {index === 0 ? (
+                      <div className="mt-auto flex flex-wrap gap-2 pt-8">
+                        {["Keyboard-first grid", "Auto-saved drafts", "Live validation"].map(
+                          (chip) => (
+                            <span
+                              key={chip}
+                              className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-medium text-primary-foreground/85"
+                            >
+                              {chip}
+                            </span>
+                          ),
+                        )}
+                      </div>
+                    ) : null}
                   </div>
                 </Reveal>
               );
