@@ -321,6 +321,7 @@ export function PrincipalDashboard() {
 export function StaffDashboard() {
   const { containerRef, isCollapsed, toggleSection } = useDashboardPrefs("staff");
   const { institutionId, institutionName } = useInstitution();
+  useLiveInstitution(institutionId);
   const { data: sheets = [] } = useSheets(institutionId);
   const { data: students = [] } = useStudents(institutionId);
   const { data: classes = [] } = useClasses(institutionId);
@@ -392,6 +393,7 @@ export function StaffDashboard() {
 export function ClassTeacherDashboard({ myClasses }: { myClasses: ClassRow[] }) {
   const { containerRef, isCollapsed, toggleSection } = useDashboardPrefs("class_teacher");
   const { institutionId } = useInstitution();
+  useLiveInstitution(institutionId);
   const { data: sheets = [] } = useSheets(institutionId);
   const { data: assignments = [] } = useAssignments(institutionId);
   const { data: exams = [] } = useExams(institutionId);
@@ -544,6 +546,7 @@ export function ClassTeacherDashboard({ myClasses }: { myClasses: ClassRow[] }) 
 export function SubjectTeacherDashboard() {
   const { containerRef, isCollapsed, toggleSection } = useDashboardPrefs("subject_teacher");
   const { institutionId } = useInstitution();
+  useLiveInstitution(institutionId);
   const { data: userId } = useCurrentUserId();
   const { data: assignments = [] } = useAssignments(institutionId);
   const { data: classes = [] } = useClasses(institutionId);
