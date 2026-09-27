@@ -114,10 +114,10 @@ function CreateStaffWizard({ open, onOpenChange }: { open: boolean; onOpenChange
   }
 
   async function onPhoto(file: File | undefined) {
-    if (!file) return setPhoto(null);
-    if (file.size > 1_400_000) return toast.error("Photo must be under 1.4 MB.");
+    if (!file) { setPhoto(null); return; }
+    if (file.size > 1_400_000) { toast.error("Photo must be under 1.4 MB."); return; }
     const ext = (file.name.split(".").pop() ?? "").toLowerCase();
-    if (!["png", "jpg", "jpeg", "webp"].includes(ext)) return toast.error("Use a PNG, JPG or WEBP image.");
+    if (!["png", "jpg", "jpeg", "webp"].includes(ext)) { toast.error("Use a PNG, JPG or WEBP image."); return; }
     const dataUrl = await new Promise<string>((res) => {
       const r = new FileReader();
       r.onload = () => res(String(r.result));
@@ -320,7 +320,7 @@ function CreateStaffWizard({ open, onOpenChange }: { open: boolean; onOpenChange
   );
 }
 
-function Field(props: { label: string; value: string; onChange: (v: string) => void; type?: string; placeholder?: string }) {
+function Field(props: { label: string; value: string; onChange: (v: string) => void; type?: string; placeholder?: string | undefined }) {
   const id = props.label.replace(/\W+/g, "-").toLowerCase();
   return (
     <div className="space-y-1.5">
@@ -339,7 +339,7 @@ function Row({ k, v }: { k: string; v: string }) {
   );
 }
 
-export function Credentials({ c, name }: { c: { email: string; password: string; staffId?: string; reused?: boolean }; name: string }) {
+export function Credentials({ c, name }: { c: { email: string; password: string; staffId?: string | undefined; reused?: boolean | undefined }; name: string }) {
   const text = `Edqorix sign-in for ${name}\nLogin ID: ${c.email}\nTemporary password: ${c.password}${c.staffId ? `\nStaff ID: ${c.staffId}` : ""}\nSign in at: ${typeof window !== "undefined" ? window.location.origin : ""}/auth`;
   return (
     <div className="space-y-4">

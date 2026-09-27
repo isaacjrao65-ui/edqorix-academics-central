@@ -163,7 +163,7 @@ export async function writeAssignments(opts: {
   sessionId?: string | null;
 }) {
   const courseIds = await resolveCourses(opts.institutionId, opts.subjects);
-  const classRows = [];
+  const classRows: { id: string; name: string; section: string }[] = [];
   for (const c of opts.classes) classRows.push(await resolveClass(opts.institutionId, c, opts.sessionId));
 
   await supabaseAdmin

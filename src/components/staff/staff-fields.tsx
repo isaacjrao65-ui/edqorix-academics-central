@@ -77,8 +77,8 @@ export function SearchableMulti({
   options: { value: string; label: string }[];
   selected: string[];
   onChange: (v: string[]) => void;
-  allowCustom?: boolean;
-  placeholder?: string;
+  allowCustom?: boolean | undefined;
+  placeholder?: string | undefined;
 }) {
   const [q, setQ] = useState("");
   const filtered = options.filter((o) => o.label.toLowerCase().includes(q.toLowerCase()));

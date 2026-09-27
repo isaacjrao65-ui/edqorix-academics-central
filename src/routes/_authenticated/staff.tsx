@@ -426,8 +426,8 @@ function AssignDialog({ row, onClose }: { row: StaffRow; onClose: () => void }) 
           <Button
             disabled={busy}
             onClick={async () => {
-              if (needsSubjects(type) && (!subjects.length || !classSel.length)) return toast.error("Choose subjects and classes.");
-              if (needsClassTeacher(type) && (!ct.number || !ct.section)) return toast.error("Choose the class teacher's class.");
+              if (needsSubjects(type) && (!subjects.length || !classSel.length)) { toast.error("Choose subjects and classes."); return; }
+              if (needsClassTeacher(type) && (!ct.number || !ct.section)) { toast.error("Choose the class teacher's class."); return; }
               setBusy(true);
               try {
                 await save({
