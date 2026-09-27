@@ -1,0 +1,1058 @@
+{
+  "meta": {
+    "name": "Edqorix Academic Hub",
+    "package": "@ws-hstme9tke2fthtwxi1ku/af61079d-2ba1-4173-ad26-c7ed3b50d83c",
+    "version": "1.0.0",
+    "framework": "react",
+    "css_framework": "tailwind",
+    "starter_template": "custom_design_system_tailwind",
+    "theme_files": [
+      "src/styles.css"
+    ],
+    "source_type": "local",
+    "source_manifest": {
+      "#enrichment": "fd510e6ee6a168deed01e4cc948c207edc7b946a970ac899bf909f5dab9a63c0",
+      ".gitignore": "6d9e901a692b46a83707c245fb03bc91",
+      ".lovable/plan/edqorix-digital-examination-marks-academic-records-system-2026-08-25.md": "3e80f902e0bc8284a3889d634c00dd25",
+      ".lovable/plan/super-admin-full-institution-authority-2026-08-25.md": "ef1f03d90a86471f05065d651f9b86cc",
+      ".lovable/project.json": "683a7777285ec09604e1030ddf427ac5",
+      ".prettierignore": "7279a476f196a2da5f7edd18db568dc6",
+      ".prettierrc": "185ef0234746ab738ac1ab6cec5e2bd9",
+      "AGENTS.md": "3da3c4cd15b686e79a248c25735d6aaf",
+      "README.md": "55daadd6e7ebe96f31805d23d53f4d27",
+      "bunfig.toml": "89115995d9de72fdfc894e16b1e75297",
+      "components.json": "30d3d035361ce807021f5c54620962e9",
+      "drizzle.config.ts": "c2b6029fa56b49433380b7263b06e3f7",
+      "drizzle/migrations/0000_institution_auth_event_read.sql": "06e12047b82e5066f79a27796e226eed",
+      "drizzle/migrations/0001_principal_realtime.sql": "083efdcae424e44c8422d94f5e6e6fda",
+      "drizzle/migrations/0002_staff_accounts.sql": "d02d08ba7f730698d327ce9c19d19e67",
+      "drizzle/migrations/meta/0000_snapshot.json": "9eac3498b68fa0b511f1446239471c36",
+      "drizzle/migrations/meta/0001_snapshot.json": "79b06263de4614a019edb055069c4f29",
+      "drizzle/migrations/meta/0002_snapshot.json": "c2a7d22d31fde567aaa18ada722fa140",
+      "drizzle/migrations/meta/_journal.json": "9c56bedfa34e40fad0639037be0fd793",
+      "drizzle/schema.ts": "a60267d05d7dd11572f02686241f37c6",
+      "eslint.config.js": "345bdd57e188e0e4525edcd00e5003f5",
+      "package.json": "31688fd341f7d85f9e575c2d9cd1e3a8",
+      "public/edqorix-mark.png": "0508176dd2fd54fddce615363159f749",
+      "public/favicon.png": "43be8f99d6c44f6336c437c56e6ee13d",
+      "public/robots.txt": "f9dff89adf98833e676de2205921996a",
+      "src/assets/edqorix-logo.png.asset.json": "27cde600330111f3919ebf1325843a67",
+      "src/assets/edqorix-mark.png.asset.json": "b4b342609bfff754753424766e9e25ea",
+      "src/components/app-shell.tsx": "78cfaa157d170cf72f3ed04c06f01eae",
+      "src/components/bulk-import-users.tsx": "81867903af50a42f26a2ddfe45ccc1c6",
+      "src/components/create-staff-user.tsx": "9102231da698585d2f80096d74af3560",
+      "src/components/dashboard-quick-actions.tsx": "f1ec9c118a9f822d0a6bc4ecaa51a58f",
+      "src/components/dashboards.tsx": "d2ef88e305a6468da21556d23dbcd567",
+      "src/components/marketing.tsx": "c4bbc232fec68ef4e6a4830b07693d25",
+      "src/components/page-header.tsx": "d06177a7455655b1a64fca955e902fc3",
+      "src/components/platform-owner-emails.tsx": "e4e47fbb97855145ffb19abb114d94eb",
+      "src/components/platform-shell.tsx": "fb0ac346af7302797793d3f3514f2ac2",
+      "src/components/reason-dialog.tsx": "578e60cbaacd93c8421ebf0014d30465",
+      "src/components/record-dialog.tsx": "6c987a7620d1201bf0d4e60dc41d10e1",
+      "src/components/staff/create-staff-wizard.tsx": "f49fb7fdfc553bbfed11d92d05e3f6ff",
+      "src/components/staff/staff-fields.tsx": "6c3bac9c6dcc8f200b4a987332f0250c",
+      "src/components/ui/accordion.tsx": "55f9dda62b4e3913c9b23e5015a86aef",
+      "src/components/ui/alert-dialog.tsx": "96350e949e9b7b674545430a410ab89c",
+      "src/components/ui/alert.tsx": "f993d7e96b1e25ce50e68ed97e11d2a8",
+      "src/components/ui/aspect-ratio.tsx": "c5c364545e1b25a94e9e752cd67ad048",
+      "src/components/ui/avatar.tsx": "72989cd32f72c4122802540ef32525a5",
+      "src/components/ui/badge.tsx": "81cade001fc4260f9943e18dcd79449b",
+      "src/components/ui/breadcrumb.tsx": "bb9ac254f12662b20d5d50b84308bf3a",
+      "src/components/ui/button.tsx": "7d07d520f486b12bd47373d694ecd2ee",
+      "src/components/ui/calendar.tsx": "d849cc610e2683271f3f1c47d093cf30",
+      "src/components/ui/card.tsx": "d6c48ea36221b9cdc3576d305d12d5d5",
+      "src/components/ui/carousel.tsx": "e324c68ae00cd5aed49317638abd429a",
+      "src/components/ui/chart.tsx": "6a3baf94f2e89f1f97d4d7a28f3622d2",
+      "src/components/ui/checkbox.tsx": "f78aac270ca482c8c2cb907ef6260462",
+      "src/components/ui/collapsible.tsx": "767631bbc344945c236f185f4078d71d",
+      "src/components/ui/command.tsx": "014782599cc838b021ec68b07ad4ea02",
+      "src/components/ui/context-menu.tsx": "3ba8244ea23df34a1dba92f3a1230dad",
+      "src/components/ui/dialog.tsx": "ef4fe8e7de8675730afe3d633b260e09",
+      "src/components/ui/drawer.tsx": "8be333e8fd8e42576b1b5f72f07f4337",
+      "src/components/ui/dropdown-menu.tsx": "28d6e98d3c7811fc0514bfa69416f087",
+      "src/components/ui/form.tsx": "1b0aa6302b9017ea2a1307c22a1d2983",
+      "src/components/ui/hover-card.tsx": "1442794c5ca2a78d69e4e613b315ed3d",
+      "src/components/ui/input-otp.tsx": "65625f2f1c4d731a760aeed7b54459d1",
+      "src/components/ui/input.tsx": "1d4cc52a4cd8afb3e18e45bda942bb8a",
+      "src/components/ui/label.tsx": "7e35df4ca8edd0835efd97ca7937ef92",
+      "src/components/ui/menubar.tsx": "3c4121a1e78d3f424a7295381a8997d3",
+      "src/components/ui/navigation-menu.tsx": "e85351147a02b29577ff83d188b63c24",
+      "src/components/ui/pagination.tsx": "fac6cdbb4bbf78b273d85cd36d6cbb49",
+      "src/components/ui/popover.tsx": "f18aa1da2144f25ee60795c539c51bcd",
+      "src/components/ui/progress.tsx": "55c462e5c9dd678dcf2c0c510b014ac4",
+      "src/components/ui/radio-group.tsx": "0e1ace237a5da3197e3eb1e6683faba9",
+      "src/components/ui/resizable.tsx": "d9fcb9203c749fcab4e125a99bb12a86",
+      "src/components/ui/scroll-area.tsx": "87b65d3eb26f2b02ff35a7acea585ba5",
+      "src/components/ui/select.tsx": "31ea1bbd6671833b010b2e852c8a55d0",
+      "src/components/ui/separator.tsx": "433d163c4ffa00b59398a0c293198b5e",
+      "src/components/ui/sheet.tsx": "0221fbf97b69611b47fcbc10bb27669a",
+      "src/components/ui/sidebar.tsx": "83c1623eb50ebc370d7b1b84a542e369",
+      "src/components/ui/skeleton.tsx": "41b182e6e2fc3805960d41e767d4a972",
+      "src/components/ui/slider.tsx": "4752f1bfa26426988d325599e01c335b",
+      "src/components/ui/sonner.tsx": "97f59f60be3413196d095fcbf7383216",
+      "src/components/ui/switch.tsx": "82f5d8b0c59bb7ff305caa9f502e79ff",
+      "src/components/ui/table.tsx": "7cc889989d53894b659903c73aded96e",
+      "src/components/ui/tabs.tsx": "56e725558c2ce72c18243bf51717f385",
+      "src/components/ui/textarea.tsx": "c7aad96fb9545210d53135a96c76ed6b",
+      "src/components/ui/toggle-group.tsx": "ac26383acf721d116ca8e3ab5c5355d5",
+      "src/components/ui/toggle.tsx": "ee8c5adac74e7242b85b544db1a8fbad",
+      "src/components/ui/tooltip.tsx": "67d71db5a1ab935695d1def497f5b8a6",
+      "src/hooks/use-mobile.tsx": "c0a0bdd4638c391a1dd06ac82074e60b",
+      "src/integrations/lovable/index.ts": "c997b4d5cc51f8fe73119e270709d8f1",
+      "src/integrations/supabase/auth-attacher.ts": "dad043cda134d909e52de0346c16625e",
+      "src/integrations/supabase/auth-middleware.ts": "5d9d831f79177b7c6327cbd794a97367",
+      "src/integrations/supabase/client.server.ts": "23f838ab7633e0a97e695f3c500d91aa",
+      "src/integrations/supabase/client.ts": "b40d27b03f346573ed0f76551e478ffb",
+      "src/integrations/supabase/cron-auth.ts": "6c04781ff98ada5977945fae55d39385",
+      "src/integrations/supabase/previewAuthStorage.ts": "0a2d63e049bc63135b19c8e21cc0b1aa",
+      "src/integrations/supabase/types.ts": "b8a352412fece30c1911a58aacd3a8f6",
+      "src/lib/audit.ts": "c58c2cdf6b2085c8f2a01995acaaf4b5",
+      "src/lib/auth-events.functions.ts": "8e962b0736a501b3684426dc83c22af3",
+      "src/lib/brand.ts": "90a0846deb809970919209ad2e84e712",
+      "src/lib/csv.ts": "e7416b445f2d38cc8f7303ae08ec0563",
+      "src/lib/dashboard-prefs.ts": "08f6e0b10e1f846c1543eb552abc8ee2",
+      "src/lib/error-capture.ts": "f630d9686a9a989170f22eff4de7b30d",
+      "src/lib/error-page.ts": "8da0ddd7569bac2676b9a5c8edff8a36",
+      "src/lib/format.ts": "9b30dac01facf9cb851f49f71aa532fc",
+      "src/lib/import-file.ts": "fda7fe83ea515da32c52b8cd18dc23ec",
+      "src/lib/institution.tsx": "53b92e7f800f36700330ef68aaa98853",
+      "src/lib/live-institution.ts": "f243a27c74ed511ebfebc56bd33de5f8",
+      "src/lib/lovable-error-reporting.ts": "77368331b8ef6e6edcf1a29b24a52d39",
+      "src/lib/permissions.ts": "9c0142fca002164da8a11cdd378e38cb",
+      "src/lib/platform-users.functions.ts": "2687a0c7bde1847e05ad9dad284cd302",
+      "src/lib/platform-users.server.ts": "39546a2ab59d6aa817882a302f3ffa86",
+      "src/lib/platform.ts": "38ee1bd42e9e33eae31cc45852f2b7b9",
+      "src/lib/queries.ts": "cf11f5b84fdd7a2b642983faf716c61c",
+      "src/lib/school.ts": "97df9b02f0724b83decbcf0f61e56fca",
+      "src/lib/staff-accounts.functions.ts": "37a11e292968963d136ea5dc01b822a2",
+      "src/lib/staff-accounts.server.ts": "aeb53b53668dec20a1e45ad97ae29d76",
+      "src/lib/staff-permissions.ts": "038740e2d30cf916efae4d130b65f897",
+      "src/lib/utils.ts": "d9837f38cc05303254571985e3164050",
+      "src/lib/view-as.ts": "42d06ff064b6e4ab34267a58ccaa6ea3",
+      "src/routeTree.gen.ts": "84781d1c0ac585f8a79cf9bd7b3462da",
+      "src/router.tsx": "403c3dc5f4c1dfd81d2fbf402775158b",
+      "src/routes/README.md": "b3a2f259b66fd1a11f54b6d5ac83bf57",
+      "src/routes/__root.tsx": "f0b81f7afaa9f690cf35f72ec96350c7",
+      "src/routes/_authenticated/academics.tsx": "7062e1911b4634e93903fa26c2bccbcf",
+      "src/routes/_authenticated/audit.tsx": "a542f4ceede0ed4633d29e539ca38451",
+      "src/routes/_authenticated/classes.tsx": "516e000613fb76f2d3f9993f4e2b26b2",
+      "src/routes/_authenticated/dashboard.tsx": "19d7781337d3aa798f357da04f7c0270",
+      "src/routes/_authenticated/documents.tsx": "c49e3ee72ef4e5b5a53a927134a3214d",
+      "src/routes/_authenticated/exams.tsx": "bf8724b9681371cbc302a40f474b56ca",
+      "src/routes/_authenticated/marks.$sheetId.tsx": "32df676d6f22d6ce0629dc4bd126a4a7",
+      "src/routes/_authenticated/marks.index.tsx": "24b4f54846c1633c961eef35cb7d4089",
+      "src/routes/_authenticated/onboarding.tsx": "d5b7966d2e5b53e52ff99b4d423cd90c",
+      "src/routes/_authenticated/reports.tsx": "9e0b79375f77cedf6a50a50a491b49ea",
+      "src/routes/_authenticated/roles.tsx": "c1d870c900cbf481fa784091464985ef",
+      "src/routes/_authenticated/route.tsx": "3af2a5786d36c2e75306ba39e3e6ff58",
+      "src/routes/_authenticated/settings.tsx": "0222a775cc57574d5d9a34d10c080ce2",
+      "src/routes/_authenticated/staff.tsx": "10e5c6f241fcceb2ec3b1ffeb1201927",
+      "src/routes/_authenticated/students.tsx": "acde14f6930104ac080e7947de179ff4",
+      "src/routes/_authenticated/team.tsx": "17342ef67427f9cf77fc390c643cac92",
+      "src/routes/_authenticated/users.tsx": "73963966b430223c07e2e9eca89cae3f",
+      "src/routes/auth.tsx": "e83c2c20e7ef27149cfa5df7e44e564a",
+      "src/routes/contact.tsx": "382910b0f75306bfe2cd2045efe571eb",
+      "src/routes/index.tsx": "01da916dc818a2e6ce3a29d5f936553d",
+      "src/routes/platform-admin.tsx": "deec54845662073c918315f32cd9473c",
+      "src/routes/platform/analytics.tsx": "3aa10cc774c5d65854491edbc9dfc441",
+      "src/routes/platform/audit.tsx": "5fd3f76237cdafd452190d754ffe5846",
+      "src/routes/platform/features.tsx": "9302ea6da4700fd7f80859191084ad53",
+      "src/routes/platform/index.tsx": "0067a93ed90a3611483fd013829d0bda",
+      "src/routes/platform/institutions.$institutionId.tsx": "c500663148d4af7c016e568a0f29c1ae",
+      "src/routes/platform/institutions.index.tsx": "c47cbabc324fc0ec9f7a43687ed421c2",
+      "src/routes/platform/people.tsx": "14f418abb12a48d3283816009a7795e6",
+      "src/routes/platform/permissions.tsx": "67a63b5f50e419c5be257137c40fbbe1",
+      "src/routes/platform/route.tsx": "7e13e7afeb8ba99aa4d750460ef5ec1a",
+      "src/routes/platform/search.tsx": "1f876f3fc4d53d4469f15f044b752898",
+      "src/routes/platform/security.tsx": "bc0e8f8ab087f7a44897c88a2af2fd52",
+      "src/routes/platform/settings.tsx": "0b9f662fab4ca84898cfc2079f1c7659",
+      "src/routes/platform/storage.tsx": "91a94718a11c0931983aabdafb04fa90",
+      "src/routes/platform/subscriptions.tsx": "e00b72dd29a09af1568b38d066e2c94d",
+      "src/routes/platform/support.tsx": "8ecb04e50e856a88000ee46552e9666f",
+      "src/routes/pricing.tsx": "d335fabf406fcb81b276cff73b8334f1",
+      "src/server.ts": "c7bbc49bb70e318af618d92775ee0f27",
+      "src/start.ts": "d77c1c12904be5077c6955d9b30071af",
+      "src/styles.css": "71d72a90bdcf7f2de9d4fefa2891e5cc",
+      "supabase/config.toml": "fb1329541b9cd339438067accc508eef",
+      "supabase/migrations/20260825115205_8ce8d4db-f0d3-4bc7-9155-23ed661bcaa9.sql": "ab88d06658d1b28f5c1b787de34afca8",
+      "supabase/migrations/20260825115231_8dcf3cd1-83ec-46ea-a871-25de15b6416a.sql": "730ba9ab10387276e0ccedcf3a516ee7",
+      "supabase/migrations/20260825121140_08e67ca9-98f9-4e78-803e-b9a154feb075.sql": "4830dc2b86da42f4d533bb5899b63366",
+      "supabase/migrations/20260825123418_9a49fbd7-d376-434c-9a7a-29bec32028d3.sql": "ebc1da63943cb6de3dc529106e28e85c",
+      "supabase/migrations/20260825123457_d1165899-98aa-42ba-aa73-2d8129145928.sql": "8c546e61ea2e72ac21be826c18563c6c",
+      "supabase/migrations/20260825124522_221e1296-bad4-4dd4-869e-308e6607d982.sql": "da002f3bc1396d9b6cf7d3f23987db6f",
+      "supabase/migrations/20260825124606_20e06e07-6691-4aa4-83c6-22f46d2661bb.sql": "2bbf31c7a2b15ae793a2424fa158aa5d",
+      "supabase/migrations/20260826122356_5482011f-696e-42e7-86d1-f9c691f70231.sql": "a467207c43f5448259760c0916a69829",
+      "supabase/migrations/20260826125128_8b9700bb-d973-4e46-b850-612c3e490cdd.sql": "fb2ff1903fc83622e5b915625c46c2ba",
+      "supabase/migrations/20260826125157_1b5314ee-68fa-43f0-8a28-c1b80d2cef56.sql": "fcee396e558dec5f034c53eb2aa3e25c",
+      "supabase/migrations/20260827094702_00398bb0-6fc2-4b96-bf50-9ec2546f62cc.sql": "1202f3090d1bdf439a2314530390b457",
+      "supabase/migrations/20260827094805_f5311110-dabb-433c-8ebd-8acda37798d1.sql": "3dc548ad5608bf2954100fe834681edf",
+      "supabase/migrations/20260827095356_fb33f5fc-4bd7-4ff6-8853-a2c391ffd5fa.sql": "a7c1258ab9a256aa8f8fd2571fa849b5",
+      "tsconfig.json": "e84e5c7fe88e3c5a4d54f55a816d42c1",
+      "vite.config.ts": "d67e8217e5f31b87c276b6357c9aedcf"
+    },
+    "pipeline_version": 8
+  },
+  "tokens": {
+    "color": [
+      {
+        "name": "--background",
+        "raw": "oklch(0.994 0.003 106)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--foreground",
+        "raw": "oklch(0.24 0.014 200)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--card",
+        "raw": "oklch(1 0 0)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--card-foreground",
+        "raw": "oklch(0.24 0.014 200)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--popover",
+        "raw": "oklch(1 0 0)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--popover-foreground",
+        "raw": "oklch(0.24 0.014 200)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--primary",
+        "raw": "oklch(0.46 0.082 175)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--primary-foreground",
+        "raw": "oklch(0.985 0.005 175)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--secondary",
+        "raw": "oklch(0.965 0.008 180)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--secondary-foreground",
+        "raw": "oklch(0.3 0.02 190)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--muted",
+        "raw": "oklch(0.968 0.005 150)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--muted-foreground",
+        "raw": "oklch(0.52 0.015 195)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--accent",
+        "raw": "oklch(0.945 0.02 175)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--accent-foreground",
+        "raw": "oklch(0.34 0.05 175)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--destructive",
+        "raw": "oklch(0.55 0.19 25)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--destructive-foreground",
+        "raw": "oklch(0.99 0.005 25)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--success",
+        "raw": "oklch(0.55 0.11 155)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--success-foreground",
+        "raw": "oklch(0.99 0.005 155)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--warning",
+        "raw": "oklch(0.72 0.13 75)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--warning-foreground",
+        "raw": "oklch(0.25 0.04 75)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--info",
+        "raw": "oklch(0.55 0.09 235)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--info-foreground",
+        "raw": "oklch(0.99 0.005 235)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--border",
+        "raw": "oklch(0.915 0.006 190)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--input",
+        "raw": "oklch(0.9 0.008 190)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--ring",
+        "raw": "oklch(0.46 0.082 175)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--chart-1",
+        "raw": "oklch(0.46 0.082 175)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--chart-2",
+        "raw": "oklch(0.62 0.1 210)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--chart-3",
+        "raw": "oklch(0.72 0.13 75)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--chart-4",
+        "raw": "oklch(0.55 0.11 155)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--chart-5",
+        "raw": "oklch(0.55 0.14 25)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--sidebar",
+        "raw": "oklch(0.985 0.004 180)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--sidebar-foreground",
+        "raw": "oklch(0.3 0.014 200)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--sidebar-primary",
+        "raw": "oklch(0.46 0.082 175)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--sidebar-primary-foreground",
+        "raw": "oklch(0.985 0.005 175)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--sidebar-accent",
+        "raw": "oklch(0.945 0.018 175)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--sidebar-accent-foreground",
+        "raw": "oklch(0.3 0.04 175)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--sidebar-border",
+        "raw": "oklch(0.91 0.006 190)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--sidebar-ring",
+        "raw": "oklch(0.46 0.082 175)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--brand-1",
+        "raw": "oklch(0.55 0.22 285)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--brand-2",
+        "raw": "oklch(0.62 0.24 330)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--brand-3",
+        "raw": "oklch(0.66 0.15 205)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--brand-4",
+        "raw": "oklch(0.75 0.16 80)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--brand-5",
+        "raw": "oklch(0.62 0.16 155)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--brand-6",
+        "raw": "oklch(0.6 0.2 25)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--animate-pulse-ring",
+        "raw": "pulse-ring 2.4s ease-out infinite",
+        "source": "src/styles.css"
+      }
+    ],
+    "typography": [
+      {
+        "name": "--font-display",
+        "raw": "\"Space Grotesk\", ui-sans-serif, system-ui, sans-serif",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--font-sans",
+        "raw": "\"Plus Jakarta Sans\", ui-sans-serif, system-ui, sans-serif",
+        "source": "src/styles.css"
+      }
+    ],
+    "radius": [
+      {
+        "name": "--radius-sm",
+        "raw": "calc(var(--radius) - 4px)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--radius-md",
+        "raw": "calc(var(--radius) - 2px)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--radius-xl",
+        "raw": "calc(var(--radius) + 4px)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--radius-2xl",
+        "raw": "calc(var(--radius) + 8px)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--radius-3xl",
+        "raw": "calc(var(--radius) + 12px)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--radius-4xl",
+        "raw": "calc(var(--radius) + 16px)",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--radius",
+        "raw": "0.75rem",
+        "source": "src/styles.css"
+      }
+    ],
+    "other": [
+      {
+        "name": "--animate-float-slow",
+        "raw": "float-slow 14s ease-in-out infinite",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--animate-float-slower",
+        "raw": "float-slow 20s ease-in-out infinite",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--animate-gradient-pan",
+        "raw": "gradient-pan 8s ease infinite",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--animate-shimmer",
+        "raw": "shimmer 2.6s linear infinite",
+        "source": "src/styles.css"
+      },
+      {
+        "name": "--animate-rise",
+        "raw": "rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both",
+        "source": "src/styles.css"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "AppShell",
+      "file": "src/components/app-shell",
+      "import_path": ""
+    },
+    {
+      "name": "BulkImportUsers",
+      "file": "src/components/bulk-import-users",
+      "import_path": ""
+    },
+    {
+      "name": "CreateStaffUser",
+      "file": "src/components/create-staff-user",
+      "import_path": ""
+    },
+    {
+      "name": "DashboardQuickActions",
+      "file": "src/components/dashboard-quick-actions",
+      "import_path": ""
+    },
+    {
+      "name": "CollapsibleSection",
+      "file": "src/components/dashboard-quick-actions",
+      "import_path": ""
+    },
+    {
+      "name": "Stat",
+      "file": "src/components/dashboards",
+      "import_path": ""
+    },
+    {
+      "name": "PrincipalDashboard",
+      "file": "src/components/dashboards",
+      "import_path": ""
+    },
+    {
+      "name": "StaffDashboard",
+      "file": "src/components/dashboards",
+      "import_path": ""
+    },
+    {
+      "name": "ClassTeacherDashboard",
+      "file": "src/components/dashboards",
+      "import_path": ""
+    },
+    {
+      "name": "SubjectTeacherDashboard",
+      "file": "src/components/dashboards",
+      "import_path": ""
+    },
+    {
+      "name": "Wordmark",
+      "file": "src/components/marketing",
+      "import_path": ""
+    },
+    {
+      "name": "Reveal",
+      "file": "src/components/marketing",
+      "import_path": ""
+    },
+    {
+      "name": "SectionHeading",
+      "file": "src/components/marketing",
+      "import_path": ""
+    },
+    {
+      "name": "SiteHeader",
+      "file": "src/components/marketing",
+      "import_path": ""
+    },
+    {
+      "name": "SiteFooter",
+      "file": "src/components/marketing",
+      "import_path": ""
+    },
+    {
+      "name": "DashboardPreview",
+      "file": "src/components/marketing",
+      "import_path": ""
+    },
+    {
+      "name": "FaqList",
+      "file": "src/components/marketing",
+      "import_path": ""
+    },
+    {
+      "name": "PageHeader",
+      "file": "src/components/page-header",
+      "import_path": ""
+    },
+    {
+      "name": "EmptyState",
+      "file": "src/components/page-header",
+      "import_path": ""
+    },
+    {
+      "name": "PlatformOwnerEmailsCard",
+      "file": "src/components/platform-owner-emails",
+      "import_path": ""
+    },
+    {
+      "name": "PlatformShell",
+      "file": "src/components/platform-shell",
+      "import_path": ""
+    },
+    {
+      "name": "OwnerPageHeader",
+      "file": "src/components/platform-shell",
+      "import_path": ""
+    },
+    {
+      "name": "OwnerCard",
+      "file": "src/components/platform-shell",
+      "import_path": ""
+    },
+    {
+      "name": "StatTile",
+      "file": "src/components/platform-shell",
+      "import_path": ""
+    },
+    {
+      "name": "OwnerBadge",
+      "file": "src/components/platform-shell",
+      "import_path": ""
+    },
+    {
+      "name": "ReasonDialog",
+      "file": "src/components/reason-dialog",
+      "import_path": ""
+    },
+    {
+      "name": "RecordDialog",
+      "file": "src/components/record-dialog",
+      "import_path": ""
+    },
+    {
+      "name": "CreateStaffAccountButton",
+      "file": "src/components/staff/create-staff-wizard",
+      "import_path": ""
+    },
+    {
+      "name": "Credentials",
+      "file": "src/components/staff/create-staff-wizard",
+      "import_path": ""
+    },
+    {
+      "name": "RolePicker",
+      "file": "src/components/staff/staff-fields",
+      "import_path": ""
+    },
+    {
+      "name": "SearchableMulti",
+      "file": "src/components/staff/staff-fields",
+      "import_path": ""
+    },
+    {
+      "name": "ClassTeacherFields",
+      "file": "src/components/staff/staff-fields",
+      "import_path": ""
+    },
+    {
+      "name": "PermissionGrid",
+      "file": "src/components/staff/staff-fields",
+      "import_path": ""
+    },
+    {
+      "name": "AlertDialog",
+      "file": "src/components/ui/alert-dialog",
+      "import_path": ""
+    },
+    {
+      "name": "AlertDialogPortal",
+      "file": "src/components/ui/alert-dialog",
+      "import_path": ""
+    },
+    {
+      "name": "AlertDialogOverlay",
+      "file": "src/components/ui/alert-dialog",
+      "import_path": ""
+    },
+    {
+      "name": "AlertDialogTrigger",
+      "file": "src/components/ui/alert-dialog",
+      "import_path": ""
+    },
+    {
+      "name": "AlertDialogContent",
+      "file": "src/components/ui/alert-dialog",
+      "import_path": ""
+    },
+    {
+      "name": "AlertDialogHeader",
+      "file": "src/components/ui/alert-dialog",
+      "import_path": ""
+    },
+    {
+      "name": "AlertDialogFooter",
+      "file": "src/components/ui/alert-dialog",
+      "import_path": ""
+    },
+    {
+      "name": "AlertDialogTitle",
+      "file": "src/components/ui/alert-dialog",
+      "import_path": ""
+    },
+    {
+      "name": "AlertDialogDescription",
+      "file": "src/components/ui/alert-dialog",
+      "import_path": ""
+    },
+    {
+      "name": "AlertDialogAction",
+      "file": "src/components/ui/alert-dialog",
+      "import_path": ""
+    },
+    {
+      "name": "AlertDialogCancel",
+      "file": "src/components/ui/alert-dialog",
+      "import_path": ""
+    },
+    {
+      "name": "Badge",
+      "file": "src/components/ui/badge",
+      "import_path": "",
+      "props": [
+        {
+          "name": "variant",
+          "type": "enum",
+          "values": [
+            "default",
+            "secondary",
+            "destructive",
+            "outline"
+          ],
+          "default": "default"
+        }
+      ]
+    },
+    {
+      "name": "Button",
+      "file": "src/components/ui/button",
+      "import_path": "",
+      "props": [
+        {
+          "name": "variant",
+          "type": "enum",
+          "values": [
+            "default",
+            "destructive",
+            "outline",
+            "secondary",
+            "ghost",
+            "link"
+          ],
+          "default": "default"
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "values": [
+            "default",
+            "sm",
+            "lg",
+            "icon"
+          ],
+          "default": "default"
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "default": "false"
+        }
+      ]
+    },
+    {
+      "name": "Checkbox",
+      "file": "src/components/ui/checkbox",
+      "import_path": ""
+    },
+    {
+      "name": "Dialog",
+      "file": "src/components/ui/dialog",
+      "import_path": ""
+    },
+    {
+      "name": "DialogPortal",
+      "file": "src/components/ui/dialog",
+      "import_path": ""
+    },
+    {
+      "name": "DialogOverlay",
+      "file": "src/components/ui/dialog",
+      "import_path": ""
+    },
+    {
+      "name": "DialogTrigger",
+      "file": "src/components/ui/dialog",
+      "import_path": ""
+    },
+    {
+      "name": "DialogClose",
+      "file": "src/components/ui/dialog",
+      "import_path": ""
+    },
+    {
+      "name": "DialogContent",
+      "file": "src/components/ui/dialog",
+      "import_path": ""
+    },
+    {
+      "name": "DialogHeader",
+      "file": "src/components/ui/dialog",
+      "import_path": ""
+    },
+    {
+      "name": "DialogFooter",
+      "file": "src/components/ui/dialog",
+      "import_path": ""
+    },
+    {
+      "name": "DialogTitle",
+      "file": "src/components/ui/dialog",
+      "import_path": ""
+    },
+    {
+      "name": "DialogDescription",
+      "file": "src/components/ui/dialog",
+      "import_path": ""
+    },
+    {
+      "name": "DropdownMenu",
+      "file": "src/components/ui/dropdown-menu",
+      "import_path": ""
+    },
+    {
+      "name": "DropdownMenuTrigger",
+      "file": "src/components/ui/dropdown-menu",
+      "import_path": ""
+    },
+    {
+      "name": "DropdownMenuContent",
+      "file": "src/components/ui/dropdown-menu",
+      "import_path": ""
+    },
+    {
+      "name": "DropdownMenuItem",
+      "file": "src/components/ui/dropdown-menu",
+      "import_path": ""
+    },
+    {
+      "name": "DropdownMenuCheckboxItem",
+      "file": "src/components/ui/dropdown-menu",
+      "import_path": ""
+    },
+    {
+      "name": "DropdownMenuRadioItem",
+      "file": "src/components/ui/dropdown-menu",
+      "import_path": ""
+    },
+    {
+      "name": "DropdownMenuLabel",
+      "file": "src/components/ui/dropdown-menu",
+      "import_path": ""
+    },
+    {
+      "name": "DropdownMenuSeparator",
+      "file": "src/components/ui/dropdown-menu",
+      "import_path": ""
+    },
+    {
+      "name": "DropdownMenuShortcut",
+      "file": "src/components/ui/dropdown-menu",
+      "import_path": ""
+    },
+    {
+      "name": "DropdownMenuGroup",
+      "file": "src/components/ui/dropdown-menu",
+      "import_path": ""
+    },
+    {
+      "name": "DropdownMenuPortal",
+      "file": "src/components/ui/dropdown-menu",
+      "import_path": ""
+    },
+    {
+      "name": "DropdownMenuSub",
+      "file": "src/components/ui/dropdown-menu",
+      "import_path": ""
+    },
+    {
+      "name": "DropdownMenuSubContent",
+      "file": "src/components/ui/dropdown-menu",
+      "import_path": ""
+    },
+    {
+      "name": "DropdownMenuSubTrigger",
+      "file": "src/components/ui/dropdown-menu",
+      "import_path": ""
+    },
+    {
+      "name": "DropdownMenuRadioGroup",
+      "file": "src/components/ui/dropdown-menu",
+      "import_path": ""
+    },
+    {
+      "name": "Input",
+      "file": "src/components/ui/input",
+      "import_path": ""
+    },
+    {
+      "name": "Label",
+      "file": "src/components/ui/label",
+      "import_path": ""
+    },
+    {
+      "name": "Select",
+      "file": "src/components/ui/select",
+      "import_path": ""
+    },
+    {
+      "name": "SelectGroup",
+      "file": "src/components/ui/select",
+      "import_path": ""
+    },
+    {
+      "name": "SelectValue",
+      "file": "src/components/ui/select",
+      "import_path": ""
+    },
+    {
+      "name": "SelectTrigger",
+      "file": "src/components/ui/select",
+      "import_path": ""
+    },
+    {
+      "name": "SelectContent",
+      "file": "src/components/ui/select",
+      "import_path": ""
+    },
+    {
+      "name": "SelectLabel",
+      "file": "src/components/ui/select",
+      "import_path": ""
+    },
+    {
+      "name": "SelectItem",
+      "file": "src/components/ui/select",
+      "import_path": ""
+    },
+    {
+      "name": "SelectSeparator",
+      "file": "src/components/ui/select",
+      "import_path": ""
+    },
+    {
+      "name": "SelectScrollUpButton",
+      "file": "src/components/ui/select",
+      "import_path": ""
+    },
+    {
+      "name": "SelectScrollDownButton",
+      "file": "src/components/ui/select",
+      "import_path": ""
+    },
+    {
+      "name": "Sheet",
+      "file": "src/components/ui/sheet",
+      "import_path": "",
+      "props": [
+        {
+          "name": "side",
+          "type": "enum",
+          "values": [
+            "top",
+            "bottom",
+            "left",
+            "right"
+          ],
+          "default": "right"
+        }
+      ]
+    },
+    {
+      "name": "SheetPortal",
+      "file": "src/components/ui/sheet",
+      "import_path": ""
+    },
+    {
+      "name": "SheetOverlay",
+      "file": "src/components/ui/sheet",
+      "import_path": ""
+    },
+    {
+      "name": "SheetTrigger",
+      "file": "src/components/ui/sheet",
+      "import_path": ""
+    },
+    {
+      "name": "SheetClose",
+      "file": "src/components/ui/sheet",
+      "import_path": ""
+    },
+    {
+      "name": "SheetContent",
+      "file": "src/components/ui/sheet",
+      "import_path": ""
+    },
+    {
+      "name": "SheetHeader",
+      "file": "src/components/ui/sheet",
+      "import_path": ""
+    },
+    {
+      "name": "SheetFooter",
+      "file": "src/components/ui/sheet",
+      "import_path": ""
+    },
+    {
+      "name": "SheetTitle",
+      "file": "src/components/ui/sheet",
+      "import_path": ""
+    },
+    {
+      "name": "SheetDescription",
+      "file": "src/components/ui/sheet",
+      "import_path": ""
+    },
+    {
+      "name": "Textarea",
+      "file": "src/components/ui/textarea",
+      "import_path": ""
+    },
+    {
+      "name": "Constants",
+      "file": "src/integrations/supabase/types",
+      "import_path": ""
+    },
+    {
+      "name": "InstitutionProvider",
+      "file": "src/lib/institution",
+      "import_path": ""
+    }
+  ],
+  "assets": [
+    {
+      "file": "src/assets/edqorix-logo.png.asset.json",
+      "kind": "logo",
+      "format": "png",
+      "pointer": true
+    },
+    {
+      "file": "src/assets/edqorix-mark.png.asset.json",
+      "kind": "image",
+      "format": "png",
+      "pointer": true
+    }
+  ]
+}
