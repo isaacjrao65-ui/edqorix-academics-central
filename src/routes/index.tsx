@@ -512,7 +512,7 @@ function Landing() {
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {PROBLEMS.map((item, index) => (
             <Reveal key={item.title} delay={index * 60}>
-              <div className={`h-full rounded-xl border border-border/70 bg-card p-5 transition-all duration-300 hover:-translate-y-1.5 hover:card-glow ${BRAND_BORDER[index % BRAND_BORDER.length]}`}>
+              <div className={`group h-full rounded-xl border border-border/70 bg-card p-5 transition-all duration-300 hover:-translate-y-1.5 hover:card-glow ${BRAND_BORDER[index % BRAND_BORDER.length]}`}>
                 <span className="grid size-9 place-items-center rounded-lg bg-brand-2/12 text-brand-6 transition-transform duration-300 group-hover:scale-110">
                   <item.icon className="size-4.5" aria-hidden />
                 </span>
