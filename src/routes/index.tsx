@@ -27,6 +27,7 @@ import {
 } from "lucide-react";
 
 import {
+  CountUp,
   DashboardPreview,
   FAQS,
   FaqList,
@@ -310,6 +311,73 @@ const BRAND_BORDER = [
   "hover:border-brand-6/50",
 ];
 
+/* Bento card styles for the feature grid — mixed sizes and royal tints */
+const BENTO = [
+  {
+    span: "sm:col-span-2 lg:row-span-2",
+    card: "border-brand-3/20 bg-primary text-primary-foreground shadow-xl shadow-indigo-900/20",
+    icon: "bg-brand-1 text-white",
+    title: "text-primary-foreground",
+    body: "text-primary-foreground/70",
+  },
+  {
+    span: "",
+    card: "border-transparent bg-brand-1 text-white shadow-lg",
+    icon: "bg-white/20 text-white",
+    title: "text-white",
+    body: "text-white/75",
+  },
+  {
+    span: "",
+    card: "border-border/70 bg-background",
+    icon: "bg-brand-2/12 text-brand-6",
+    title: "",
+    body: "text-muted-foreground",
+  },
+  {
+    span: "",
+    card: "border-border/70 bg-background",
+    icon: "bg-brand-1/12 text-brand-1",
+    title: "",
+    body: "text-muted-foreground",
+  },
+  {
+    span: "",
+    card: "border-2 border-dashed border-brand-2/40 bg-brand-2/5",
+    icon: "bg-brand-2/15 text-brand-6",
+    title: "",
+    body: "text-muted-foreground",
+  },
+  {
+    span: "",
+    card: "border-border/70 bg-background",
+    icon: "bg-brand-3/10 text-brand-3",
+    title: "",
+    body: "text-muted-foreground",
+  },
+  {
+    span: "",
+    card: "border-border/70 bg-background",
+    icon: "bg-brand-5/12 text-brand-5",
+    title: "",
+    body: "text-muted-foreground",
+  },
+  {
+    span: "",
+    card: "border-border/70 bg-background",
+    icon: "bg-brand-6/12 text-brand-6",
+    title: "",
+    body: "text-muted-foreground",
+  },
+];
+
+const HERO_STATS = [
+  { value: 2480, suffix: "+", label: "Students managed per institution" },
+  { value: 92, suffix: "%", label: "Faster result preparation" },
+  { value: 100, suffix: "%", label: "Changes recorded in the audit log" },
+  { value: 0, suffix: "", label: "Paper registers required" },
+];
+
 function Landing() {
   return (
     <div className="min-h-screen scroll-smooth bg-background">
@@ -318,24 +386,24 @@ function Landing() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute -top-40 -left-24 size-[34rem] rounded-full bg-brand-1/25 blur-3xl animate-float-slow" />
-          <div className="absolute -top-24 right-[-10%] size-[30rem] rounded-full bg-brand-2/25 blur-3xl animate-float-slower" />
-          <div className="absolute top-40 left-1/3 size-[26rem] rounded-full bg-brand-3/22 blur-3xl animate-float-slow" />
-          <div className="absolute top-72 right-1/4 size-[22rem] rounded-full bg-brand-4/20 blur-3xl animate-float-slower" />
+          <div className="absolute -top-24 -left-24 size-64 rounded-full bg-brand-1/10 blur-3xl animate-pulse" />
+          <div className="absolute top-1/2 -right-32 size-80 rounded-full bg-brand-2/10 blur-3xl animate-float-slower" />
+          <div className="absolute -bottom-24 left-1/3 size-72 rounded-full bg-brand-1/8 blur-3xl animate-float-slow" />
         </div>
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-brand-1/0 via-brand-2/70 to-brand-3/0"
+          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-brand-3/0 via-brand-1/60 to-brand-2/0"
         />
         <div className="mx-auto max-w-7xl px-4 pt-16 pb-8 sm:px-6 sm:pt-24 lg:px-8">
           <Reveal className="mx-auto max-w-4xl text-center">
-            <span className="animate-pulse-ring inline-flex items-center gap-2 rounded-full border border-brand-2/30 bg-card px-3.5 py-1.5 text-xs font-medium text-foreground/80">
-              <span className="size-1.5 rounded-full bg-gradient-brand" />
-              Digital Academic Management, Simplified
+            <span className="animate-pulse-ring inline-flex items-center gap-2 rounded-full bg-primary px-4 py-1.5 text-[11px] font-bold tracking-[0.14em] text-primary-foreground uppercase">
+              Staff Portal
             </span>
-            <h1 className="mt-6 font-display text-4xl leading-[1.08] font-semibold tracking-tight text-balance-tight sm:text-5xl lg:text-6xl">
+            <h1 className="mt-6 font-display text-4xl leading-[1.08] font-bold tracking-tight text-balance-tight sm:text-5xl lg:text-6xl">
               Replace paper-based marks management with a{" "}
-              <span className="text-gradient-brand">smarter digital system</span>
+              <span className="text-brand-1 underline decoration-brand-2 decoration-4 underline-offset-8">
+                smarter digital system
+              </span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
               Edqorix helps educational institutions enter, verify, manage, secure and analyze
@@ -345,7 +413,7 @@ function Landing() {
               <Button
                 asChild
                 size="lg"
-                className="group relative w-full overflow-hidden border-0 bg-gradient-brand text-primary-foreground shadow-lg transition-transform duration-300 hover:scale-[1.03] sm:w-auto"
+                className="group relative w-full overflow-hidden border-0 bg-primary text-primary-foreground shadow-xl shadow-indigo-900/20 transition-transform duration-300 hover:scale-[1.03] active:scale-95 sm:w-auto"
               >
                 <Link to="/auth">
                   <span
@@ -359,7 +427,7 @@ function Landing() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="w-full border-brand-3/40 transition-colors hover:bg-brand-3/10 sm:w-auto"
+                className="w-full border-brand-1/40 transition-colors hover:bg-brand-1/10 sm:w-auto"
               >
                 <Link to="/contact">Request a Demo</Link>
               </Button>
@@ -369,28 +437,38 @@ function Landing() {
             </p>
           </Reveal>
 
-          <Reveal delay={120} className="mx-auto mt-14 max-w-5xl">
-            <div className="rounded-2xl bg-gradient-brand p-[1.5px] card-glow">
-              <div className="rounded-[calc(1rem-1px)] bg-background">
-                <DashboardPreview />
+          <Reveal delay={140} className="mx-auto mt-14 max-w-5xl">
+            <div className="animate-float-y">
+              <div className="rounded-3xl bg-gradient-brand p-[1.5px] card-glow">
+                <div className="rounded-[calc(1.5rem-1px)] bg-background">
+                  <DashboardPreview />
+                </div>
               </div>
             </div>
           </Reveal>
         </div>
       </section>
 
-      {/* Trusted by / institution types */}
-      <section className="border-y border-border/70 bg-card/40">
-        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-          <Reveal className="flex flex-col items-center gap-6">
-            <p className="text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">
-              One platform, every kind of institution
-            </p>
-            <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-4">
-              {INSTITUTION_TYPES.map((type, index) => (
+      {/* Institution types marquee */}
+      <section className="overflow-hidden border-y border-border/70 bg-card/40 py-8">
+        <p className="mb-6 px-4 text-center text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">
+          One platform, every kind of institution
+        </p>
+        <div className="relative">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-background to-transparent"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-background to-transparent"
+          />
+          <div className="animate-marquee flex w-max gap-4 motion-reduce:animate-none">
+            {[...INSTITUTION_TYPES, ...INSTITUTION_TYPES, ...INSTITUTION_TYPES, ...INSTITUTION_TYPES].map(
+              (type, index) => (
                 <div
-                  key={type}
-                  className={`rounded-xl border border-border/60 bg-background px-4 py-5 text-center transition-all duration-300 hover:-translate-y-1 hover:card-glow ${BRAND_BORDER[index % BRAND_BORDER.length]}`}
+                  key={`${type}-${index}`}
+                  className="rounded-2xl border border-border/60 bg-background px-8 py-4 text-center"
                 >
                   <p
                     className={`font-display text-base font-semibold ${["text-brand-1", "text-brand-2", "text-brand-3", "text-brand-5"][index % 4]}`}
@@ -398,11 +476,28 @@ function Landing() {
                     {type}
                   </p>
                 </div>
-              ))}
-            </div>
-          </Reveal>
+              ),
+            )}
+          </div>
         </div>
       </section>
+
+      {/* Animated stats band */}
+      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {HERO_STATS.map((stat, index) => (
+            <Reveal key={stat.label} delay={index * 70}>
+              <div className="h-full rounded-2xl border border-border/70 bg-card p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:card-glow">
+                <p className="text-gradient-brand font-display text-3xl font-bold sm:text-4xl">
+                  <CountUp value={stat.value} suffix={stat.suffix} />
+                </p>
+                <p className="mt-2 text-xs text-muted-foreground sm:text-sm">{stat.label}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
 
 
       {/* Problem */}
@@ -417,8 +512,8 @@ function Landing() {
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {PROBLEMS.map((item, index) => (
             <Reveal key={item.title} delay={index * 60}>
-              <div className={`h-full rounded-xl border border-border/70 bg-card p-5 transition-all duration-300 hover:-translate-y-1.5 hover:card-glow ${BRAND_BORDER[index % BRAND_BORDER.length]}`}>
-                <span className="grid size-9 place-items-center rounded-lg bg-destructive/10 text-destructive">
+              <div className={`group h-full rounded-xl border border-border/70 bg-card p-5 transition-all duration-300 hover:-translate-y-1.5 hover:card-glow ${BRAND_BORDER[index % BRAND_BORDER.length]}`}>
+                <span className="grid size-9 place-items-center rounded-lg bg-brand-2/12 text-brand-6 transition-transform duration-300 group-hover:scale-110">
                   <item.icon className="size-4.5" aria-hidden />
                 </span>
                 <h3 className="mt-4 text-sm font-semibold">{item.title}</h3>
@@ -452,18 +547,40 @@ function Landing() {
             />
           </Reveal>
           <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {FEATURES.map((item, index) => (
-              <Reveal key={item.title} delay={index * 60}>
-                <div className={`group h-full rounded-xl border border-border/70 bg-background p-6 transition-all duration-300 hover:-translate-y-1.5 hover:card-glow ${BRAND_BORDER[index % BRAND_BORDER.length]}`}>
-                  <span className={`grid size-10 place-items-center rounded-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 ${BRAND_TINT[index % BRAND_TINT.length]}`}>
-                    <item.icon className="size-5" aria-hidden />
-                  </span>
-
-                  <h3 className="mt-4 font-display text-base font-semibold">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
-                </div>
-              </Reveal>
-            ))}
+            {FEATURES.map((item, index) => {
+              const style = BENTO[index % BENTO.length]!;
+              return (
+                <Reveal key={item.title} delay={index * 60} className={style.span}>
+                  <div
+                    className={`group flex h-full flex-col rounded-3xl border p-6 transition-all duration-300 hover:-translate-y-1.5 hover:card-glow ${style.card}`}
+                  >
+                    <span
+                      className={`grid size-10 place-items-center rounded-xl transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 ${style.icon}`}
+                    >
+                      <item.icon className="size-5" aria-hidden />
+                    </span>
+                    <h3 className={`mt-4 font-display text-base font-semibold ${style.title}`}>
+                      {item.title}
+                    </h3>
+                    <p className={`mt-2 text-sm leading-relaxed ${style.body}`}>{item.body}</p>
+                    {index === 0 ? (
+                      <div className="mt-auto flex flex-wrap gap-2 pt-8">
+                        {["Keyboard-first grid", "Auto-saved drafts", "Live validation"].map(
+                          (chip) => (
+                            <span
+                              key={chip}
+                              className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-medium text-primary-foreground/85"
+                            >
+                              {chip}
+                            </span>
+                          ),
+                        )}
+                      </div>
+                    ) : null}
+                  </div>
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>
