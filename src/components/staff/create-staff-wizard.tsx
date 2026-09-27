@@ -109,7 +109,7 @@ function CreateStaffWizard({ open, onOpenChange }: { open: boolean; onOpenChange
 
   function next() {
     const err = stepError();
-    if (err) return toast.error(err);
+    if (err) { toast.error(err); return; }
     setStep((s) => s + 1);
   }
 
@@ -245,7 +245,7 @@ function CreateStaffWizard({ open, onOpenChange }: { open: boolean; onOpenChange
                 <Row k="Name" v={form.fullName} />
                 <Row k="Email" v={form.email} />
                 <Row k="Staff ID" v={form.staffId || "Auto-generated"} />
-                <Row k="Role" v={type ? STAFF_TYPE_LABEL[type] : "—"} />
+                <Row k="Role" v={type ? (STAFF_TYPE_LABEL[type] ?? type) : "—"} />
                 {type && needsClassTeacher(type) && <Row k="Class teacher of" v={`Class ${ct.number}-${ct.section}`} />}
                 {type && needsSubjects(type) && <Row k="Subjects" v={subjects.join(", ")} />}
                 {type && needsSubjects(type) && <Row k="Classes" v={classSel.map(classLabelOf).join(", ")} />}

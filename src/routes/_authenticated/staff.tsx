@@ -297,7 +297,7 @@ function ViewDialog({ row, rows, onClose }: { row: StaffRow; rows: StaffRow[]; o
         </DialogHeader>
         <dl className="grid gap-2 text-sm sm:grid-cols-2">
           <Info k="Staff ID" v={row.staffId ?? "—"} />
-          <Info k="Role" v={row.staffType ? STAFF_TYPE_LABEL[row.staffType] : ROLE_FALLBACK[row.role]} />
+          <Info k="Role" v={row.staffType ? STAFF_TYPE_LABEL[row.staffType] ?? "" : ROLE_FALLBACK[row.role] ?? row.role} />
           <Info k="Designation" v={row.designation ?? "—"} />
           <Info k="Status" v={row.status} />
           <Info k="Subjects" v={row.subjects.join(", ") || "—"} />
