@@ -197,7 +197,7 @@ function PlatformLogin() {
             </div>
             <Button type="submit" className="w-full bg-cyan-500 text-slate-950 hover:bg-cyan-400">
               <KeyRound className="size-4" strokeWidth={2} />
-              Enter control plane
+              {busy ? "Entering..." : "Enter control plane"}
             </Button>
           </form>
         )}
