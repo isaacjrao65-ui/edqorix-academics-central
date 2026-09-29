@@ -283,6 +283,16 @@
   }
 }
 
+html[data-marketing-motion="paused"] [class*="animate-"] {
+  animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html [class*="animate-"] {
+    animation: none !important;
+  }
+}
+
 /* Animated royal gradient text — violet → gold → indigo */
 @utility text-gradient-brand {
   background-image: linear-gradient(

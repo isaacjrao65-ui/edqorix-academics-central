@@ -770,8 +770,8 @@ function Landing() {
               </table>
               <div className="flex items-center justify-between gap-3 border-t border-border/70 px-5 py-4">
                 <p className="text-xs text-muted-foreground">Draft saved a moment ago</p>
-                <span className="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground">
-                  Submit marks
+                <span className="rounded-md border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
+                  Preview: Submit marks
                 </span>
               </div>
             </div>
@@ -866,7 +866,7 @@ function Landing() {
                 <div className="flex items-center justify-between gap-3 rounded-xl border border-border/70 bg-card px-5 py-4 transition-colors hover:border-primary/40">
                   <span className="text-sm font-medium">{report}</span>
                   <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    <Search className="size-3.5" aria-hidden /> CSV · PDF
+                    <Search className="size-3.5" aria-hidden /> Exports: CSV · PDF
                   </span>
                 </div>
               </Reveal>

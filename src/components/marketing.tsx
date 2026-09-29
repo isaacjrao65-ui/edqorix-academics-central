@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Activity, BarChart3, ChevronDown, Lock, Menu, ShieldCheck, X } from "lucide-react";
+import { Activity, BarChart3, ChevronDown, Lock, Menu, Pause, Play, ShieldCheck, X } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import { edqorixMark } from "@/lib/brand";
@@ -173,6 +173,8 @@ const NAV: { label: string; href: string }[] = [
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [motionPaused, setMotionPaused] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -180,6 +182,32 @@ export function SiteHeader() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => {
+      const reduced = media.matches;
+      setReducedMotion(reduced);
+      const saved = window.localStorage.getItem("edqorix-marketing-motion");
+      setMotionPaused(reduced || saved === "paused");
+    };
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.dataset.marketingMotion = motionPaused ? "paused" : "playing";
+    return () => { delete document.documentElement.dataset.marketingMotion; };
+  }, [motionPaused]);
+
+  function toggleMotion() {
+    if (reducedMotion) return;
+    setMotionPaused((paused) => {
+      window.localStorage.setItem("edqorix-marketing-motion", paused ? "playing" : "paused");
+      return !paused;
+    });
+  }
 
   return (
     <header
@@ -208,6 +236,18 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={toggleMotion}
+            aria-pressed={motionPaused}
+            title={reducedMotion ? "Animations are reduced by your device preference" : undefined}
+            disabled={reducedMotion}
+          >
+            {motionPaused ? <Play aria-hidden /> : <Pause aria-hidden />}
+            {reducedMotion ? "Reduced motion" : motionPaused ? "Play motion" : "Pause motion"}
+          </Button>
           <Button asChild variant="ghost" size="sm">
             <Link to="/auth">Login</Link>
           </Button>
@@ -221,7 +261,7 @@ export function SiteHeader() {
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-label="Toggle navigation"
-          className="grid size-10 place-items-center rounded-md border border-border/70 text-foreground xl:hidden"
+          className="grid size-10 place-items-center rounded-md border border-border/70 text-foreground transition-[background-color,transform] hover:bg-accent active:scale-95 xl:hidden"
         >
           {open ? <X className="size-5" /> : <Menu className="size-5" />}
         </button>
@@ -248,6 +288,16 @@ export function SiteHeader() {
                 <Link to="/auth">Get Started</Link>
               </Button>
             </div>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={toggleMotion}
+              aria-pressed={motionPaused}
+              disabled={reducedMotion}
+            >
+              {motionPaused ? <Play aria-hidden /> : <Pause aria-hidden />}
+              {reducedMotion ? "Reduced motion enabled" : motionPaused ? "Play animations" : "Pause animations"}
+            </Button>
           </div>
         </div>
       ) : null}

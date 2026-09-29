@@ -34,7 +34,13 @@ export const Route = createFileRoute("/_authenticated/learning-gaps")({
   component: LearningGapsPage,
 });
 
-type Analysis = Awaited<ReturnType<ReturnType<typeof useServerFn<typeof analyzeLearningGaps>>>>;
+type Analysis = {
+  overview: string;
+  priority: "low" | "medium" | "high";
+  gaps: Array<{ area: string; evidence: string; affectedGroup: string }>;
+  actions: Array<{ title: string; owner: string; timeframe: string; detail: string }>;
+  generatedAt: string;
+};
 
 function LearningGapsPage() {
   const { institutionId } = useInstitution();
