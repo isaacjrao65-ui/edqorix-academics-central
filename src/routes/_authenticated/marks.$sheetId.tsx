@@ -282,15 +282,13 @@ function MarkSheetPage() {
       <div className="flex flex-wrap items-center gap-2">
         {canEdit ? (
           <Button onClick={saveMarks} disabled={busy || roster.length === 0}>
+            {busy ? "Saving..." : <><Save className="size-4" strokeWidth={1.75} /> Save marks</>}
             <Save className="size-4" strokeWidth={1.75} />
             Save marks
           </Button>
         ) : null}
         {canEdit ? (
-          <Button
-            variant="outline"
-            disabled={busy || roster.length === 0}
-            onClick={async () => {
+          <Button variant="outline" disabled={busy || roster.length === 0} onClick={async () => {
               await saveMarks();
               await transition("submitted", "marks.submitted", {
                 submitted_by: userId,
@@ -298,7 +296,7 @@ function MarkSheetPage() {
               });
             }}
           >
-            Submit for verification
+            {busy ? "Submitting..." : "Submit for verification"}
           </Button>
         ) : null}
         {canVerify ? (
@@ -312,7 +310,7 @@ function MarkSheetPage() {
                 })
               }
             >
-              Verify
+              {busy ? "Verifying..." : "Verify"}
             </Button>
             <ReturnDialog
               busy={busy}
@@ -332,7 +330,7 @@ function MarkSheetPage() {
               })
             }
           >
-            Approve
+            {busy ? "Approving..." : "Approve"}
           </Button>
         ) : null}
         {canPublish ? (
@@ -344,7 +342,7 @@ function MarkSheetPage() {
               })
             }
           >
-            Publish result
+            {busy ? "Publishing..." : "Publish result"}
           </Button>
         ) : null}
         {canUnlock ? (
@@ -353,7 +351,7 @@ function MarkSheetPage() {
             disabled={busy}
             onClick={() => transition("draft", "marks.unlocked", {})}
           >
-            Unlock for correction
+            {busy ? "Unlocking..." : "Unlock for correction"}
           </Button>
         ) : null}
         {canManage && sectionId ? (

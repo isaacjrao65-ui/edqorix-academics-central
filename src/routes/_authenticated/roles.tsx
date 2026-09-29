@@ -118,6 +118,8 @@ function RolesTab({ institutionId }: { institutionId: string | null }) {
       .select("id")
       .single();
     if (error) {
+        setToggling(null);
+        setToggling(null);
       toast.error(error.message);
       return;
     }
@@ -141,6 +143,8 @@ function RolesTab({ institutionId }: { institutionId: string | null }) {
     const role = roles.find((r) => r.id === id);
     const { error } = await supabase.from("roles").delete().eq("id", id);
     if (error) {
+        setToggling(null);
+        setToggling(null);
       toast.error(error.message);
       return;
     }
@@ -267,7 +271,9 @@ function MatrixTab({ institutionId }: { institutionId: string | null }) {
   const { data: roles = [] } = useRoles(institutionId);
   const { data: permissions = [] } = usePermissionCatalogue();
   const { data: rolePerms = [] } = useRolePermissions(institutionId);
+  const [toggling, setToggling] = useState<string | null>(null);
   const [roleId, setRoleId] = useState<string>("");
+  const [toggling, setToggling] = useState<string | null>(null);
 
   const active = roleId || roles[0]?.id || "";
   const granted = useMemo(
@@ -286,12 +292,16 @@ function MatrixTab({ institutionId }: { institutionId: string | null }) {
   }, [permissions]);
 
   async function toggle(permissionKey: string, next: boolean) {
+    setToggling(permissionKey);
+    setToggling(permissionKey);
     if (!institutionId || !active) return;
     if (next) {
       const { error } = await supabase
         .from("role_permissions")
         .insert({ institution_id: institutionId, role_id: active, permission_key: permissionKey });
       if (error) {
+        setToggling(null);
+        setToggling(null);
         toast.error(error.message);
         return;
       }
@@ -302,6 +312,8 @@ function MatrixTab({ institutionId }: { institutionId: string | null }) {
         .eq("role_id", active)
         .eq("permission_key", permissionKey);
       if (error) {
+        setToggling(null);
+        setToggling(null);
         toast.error(error.message);
         return;
       }
@@ -319,6 +331,9 @@ function MatrixTab({ institutionId }: { institutionId: string | null }) {
     });
     await queryClient.invalidateQueries({ queryKey: ["role-permissions"] });
     await queryClient.invalidateQueries({ queryKey: ["effective-permissions"] });
+    setToggling(null);
+    setToggling(null);
+    setToggling(null);
   }
 
   if (roles.length === 0) {
@@ -354,6 +369,7 @@ function MatrixTab({ institutionId }: { institutionId: string | null }) {
                   <Checkbox
                     id={`perm-${perm.key}`}
                     checked={granted.has(perm.key)}
+                    disabled={toggling === perm.key}
                     onCheckedChange={(checked) => void toggle(perm.key, checked === true)}
                   />
                   <Label htmlFor={`perm-${perm.key}`} className="font-normal">
@@ -368,6 +384,7 @@ function MatrixTab({ institutionId }: { institutionId: string | null }) {
     </div>
   );
 }
+  const [toggling, setToggling] = useState<string | null>(null);
 
 function OverridesTab({ institutionId }: { institutionId: string | null }) {
   const queryClient = useQueryClient();
@@ -375,6 +392,7 @@ function OverridesTab({ institutionId }: { institutionId: string | null }) {
   const { data: permissions = [] } = usePermissionCatalogue();
   const { data: overrides = [] } = useUserPermissions(institutionId);
   const [userId, setUserId] = useState("");
+  const [toggling, setToggling] = useState<string | null>(null);
 
   const active = userId || members[0]?.user_id || "";
   const mine = useMemo(
@@ -383,12 +401,16 @@ function OverridesTab({ institutionId }: { institutionId: string | null }) {
   );
 
   async function setOverride(permissionKey: string, value: "inherit" | "allow" | "deny") {
+    setToggling(permissionKey);
+    setToggling(permissionKey);
     if (!institutionId || !active) return;
     const existing = mine.get(permissionKey);
     if (value === "inherit") {
       if (!existing) return;
       const { error } = await supabase.from("user_permissions").delete().eq("id", existing.id);
       if (error) {
+        setToggling(null);
+        setToggling(null);
         toast.error(error.message);
         return;
       }
@@ -403,6 +425,8 @@ function OverridesTab({ institutionId }: { institutionId: string | null }) {
             granted,
           });
       if (error) {
+        setToggling(null);
+        setToggling(null);
         toast.error(error.message);
         return;
       }
@@ -420,6 +444,9 @@ function OverridesTab({ institutionId }: { institutionId: string | null }) {
     });
     await queryClient.invalidateQueries({ queryKey: ["user-permissions"] });
     await queryClient.invalidateQueries({ queryKey: ["effective-permissions"] });
+    setToggling(null);
+    setToggling(null);
+    setToggling(null);
   }
 
   if (members.length === 0) {
@@ -464,6 +491,7 @@ function OverridesTab({ institutionId }: { institutionId: string | null }) {
                   <td className="px-5 py-2.5">
                     <Select
                       value={value}
+                      disabled={toggling === perm.key}
                       onValueChange={(next) =>
                         void setOverride(perm.key, next as "inherit" | "allow" | "deny")
                       }
