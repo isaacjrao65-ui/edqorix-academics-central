@@ -283,8 +283,6 @@ function MarkSheetPage() {
         {canEdit ? (
           <Button onClick={saveMarks} disabled={busy || roster.length === 0}>
             {busy ? "Saving..." : <><Save className="size-4" strokeWidth={1.75} /> Save marks</>}
-            <Save className="size-4" strokeWidth={1.75} />
-            Save marks
           </Button>
         ) : null}
         {canEdit ? (
