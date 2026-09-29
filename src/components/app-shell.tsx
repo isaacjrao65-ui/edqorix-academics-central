@@ -2,6 +2,7 @@ import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   BookOpen,
+  BrainCircuit,
   ClipboardList,
   FileStack,
   GraduationCap,
@@ -69,6 +70,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: "/academics", label: "Departments & subjects", icon: BookOpen },
       { to: "/exams", label: "Examinations", icon: ClipboardList },
       { to: "/marks", label: "Marks & approvals", icon: PenSquare },
+      { to: "/learning-gaps", label: "AI learning gaps", icon: BrainCircuit },
     ],
   },
   {

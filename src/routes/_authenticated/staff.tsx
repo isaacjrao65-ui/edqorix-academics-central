@@ -495,7 +495,7 @@ function StatusDialog({ row, status, onClose }: { row: StaffRow; status: "active
               }
             }}
           >
-            {verb}
+            {busy ? "Processing..." : verb}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -533,7 +533,7 @@ function PasswordDialog({ row, onClose }: { row: StaffRow; onClose: () => void }
                 }
               }}
             >
-              Generate new password
+              {busy ? "Generating..." : "Generate new password"}
             </Button>
           )}
         </DialogFooter>

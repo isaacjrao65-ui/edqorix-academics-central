@@ -4,4 +4,9 @@ component_library: ""
 source_type: local
 upstream_package: ""
 starter_template: custom_design_system_tailwind
-stack_packages: []
+upstream_versions:
+  "@radix-ui/react-accordion": "1.2.20"
+  "lucide-react": "0.575.0"
+  "react": "19.2.8"
+  "react-dom": "19.2.8"
+  "tailwindcss": "4.3.3"

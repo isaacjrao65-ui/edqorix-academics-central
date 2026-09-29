@@ -149,8 +149,8 @@ function QuickCreate() {
   const navigate = useNavigate();
   const actions: { label: string; to: string; search?: Record<string, string> }[] = [
     { label: "Create institution", to: "/platform/institutions", search: { create: "1" } },
-    { label: "Create institution admin", to: "/platform/people" },
-    { label: "Grant a permission", to: "/platform/permissions" },
+    { label: "Manage institution admins", to: "/platform/people" },
+    { label: "Review permission requests", to: "/platform/permissions" },
     { label: "Create subscription plan", to: "/platform/subscriptions", search: { create: "1" } },
     { label: "Create feature flag", to: "/platform/features", search: { create: "1" } },
   ];
