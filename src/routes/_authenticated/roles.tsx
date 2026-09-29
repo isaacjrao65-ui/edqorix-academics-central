@@ -118,7 +118,6 @@ function RolesTab({ institutionId }: { institutionId: string | null }) {
       .select("id")
       .single();
     if (error) {
-        setToggling(null);
       toast.error(error.message);
       return;
     }
@@ -142,7 +141,6 @@ function RolesTab({ institutionId }: { institutionId: string | null }) {
     const role = roles.find((r) => r.id === id);
     const { error } = await supabase.from("roles").delete().eq("id", id);
     if (error) {
-        setToggling(null);
       toast.error(error.message);
       return;
     }

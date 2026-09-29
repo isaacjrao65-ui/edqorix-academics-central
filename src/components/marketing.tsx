@@ -197,8 +197,8 @@ export function SiteHeader() {
   }, []);
 
   useEffect(() => {
-    document.documentElement.dataset.marketingMotion = motionPaused ? "paused" : "playing";
-    return () => { delete document.documentElement.dataset.marketingMotion; };
+    document.documentElement.dataset["marketingMotion"] = motionPaused ? "paused" : "playing";
+    return () => { delete document.documentElement.dataset["marketingMotion"]; };
   }, [motionPaused]);
 
   function toggleMotion() {

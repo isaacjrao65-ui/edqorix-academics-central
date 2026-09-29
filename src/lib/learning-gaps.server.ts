@@ -35,30 +35,30 @@ function extractJson(text: string): unknown {
 function cleanAnalysis(value: unknown): LearningGapAnalysis {
   if (!value || typeof value !== "object") return FALLBACK;
   const raw = value as Record<string, unknown>;
-  const priority = raw.priority === "low" || raw.priority === "high" ? raw.priority : "medium";
-  const gaps = Array.isArray(raw.gaps)
-    ? raw.gaps.slice(0, 5).map((item) => {
+  const priority = raw["priority"] === "low" || raw["priority"] === "high" ? raw["priority"] : "medium";
+  const gaps = Array.isArray(raw["gaps"])
+    ? raw["gaps"].slice(0, 5).map((item) => {
         const row = item && typeof item === "object" ? (item as Record<string, unknown>) : {};
         return {
-          area: String(row.area ?? "Learning gap").slice(0, 120),
-          evidence: String(row.evidence ?? "").slice(0, 300),
-          affectedGroup: String(row.affectedGroup ?? "Class group").slice(0, 160),
+          area: String(row["area"] ?? "Learning gap").slice(0, 120),
+          evidence: String(row["evidence"] ?? "").slice(0, 300),
+          affectedGroup: String(row["affectedGroup"] ?? "Class group").slice(0, 160),
         };
       })
     : [];
-  const actions = Array.isArray(raw.actions)
-    ? raw.actions.slice(0, 6).map((item) => {
+  const actions = Array.isArray(raw["actions"])
+    ? raw["actions"].slice(0, 6).map((item) => {
         const row = item && typeof item === "object" ? (item as Record<string, unknown>) : {};
         return {
-          title: String(row.title ?? "Follow-up action").slice(0, 120),
-          owner: String(row.owner ?? "Teacher").slice(0, 80),
-          timeframe: String(row.timeframe ?? "Next lesson").slice(0, 80),
-          detail: String(row.detail ?? "").slice(0, 360),
+          title: String(row["title"] ?? "Follow-up action").slice(0, 120),
+          owner: String(row["owner"] ?? "Teacher").slice(0, 80),
+          timeframe: String(row["timeframe"] ?? "Next lesson").slice(0, 80),
+          detail: String(row["detail"] ?? "").slice(0, 360),
         };
       })
     : [];
   return {
-    overview: String(raw.overview ?? FALLBACK.overview).slice(0, 700),
+    overview: String(raw["overview"] ?? FALLBACK.overview).slice(0, 700),
     priority,
     gaps,
     actions,
